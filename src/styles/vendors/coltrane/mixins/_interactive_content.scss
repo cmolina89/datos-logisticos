@@ -1,0 +1,46 @@
+@use '_actions' as actions;
+
+[cl-interactive-content] {
+    @extend [cl-text-ellipsis];
+    @extend [cl-interactive-content-regular];
+    &:hover     { @extend [cl-interactive-content-selected]; }
+    &:focus     { @extend [cl-interactive-content-selected]; }
+    &:active    { @extend [cl-interactive-content-highlight]; }
+    &[aria-selected="true"] { @extend [cl-interactive-content-selected]; }
+}
+
+.cl-inverted [cl-interactive-content],
+[cl-interactive-content="inverted"] {
+    @extend [cl-text-ellipsis];
+    color: var(--color-text-invert);
+    &:hover     { color: var(--color-text-invert); }
+    &:focus     { color: var(--color-text-invert); }
+    &:active    { color: var(--color-text-invert); }
+    &:disabled, &[cl-action="disabled"], &[disabled] {
+        color: var(--color-text-inactive);
+        &:active    { color: var(--color-text-soft); }
+    }
+    &[aria-selected="true"] { color: var(--color-text-invert); }
+}
+
+[cl-interactive-content-regular]    {
+    @include actions.property-tokens("color", "regular",
+        $disabled-style: var(--color-text-inactive)
+    );
+}
+[cl-interactive-content-selected]     {
+    @include actions.property-tokens("color", "selected",
+        $disabled-style: var(--color-text-inactive)
+    );
+}
+[cl-interactive-content-highlight]  {
+    @include actions.property-tokens("color", "highlight",
+        $disabled-style: var(--color-text-soft)
+    );
+}
+
+[cl-text-ellipsis] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -1,0 +1,13 @@
+
+@use 'variables' as v;
+
+footer#clt-footer {
+    position: fixed;
+    height: v.$footer-height;
+    left: v.$sidebar-collapsed-width;
+    right: 0;
+    bottom: 0;
+    text-align: right;
+    padding: 0 2rem;
+    color: var(--color-icon-soft);
+}

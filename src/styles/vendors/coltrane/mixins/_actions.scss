@@ -1,0 +1,40 @@
+@mixin property-tokens(
+    $property,
+    $variant: "regular",
+    $disabled-style: null,
+    $prefix: ""
+) {
+
+    @if $variant == "regular" {
+
+        #{$property}: #{$prefix} var(--color-primary);
+        &[cl-action="error"]     { #{$property}: #{$prefix} var(--color-background-error); }
+        &[cl-action="success"]   { #{$property}: #{$prefix} var(--color-background-success); }
+        &[cl-action="warning"]   { #{$property}: #{$prefix} var(--color-background-warning); }
+        &[cl-action="info"]      { #{$property}: #{$prefix} var(--color-background-info); }
+
+    } @else if $variant == "highlight" {
+
+        #{$property}: #{$prefix} var(--color-primary-press);
+        &[cl-action="error"]     { #{$property}: #{$prefix} var(--color-interactive-error-press); }
+        &[cl-action="success"]   { #{$property}: #{$prefix} var(--color-interactive-success-press); }
+        &[cl-action="warning"]   { #{$property}: #{$prefix} var(--color-interactive-warning-press); }
+        &[cl-action="info"]      { #{$property}: #{$prefix} var(--color-interactive-info-press); }
+
+    } @else if $variant == "selected" {
+
+        #{$property}: #{$prefix} var(--color-primary-hover);
+        &[cl-action="error"]     { #{$property}: #{$prefix} var(--color-interactive-error-hover); }
+        &[cl-action="success"]   { #{$property}: #{$prefix} var(--color-interactive-success-hover); }
+        &[cl-action="warning"]   { #{$property}: #{$prefix} var(--color-interactive-warning-hover); }
+        &[cl-action="info"]      { #{$property}: #{$prefix} var(--color-interactive-info-hover); }
+
+    }
+
+    @if $disabled-style {
+        &:disabled, &[cl-action="disabled"], &[disabled] {
+            #{$property}: #{$disabled-style};
+        }
+    }
+
+}

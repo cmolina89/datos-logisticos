@@ -1,0 +1,100 @@
+{
+  "navigation": {
+    "home": "Accueil",
+    "posts": "Articles",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "protected": "Zone Protégée",
+    "serverInfo": "Info Serveur"
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "loginSimulated": "Connexion (Simulée)",
+    "logoutSimulated": "Déconnexion (Simulée)",
+    "loginSuccess": "Vous êtes connecté (simulé) ! Vous pouvez maintenant accéder aux routes protégées.",
+    "logoutSuccess": "Vous êtes déconnecté.",
+    "unauthorized": "Non autorisé",
+    "accessDenied": "Accès refusé",
+    "redirectingToLogin": "Redirection vers la connexion..."
+  },
+  "posts": {
+    "title": "Liste des Articles",
+    "description": "Exemple de consommation d'API avec Axios et gestion d'état avec Jotai.",
+    "loading": "Chargement des articles...",
+    "error": "Erreur lors du chargement des articles",
+    "noPostsFound": "Aucun article trouvé.",
+    "readMore": "Lire la suite...",
+    "user": "Utilisateur",
+    "loadingError": "Impossible de charger les articles."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "retry": "Réessayer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "refresh": "Actualiser"
+  },
+  "theme": {
+    "light": "Thème Clair",
+    "dark": "Thème Sombre",
+    "switchTheme": "Changer de Thème",
+    "currentTheme": "Thème actuel : {{theme}}"
+  },
+  "accessibility": {
+    "skipToContent": "Aller au contenu principal",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "toggleTheme": "Basculer le thème",
+    "imageLoadError": "Erreur de chargement d'image",
+    "loading": "Chargement du contenu"
+  },
+  "seo": {
+    "defaultTitle": "CoppelFramework - WebClient React",
+    "defaultDescription": "Standard de développement frontend pour applications React modernes, robustes et évolutives.",
+    "homeTitle": "Accueil - CoppelFramework",
+    "homeDescription": "Modèle de développement React avec Modern.js, TypeScript et meilleures pratiques.",
+    "postsTitle": "Articles - CoppelFramework",
+    "postsDescription": "Exemple de consommation d'API et gestion d'état avec Jotai.",
+    "loginTitle": "Connexion - CoppelFramework",
+    "loginDescription": "Page de connexion du framework.",
+    "protectedTitle": "Zone Protégée - CoppelFramework",
+    "protectedDescription": "Contenu protégé nécessitant une authentification."
+  },
+  "errors": {
+    "pageNotFound": "Page non trouvée",
+    "serverError": "Erreur serveur",
+    "networkError": "Erreur réseau",
+    "unexpectedError": "Erreur inattendue",
+    "tryAgain": "Réessayer",
+    "goHome": "Aller à l'accueil"
+  },
+  "validation": {
+    "required": "Ce champ est obligatoire",
+    "email": "Entrez un email valide",
+    "minLength": "Minimum {{min}} caractères",
+    "maxLength": "Maximum {{max}} caractères",
+    "invalidFormat": "Format invalide",
+    "requiredField": "Champ requis",
+    "positiveNumber": "Doit être un nombre supérieur à 0",
+    "maxDecimals": "Maximum 2 décimales",
+    "integerGreaterThanZero": "Doit être un nombre entier supérieur à 0",
+    "integerOnly": "Doit être un nombre entier",
+    "altoMax": "La hauteur ne peut pas dépasser 500",
+    "frenteMax": "La largeur ne peut pas dépasser 500",
+    "fondoMax": "La profondeur ne peut pas dépasser 500",
+    "estibaMax": "L'empilement maximum ne peut pas dépasser 999",
+    "numericOnly": "Ce champ n'accepte que des valeurs numériques"
+  }
+}

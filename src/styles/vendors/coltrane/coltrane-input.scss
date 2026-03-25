@@ -1,0 +1,70 @@
+@use './mixins/_interactive_content';
+@use './mixins/_interactive_background';
+@use './mixins/_interactive_border';
+@use './coltrane-button.scss';
+
+[cl-input-regular-core] {
+
+    display: flex;
+    background-color: transparent;
+
+    [cl-input-inside] {
+        background-color: var(--color-background-body);
+        display: flex;
+        align-items: center;
+        min-width: 320px;
+        height: 40px;
+        overflow: hidden;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 8px;
+        input {
+            border: none;
+            outline: none;
+            flex: 1;
+            height: 100%;
+        }
+        > *             { padding: 1px var(--spacing-1) 0; }
+        > *:first-child { padding-left: var(--spacing-4); }
+        > *:last-child  { padding-right: var(--spacing-4); }
+        > *:first-child { padding-left: var(--spacing-4); }
+        > *:last-child  { padding-right: var(--spacing-4); }
+        > [cl-prefix], [cl-suffix]   { padding: 0 var(--spacing-1); }
+    }
+
+    button[cl-input-button] {
+        @extend [cl-button-core];
+        @extend [cl-interactive-content="inverted"];
+        @extend [cl-interactive-background];
+        height: var(--spacing-8);
+        padding: var(--spacing-2) var(--spacing-5);
+        border-radius: 8px;
+    }
+    button[cl-input-button-outline] {
+        border: 2px solid var(--color-primary);
+        @extend [cl-button-core];
+        @extend [cl-interactive-content];
+        @extend [cl-interactive-background="inverted"];
+        @extend [cl-interactive-border];
+    }
+    button[cl-input-button-flat] {
+        @extend [cl-button-core];
+        @extend [cl-interactive-content];
+        @extend [cl-interactive-background="inverted"];
+    }
+
+    [cl-input-inside] + button {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+      }
+      
+    [cl-input-inside]:has(+ button) {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }      
+
+}
+
+[cl-input] {
+    @extend [cl-input-regular-core];
+}

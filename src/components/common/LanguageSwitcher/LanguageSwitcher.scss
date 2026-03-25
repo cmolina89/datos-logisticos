@@ -1,0 +1,178 @@
+.language-switcher {
+  .language-dropdown {
+    min-width: 120px;
+    
+    .p-dropdown-label {
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .p-dropdown-trigger {
+      width: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &:not(.p-disabled):hover {
+      border-color: var(--primary-color);
+    }
+
+    &.p-focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+      border-color: var(--primary-color);
+    }
+  }
+
+  .language-option,
+  .selected-language {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+
+    .language-flag {
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .language-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  }
+
+  .selected-language {
+    .language-label {
+      color: var(--text-color);
+    }
+  }
+
+  // Mobile optimizations
+  @media (max-width: 768px) {
+    .language-dropdown {
+      min-width: 100px;
+
+      .p-dropdown-label {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+      }
+
+      .language-flag {
+        font-size: 1rem;
+      }
+
+      .language-label {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  // High contrast mode
+  @media (prefers-contrast: high) {
+    .language-dropdown {
+      border-width: 2px;
+
+      &.p-focus {
+        outline-width: 3px;
+      }
+    }
+  }
+
+  // Reduced motion
+  @media (prefers-reduced-motion: reduce) {
+    .language-dropdown {
+      transition: none;
+    }
+  }
+}
+
+// Panel styles (global)
+.language-panel {
+  .p-dropdown-items {
+    .p-dropdown-item {
+      padding: 0.5rem 0.75rem;
+
+      &:hover {
+        background-color: var(--primary-color);
+        color: var(--primary-color-text);
+      }
+
+      &.p-highlight {
+        background-color: var(--primary-color);
+        color: var(--primary-color-text);
+      }
+
+      .language-option {
+        width: 100%;
+      }
+    }
+  }
+
+  // Mobile panel adjustments
+  @media (max-width: 768px) {
+    .p-dropdown-items {
+      .p-dropdown-item {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+// Dark theme support
+.dark-theme {
+  .language-switcher {
+    .language-dropdown {
+      background-color: var(--surface-800);
+      border-color: var(--surface-600);
+      color: var(--text-color);
+
+      &:not(.p-disabled):hover {
+        border-color: var(--primary-color);
+      }
+    }
+  }
+
+  .language-panel {
+    background-color: var(--surface-800);
+    border-color: var(--surface-600);
+
+    .p-dropdown-items {
+      .p-dropdown-item {
+        color: var(--text-color);
+
+        &:hover {
+          background-color: var(--primary-color);
+          color: var(--primary-color-text);
+        }
+      }
+    }
+  }
+}
+
+// RTL support
+[dir="rtl"] {
+  .language-switcher {
+    .language-option,
+    .selected-language {
+      flex-direction: row-reverse;
+    }
+
+    .language-dropdown {
+      .p-dropdown-label {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .language-switcher {
+    display: none;
+  }
+}

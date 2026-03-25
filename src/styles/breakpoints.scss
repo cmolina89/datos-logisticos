@@ -1,0 +1,255 @@
+@use "sass:map";
+
+// Breakpoints móvil-first
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+// Mixins para media queries móvil-first
+@mixin media-up($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    $value: map.get($breakpoints, $breakpoint);
+    @if $value > 0 {
+      @media (min-width: $value) {
+        @content;
+      }
+    } @else {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint `#{$breakpoint}` no encontrado en $breakpoints.";
+  }
+}
+
+@mixin media-down($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    $value: map.get($breakpoints, $breakpoint);
+    @if $value > 0 {
+      @media (max-width: #{$value - 1px}) {
+        @content;
+      }
+    }
+  } @else {
+    @warn "Breakpoint `#{$breakpoint}` no encontrado en $breakpoints.";
+  }
+}
+
+@mixin media-between($lower, $upper) {
+  @if map.has-key($breakpoints, $lower) and map.has-key($breakpoints, $upper) {
+    $lower-value: map.get($breakpoints, $lower);
+    $upper-value: map.get($breakpoints, $upper);
+    
+    @media (min-width: #{$lower-value}) and (max-width: #{$upper-value - 1px}) {
+      @content;
+    }
+  } @else {
+    @warn "Uno o ambos breakpoints no encontrados en $breakpoints.";
+  }
+}
+
+@mixin media-only($breakpoint) {
+  @if $breakpoint == xs {
+    @include media-down(sm) {
+      @content;
+    }
+  } @else if $breakpoint == sm {
+    @include media-between(sm, md) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    @include media-between(md, lg) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @include media-between(lg, xl) {
+      @content;
+    }
+  } @else if $breakpoint == xl {
+    @include media-between(xl, xxl) {
+      @content;
+    }
+  } @else if $breakpoint == xxl {
+    @include media-up(xxl) {
+      @content;
+    }
+  }
+}
+
+// Utilidades para contenedores responsive
+@mixin container-responsive {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+
+  @include media-up(sm) {
+    max-width: 540px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  @include media-up(md) {
+    max-width: 720px;
+  }
+
+  @include media-up(lg) {
+    max-width: 960px;
+  }
+
+  @include media-up(xl) {
+    max-width: 1140px;
+  }
+
+  @include media-up(xxl) {
+    max-width: 1320px;
+  }
+}
+
+// Grid system responsive
+@mixin make-grid-columns($columns: 12, $gutter: 1rem) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gutter;
+
+  @include media-up(sm) {
+    gap: $gutter * 1.25;
+  }
+
+  @include media-up(md) {
+    gap: $gutter * 1.5;
+  }
+}
+
+// Utilidades para texto responsive
+@mixin font-size-responsive($base-size: 1rem, $scale: 1.125) {
+  font-size: $base-size;
+
+  @include media-up(sm) {
+    font-size: $base-size * $scale;
+  }
+
+  @include media-up(md) {
+    font-size: $base-size * $scale * $scale;
+  }
+
+  @include media-up(lg) {
+    font-size: $base-size * $scale * $scale * $scale;
+  }
+}
+
+// Utilidades para espaciado responsive
+@mixin spacing-responsive($property, $base-value: 1rem, $scale: 1.25) {
+  #{$property}: $base-value;
+
+  @include media-up(sm) {
+    #{$property}: $base-value * $scale;
+  }
+
+  @include media-up(md) {
+    #{$property}: $base-value * $scale * $scale;
+  }
+
+  @include media-up(lg) {
+    #{$property}: $base-value * $scale * $scale * $scale;
+  }
+}
+
+// Utilidades para ocultar/mostrar elementos
+@mixin hidden-up($breakpoint) {
+  @include media-up($breakpoint) {
+    display: none !important;
+  }
+}
+
+@mixin hidden-down($breakpoint) {
+  @include media-down($breakpoint) {
+    display: none !important;
+  }
+}
+
+@mixin visible-up($breakpoint) {
+  display: none !important;
+  
+  @include media-up($breakpoint) {
+    display: block !important;
+  }
+}
+
+@mixin visible-down($breakpoint) {
+  display: none !important;
+  
+  @include media-down($breakpoint) {
+    display: block !important;
+  }
+}
+
+// Utilidades para interacciones táctiles
+@mixin touch-friendly {
+  min-height: 44px; // Tamaño mínimo recomendado para elementos táctiles
+  min-width: 44px;
+  
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin touch-action($action: manipulation) {
+  touch-action: $action;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+// Utilidades para orientación
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
+
+// Utilidades para densidad de píxeles
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    @content;
+  }
+}
+
+// Utilidades para modo oscuro
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+@mixin light-mode {
+  @media (prefers-color-scheme: light) {
+    @content;
+  }
+}
+
+// Utilidades para reducción de movimiento
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}

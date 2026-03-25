@@ -1,0 +1,75 @@
+.DS_Store
+
+.pnp
+.pnp.js
+.env.local
+.env.*.local
+.history
+*.log*
+
+node_modules/
+*.tsbuildinfo
+.changeset/pre.json
+
+dist/
+coverage/
+release/
+.output/
+output/
+output_resource/
+log/
+
+.vscode/**/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+
+**/*/typings/auto-generated
+
+modern.config.local.*
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
+
+# npm
+package-lock.json
+
+# Docker
+deploy
+
+# Tests folders
+/test-results
+coverage
+tests/
+test-report.xml
+
+# Others
+package-lock.js
+.npmrc

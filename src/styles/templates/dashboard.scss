@@ -1,0 +1,45 @@
+
+@use 'variables' as v;
+
+@import url('navbar.scss');
+@import url('sidebar.scss');
+@import url('submenu.scss');
+@import url('footer.scss');
+
+app-full-layout {
+
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-areas: "progress progress" "navbar navbar" "sidebar main";
+  grid-template-rows: auto auto 1fr;
+  grid-template-columns: v.$sidebar-collapsed-width auto;
+  
+  > #main {
+      position: relative;
+      grid-area: main;
+      overflow-y: auto;
+      height: 100%;
+      .content {
+        position: relative;
+        height: calc(100% - v.$submenu-height);
+        overflow-x: hidden;
+      }
+  }
+  > app-sidebar {
+      grid-area: sidebar;
+  }
+  > app-navbar {
+      grid-area: navbar;
+  }
+  > app-footer {
+    grid-area: footer;
+  }
+
+}
+
+@media only screen and (max-width: 768px) {
+  app-full-layout {
+    grid-template-columns: 0 auto;
+  }
+}

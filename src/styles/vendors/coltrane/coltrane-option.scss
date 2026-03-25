@@ -1,0 +1,53 @@
+@use './mixins/_interactive_content';
+
+[cl-option-core] {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    height: var(--spacing-9);
+    width: auto;
+    border-radius: var(--spacing-2);
+    padding: 0;
+    
+    font-size: var(--font-size-small);
+    text-decoration: none;
+    background-color: transparent;
+    border: 2px solid transparent;
+    cursor: pointer;
+
+    > .label {
+        text-align: left;
+        flex-grow: 1;
+    }
+    > .icon, > .action { 
+        width: 24px;
+        height: 24px;
+        margin: var(--spacing-2) var(--spacing-2);
+    }
+    > *:first-child {   margin-left:    var(--spacing-3);      }
+    > *:last-child  {   margin-right:   var(--spacing-2);      }
+
+    &[size="small"] {
+        height: var(--spacing-8);
+    }
+    &[size="large"] {
+        height: var(--spacing-10);
+    }
+
+}
+
+[cl-option] {
+    @extend [cl-option-core];
+    @extend [cl-text-ellipsis];
+    color: var(--color-icon-soft);
+    &:hover {
+        background-color: var(--color-background-0);
+        color: var(--color-primary-press) !important;
+    }
+    &:active, &[aria-selected="true"] {
+        background-color: var(--color-primary-press);
+        color: var(--color-text-invert) !important;
+    }
+}

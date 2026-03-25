@@ -1,0 +1,5 @@
+[
+  { "value": "carton_master", "labelKey": "datosLogisticos.segmento3.cartonMaster" },
+  { "value": "bulto", "labelKey": "datosLogisticos.segmento3.bulto" },
+  { "value": "ninguno", "labelKey": "datosLogisticos.segmento3.ninguno" }
+]

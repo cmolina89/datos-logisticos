@@ -1,0 +1,6 @@
+[
+  { "value": "", "labelKey": "datosLogisticos.options.selectOrientation" },
+  { "value": "Vertical", "labelKey": "datosLogisticos.options.vertical" },
+  { "value": "Horizontal", "labelKey": "datosLogisticos.options.horizontal" },
+  { "value": "Indistinta", "labelKey": "datosLogisticos.options.indistinta" }
+]

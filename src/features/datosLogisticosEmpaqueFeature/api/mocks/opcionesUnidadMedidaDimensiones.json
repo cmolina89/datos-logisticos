@@ -1,0 +1,6 @@
+[
+  { "value": "", "labelKey": "datosLogisticos.options.selectMeasureUnit" },
+  { "value": "cm", "labelKey": "datosLogisticos.options.cm" },
+  { "value": "m", "labelKey": "datosLogisticos.options.m" },
+  { "value": "in", "labelKey": "datosLogisticos.options.in" }
+]

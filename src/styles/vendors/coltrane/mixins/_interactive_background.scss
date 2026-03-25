@@ -1,0 +1,32 @@
+@use '_actions' as actions;
+
+[cl-interactive-background] {
+    @extend [cl-interactive-background-regular];
+    &:hover     { @extend [cl-interactive-background-selected]; }
+    &:focus     { @extend [cl-interactive-background-selected]; }
+    &:active    { @extend [cl-interactive-background-highlight]; }
+    &[aria-selected="true"] { @extend [cl-interactive-background-selected]; }
+}
+
+.cl-inverted [cl-interactive-background],
+[cl-interactive-background="inverted"] {
+    background-color: var(--color-text-invert);
+    &:disabled, &[cl-action="disabled"], &[disabled],
+    &:active    { background-color: rgba(var(--color-text-invert), 0.25); }
+}
+
+[cl-interactive-background-regular] {
+    @include actions.property-tokens("background-color", "regular",
+        $disabled-style: var(--color-background-neutral)
+    );
+}
+[cl-interactive-background-selected] {
+    @include actions.property-tokens("background-color", "selected",
+        $disabled-style: var(--color-background-neutral)
+    );
+}
+[cl-interactive-background-highlight] {
+    @include actions.property-tokens("background-color", "highlight",
+        $disabled-style: var(--color-background-neutral)
+    );
+}

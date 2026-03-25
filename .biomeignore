@@ -1,0 +1,40 @@
+# Dependencies
+**/node_modules/**
+
+# Build outputs
+**/dist/**
+**/build/**
+**/output/**
+**/output_resource/**
+**/.modern.js/**
+
+# Test outputs
+**/coverage/**
+**/test-results/**
+
+# Generated files
+**/*.d.ts
+**/typings/auto-generated/**
+src/modern-app-env.d.ts
+
+# Static assets
+public/**
+
+# Deployment
+deploy/**
+
+# Logs
+*.log
+**/*.log
+
+# Environment files
+.env
+.env.*
+
+# IDE files
+.vscode/**
+.idea/**
+
+# OS files
+.DS_Store
+Thumbs.db

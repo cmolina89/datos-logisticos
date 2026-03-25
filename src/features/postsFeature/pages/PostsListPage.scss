@@ -1,0 +1,26 @@
+// src/features/postsFeature/pages/PostsListPage.scss
+.posts-list-page {
+  padding: 1rem;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.posts-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr; // Mobile-first: 1 columna
+
+  // Media query para pantallas más grandes
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr); // 2 columnas en tablets
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr); // 3 columnas en desktops
+  }
+}

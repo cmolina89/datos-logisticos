@@ -1,0 +1,83 @@
+@use 'mixins/action-styles' as events;
+
+$contrast: var(--color-text-invert);
+$interactive: var(--color-primary);
+$hover: var(--color-primary-hover);
+$press: var(--color-primary-press);
+
+[cl-interactive-regular] {
+    @include events.apply-action-styles("regular",  transparent, transparent, transparent, transparent, true);
+}
+[cl-interactive-outline] {
+    @include events.apply-action-styles("outline",  transparent, transparent, transparent, transparent, true);
+}
+[cl-interactive-flat] {
+    @include events.apply-action-styles("flat",     transparent, transparent, transparent, transparent, true);
+}
+
+[cl-actionable-regular] {
+    @include events.apply-action-styles("regular",  $contrast, $interactive, $hover, $press);
+}
+[cl-actionable-outline] {
+
+    @include events.apply-action-styles("outline",  $contrast, $interactive, $hover, $press);
+}
+[cl-actionable-flat] {
+    @include events.apply-action-styles("flat",     $contrast, $interactive, $hover, $press);
+}
+
+[cl-interactive-regular] {
+    &[cl-action="disabled"], &[disabled] {
+        @include events.action-styles("regular",
+            var(--color-icon-soft),
+            var(--color-background-neutral),
+            var(--color-background-neutral),
+            var(--color-secondary-press), true);
+    }
+}
+[cl-interactive-outline] {
+    &[cl-action="disabled"], &[disabled] {
+        @include events.action-styles("outline",
+            var(--color-text-invert),
+            var(--color-background-neutral),
+            var(--color-background-neutral),
+            var(--color-secondary-press), true);
+    }
+}
+[cl-interactive-flat] {
+    &[cl-action="disabled"], &[disabled] {
+        @include events.action-styles("flat",
+            var(--color-text-invert),
+            var(--color-background-neutral),
+            var(--color-background-neutral),
+            var(--color-secondary-press), true);
+    }
+}
+
+[cl-actionable-regular] {
+    &[cl-action="disabled"], &[disabled] {
+        @include events.action-styles("regular",
+            var(--color-icon-soft),
+            var(--color-background-neutral),
+            var(--color-background-neutral),
+            var(--color-secondary-press));
+    }
+}
+[cl-actionable-outline] {
+    &[cl-action="disabled"], &[disabled] {
+        @include events.action-styles("outline",
+            var(--color-text-invert),
+            var(--color-background-neutral),
+            var(--color-background-neutral),
+            var(--color-secondary-press));
+    }
+}
+[cl-actionable-flat] {
+    &[cl-action="disabled"], &[disabled] {
+        @include events.action-styles("flat",
+            var(--color-text-invert),
+            var(--color-background-neutral),
+            var(--color-background-neutral),
+            var(--color-secondary-press));
+    }
+}

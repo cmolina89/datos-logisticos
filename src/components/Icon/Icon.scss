@@ -1,0 +1,71 @@
+@import '../../styles/vendors/coltrane/coltrane-tokens.scss';
+
+// Clases base para el componente Icon
+.icon-small {
+  font-size: 16px;
+  
+  &.clt {
+    font-size: 16px;
+  }
+}
+
+.icon-medium {
+  font-size: 24px;
+  
+  &.clt {
+    font-size: 24px;
+  }
+}
+
+.icon-large {
+  font-size: 32px;
+  
+  &.clt {
+    font-size: 32px;
+  }
+}
+
+// Estado interactivo para iconos clickeables
+.icon-interactive {
+  &:hover {
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+  
+  &:focus {
+    outline: 2px solid var(--color-primary, #1C42E8);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  
+  &:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+}
+
+// Soporte para tema oscuro
+body.dark-theme {
+  .icon-interactive:focus {
+    outline-color: var(--color-primary-light, #5C7CFA);
+  }
+}
+
+// Mejoras de accesibilidad
+@media (prefers-reduced-motion: reduce) {
+  .icon-interactive {
+    &:hover,
+    &:active {
+      transition: none;
+      transform: none;
+    }
+  }
+}
+
+// Modo de alto contraste
+@media (prefers-contrast: high) {
+  .icon-interactive:focus {
+    outline-width: 3px;
+    outline-style: solid;
+  }
+}

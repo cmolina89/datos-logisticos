@@ -1,0 +1,196 @@
+@import '../../styles/breakpoints.scss';
+@import '../../styles/vendors/coltrane/coltrane-tokens.scss';
+
+.coltrane-icons-catalog {
+  width: 100%;
+  
+  .icons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    justify-content: start;
+    
+    
+    @include media-down(sm) {
+      justify-content: center;
+    }
+  }
+  
+  .icon-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    min-height: 140px;
+    min-width: 140px;
+    max-width: 140px;
+    padding: var(--spacing-4, 16px);
+    background-color: var(--color-background-body, #FFFFFF);
+    border: 1px solid var(--color-border, #C9C9C9);
+    border-radius: var(--rounded-md, 12px);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+    
+    @include media-down(sm) {
+      min-height: 120px;
+      min-width: 120px;
+      max-width: 120px;
+      padding: var(--spacing-3, 12px);
+    }
+    
+    @include media-down(xs) {
+      min-height: 100px;
+      min-width: 100px;
+      max-width: 100px;
+      padding: var(--spacing-2, 8px);
+    }
+    
+    &:hover {
+      background-color: var(--color-background-0, #F3F3F3);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      border-color: var(--color-primary, #1C42E8);
+    }
+    
+    &:focus-within {
+      outline: 2px solid var(--color-primary, #1C42E8);
+      outline-offset: 2px;
+    }
+    
+    // Estilos para el componente Icon
+    .icon-large {
+      font-size: 36px;
+      color: var(--color-icon, #081754);
+      margin-bottom: var(--spacing-3, 12px);
+      transition: all 0.2s ease;
+      
+      @include media-down(sm) {
+        font-size: 32px;
+        margin-bottom: var(--spacing-2, 8px);
+      }
+      
+      @include media-down(xs) {
+        font-size: 28px;
+      }
+    }
+    
+    &:hover .icon-large {
+      color: var(--color-primary, #1C42E8);
+      transform: scale(1.15);
+    }
+  }
+  
+  .icon-caption {
+    font-size: var(--font-size-small, 14px);
+    color: var(--color-text-soft, #A4A4A4);
+    font-weight: 500;
+    line-height: 1.2;
+    word-break: break-word;
+    max-width: 100%;
+    text-align: center;
+    
+    @include media-down(sm) {
+      font-size: var(--font-size-caption, 12px);
+    }
+    
+    @include media-down(xs) {
+      font-size: 11px;
+    }
+  }
+  
+  // Responsive adjustments for larger screens
+  @include media-up(md) {
+    
+    .icon-preview {
+      min-height: 160px;
+      min-width: 160px;
+      max-width: 180px;
+      padding: var(--spacing-5, 20px);
+      
+      .icon-large {
+        font-size: 42px;
+      }
+    }
+    
+    .icon-caption {
+      font-size: var(--font-size-body, 16px);
+    }
+  }
+  
+  @include media-up(lg) {
+    
+    .icon-preview {
+      min-height: 180px;
+      min-width: 180px;
+      max-width: 180;
+      
+      .icon-large {
+        font-size: 48px;
+      }
+    }
+  }
+}
+
+// Dark theme support
+body.dark-theme {
+  .coltrane-icons-catalog {
+    .icon-preview {
+      background-color: var(--color-background-dark, #4A4A4A);
+      color: var(--color-text-invert, #FFFFFF);
+      border-color: var(--color-border-dark, #666666);
+      
+      &:hover {
+        background-color: var(--color-background-neutral, #BDBDBD);
+        border-color: var(--color-primary, #1C42E8);
+      }
+      
+      .icon-large {
+        color: var(--color-icon-invert, #FFFFFF);
+      }
+      
+      &:hover .icon-large {
+        color: var(--color-primary, #1C42E8);
+      }
+    }
+    
+    .icon-caption {
+      color: var(--color-text-invert, #FFFFFF);
+    }
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .coltrane-icons-catalog {
+    .icon-preview {
+      transition: none;
+      
+      &:hover {
+        transform: none;
+      }
+      
+      .icon-large {
+        transition: none;
+      }
+      
+      &:hover .icon-large {
+        transform: none;
+      }
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .coltrane-icons-catalog {
+    .icon-preview {
+      border-width: 2px;
+      
+      &:focus-within {
+        outline-width: 3px;
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+[
+  { "value": "", "labelKey": "datosLogisticos.options.selectWeightUnit" },
+  { "value": "KG", "labelKey": "datosLogisticos.options.kg" },
+  { "value": "LB", "labelKey": "datosLogisticos.options.lb" },
+  { "value": "G", "labelKey": "datosLogisticos.options.g" }
+]

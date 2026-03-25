@@ -1,0 +1,5 @@
+[
+  { "value": "", "labelKey": "datosLogisticos.options.selectScheme" },
+  { "value": "Logística_códigos excepción", "labelKey": "datosLogisticos.options.logisticaExcepcion" },
+  { "value": "Esquema estándar", "labelKey": "datosLogisticos.options.esquemaEstandar" }
+]

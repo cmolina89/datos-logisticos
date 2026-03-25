@@ -1,0 +1,168 @@
+/**
+ * Segmento Entrega y manipulación - Tal cual imagen de referencia
+ *
+ * HU 047 (Vista): El usuario ve el título, subsección Pallet (solo consulta) y subsección Acomodo
+ *   (preguntas con radio Si/No y dropdown de orientación).
+ *
+ * HU 048 (Func.): Campos Pallet en solo lectura; radios para acomodo y fragilidad; dropdown
+ *   para tipo de orientación.
+ *
+ * HU 049 (Guardado): Botón Guardar en el footer; validación de tipo de orientación requerido.
+ */
+
+import { useTranslation } from '@/hooks/useTranslation'
+import {
+  datosLogisticosEmpaqueStateAtom,
+  setEntregaManipulacionAtom,
+} from '../store/datosLogisticosEmpaqueAtoms'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { InputText } from 'primereact/inputtext'
+import { RadioButton } from 'primereact/radiobutton'
+import type React from 'react'
+import { useState } from 'react'
+import './TarjetaEntregaManipulacion.scss'
+
+interface TarjetaEntregaManipulacionProps {
+  children?: React.ReactNode
+}
+
+const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({ children }) => {
+  const { t } = useTranslation()
+  const state = useAtomValue(datosLogisticosEmpaqueStateAtom)
+  const setEntrega = useSetAtom(setEntregaManipulacionAtom)
+  const [collapsed, setCollapsed] = useState(false)
+
+  const en = state.entregaManipulacion
+
+  return (
+    <div className="segmento-entrega-manipulacion">
+      <div className="segmento-entrega-header">
+        <div className="segmento-entrega-titulo">
+          <h3 className="segmento-titulo-texto">{t('datosLogisticos.segmento4.title')}</h3>
+          <span className="segmento-checkmark" aria-hidden="true" title={t('datosLogisticos.segmento4.completed')}>
+            <i className="pi pi-check-circle segmento-checkmark-icon" />
+          </span>
+        </div>
+        <button
+          type="button"
+          className="segmento-collapse"
+          onClick={() => setCollapsed(!collapsed)}
+          aria-expanded={!collapsed}
+          aria-label={collapsed ? t('datosLogisticos.aria.expandSection') : t('datosLogisticos.aria.collapseSection')}
+        >
+          <i className={collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'} />
+        </button>
+      </div>
+
+      {!collapsed && (
+        <div className="segmento-entrega-body">
+          <p className="segmento-entrega-intro-texto">
+            {t('datosLogisticos.segmento4.intro')}
+          </p>
+
+          {/* Pallet: pregunta + campos (HU 047 Vista) */}
+          <h4 className="segmento-subtitulo">{t('datosLogisticos.segmento4.pallet')}</h4>
+          <div className="segmento-pregunta p-mb-2">
+            <label className="p-block segmento-label">
+              {t('datosLogisticos.segmento4.paletizable')} <span className="campo-requerido">*</span>
+            </label>
+            <div className="segmento-radios-fila">
+              <div className="segmento-radio-opcion">
+                <RadioButton
+                  inputId="paletizable-si"
+                  name="entregaPaletizable"
+                  value={true}
+                  checked={en.entregaPaletizable === true}
+                  onChange={() => setEntrega({ entregaPaletizable: true })}
+                />
+                <label htmlFor="paletizable-si">{t('datosLogisticos.segmento4.yes')}</label>
+              </div>
+              <div className="segmento-radio-opcion">
+                <RadioButton
+                  inputId="paletizable-no"
+                  name="entregaPaletizable"
+                  value={false}
+                  checked={en.entregaPaletizable === false}
+                  onChange={() => setEntrega({ entregaPaletizable: false })}
+                />
+                <label htmlFor="paletizable-no">{t('datosLogisticos.segmento4.no')}</label>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div className="segmento-entrega-pallet-fila p-mb-3">
+            <div className="segmento-entrega-campo">
+              <label htmlFor="unidadMedidaPallet" className="p-block segmento-label">
+                {t('datosLogisticos.segmento4.unidadMedida')}
+              </label>
+              <InputText
+                id="unidadMedidaPallet"
+                value={en.unidadMedidaPallet}
+                readOnly
+                className="w-full segmento-readonly"
+              />
+            </div>
+            <div className="segmento-entrega-campo">
+              <label htmlFor="layoutLargo" className="p-block segmento-label">
+                {t('datosLogisticos.segmento4.layoutLargo')}
+              </label>
+              <InputText
+                id="layoutLargo"
+                value={String(en.layoutLargo)}
+                readOnly
+                className="w-full segmento-readonly"
+              />
+            </div>
+            <div className="segmento-entrega-campo">
+              <label htmlFor="layoutAncho" className="p-block segmento-label">
+                {t('datosLogisticos.segmento4.layoutAncho')}
+              </label>
+              <InputText
+                id="layoutAncho"
+                value={String(en.layoutAncho)}
+                readOnly
+                className="w-full segmento-readonly"
+              />
+            </div>
+          </div>
+
+          {/* Acomodo (HU 048 Func.) */}
+          <h4 className="segmento-subtitulo">{t('datosLogisticos.segmento4.acomodo')}</h4>
+
+          <div className="segmento-pregunta p-mb-3">
+            <label className="p-block segmento-label">
+              {t('datosLogisticos.segmento4.acomodoLabel')} <span className="campo-requerido">*</span>
+            </label>
+            <div className="segmento-radios-fila">
+              <div className="segmento-radio-opcion">
+                <RadioButton
+                  inputId="acomodo-si"
+                  name="acomodo"
+                  value={true}
+                  checked={en.puedeAcomodarseDistintasFormas === true}
+                  onChange={() => setEntrega({ puedeAcomodarseDistintasFormas: true })}
+                />
+                <label htmlFor="acomodo-si">{t('datosLogisticos.segmento4.yes')}</label>
+              </div>
+              <div className="segmento-radio-opcion">
+                <RadioButton
+                  inputId="acomodo-no"
+                  name="acomodo"
+                  value={false}
+                  checked={en.puedeAcomodarseDistintasFormas === false}
+                  onChange={() => setEntrega({ puedeAcomodarseDistintasFormas: false })}
+                />
+                <label htmlFor="acomodo-no">{t('datosLogisticos.segmento4.no')}</label>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer: Guardar (HU 049) */}
+          <div className="segmento-entrega-footer">{children}</div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default TarjetaEntregaManipulacion

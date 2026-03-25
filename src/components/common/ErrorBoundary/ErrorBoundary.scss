@@ -1,0 +1,262 @@
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 2rem;
+
+  .error-card {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    border: 2px solid var(--red-500);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-3);
+
+    .error-content {
+      padding: 2rem;
+
+      .error-icon {
+        margin-bottom: 1.5rem;
+
+        .pi {
+          font-size: 4rem;
+          color: var(--red-500);
+        }
+      }
+
+      h2 {
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .error-message {
+        margin-bottom: 1.5rem;
+        text-align: left;
+
+        .p-message-text {
+          font-size: 1rem;
+        }
+      }
+
+      .error-description {
+        color: var(--text-color-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+
+      .error-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+
+        .p-button {
+          min-width: 120px;
+        }
+      }
+
+      .error-details {
+        text-align: left;
+        margin-top: 2rem;
+        border-top: 1px solid var(--surface-border);
+        padding-top: 1.5rem;
+
+        summary {
+          cursor: pointer;
+          font-weight: 600;
+          color: var(--text-color-secondary);
+          margin-bottom: 1rem;
+          padding: 0.5rem;
+          border-radius: var(--border-radius);
+          transition: background-color 0.2s ease;
+
+          &:hover {
+            background-color: var(--surface-100);
+          }
+
+          &:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+          }
+        }
+
+        .error-content {
+          padding: 0;
+
+          h4 {
+            color: var(--text-color);
+            margin: 1rem 0 0.5rem 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+          }
+
+          pre {
+            background-color: var(--surface-100);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+          }
+        }
+      }
+    }
+  }
+
+  // Mobile optimizations
+  @media (max-width: 768px) {
+    padding: 1rem;
+    min-height: 300px;
+
+    .error-card {
+      .error-content {
+        padding: 1.5rem;
+
+        .error-icon .pi {
+          font-size: 3rem;
+        }
+
+        h2 {
+          font-size: 1.3rem;
+        }
+
+        .error-actions {
+          flex-direction: column;
+          align-items: center;
+
+          .p-button {
+            width: 100%;
+            max-width: 200px;
+          }
+        }
+
+        .error-details {
+          .error-content {
+            h4 {
+              font-size: 0.85rem;
+            }
+
+            pre {
+              font-size: 0.75rem;
+              padding: 0.75rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Dark theme support
+  .dark-theme & {
+    .error-card {
+      border-color: var(--red-400);
+      background-color: var(--surface-900);
+
+      .error-content {
+        .error-icon .pi {
+          color: var(--red-400);
+        }
+
+        .error-details {
+          border-top-color: var(--surface-700);
+
+          summary:hover {
+            background-color: var(--surface-800);
+          }
+
+          .error-content pre {
+            background-color: var(--surface-800);
+            border-color: var(--surface-700);
+          }
+        }
+      }
+    }
+  }
+
+  // High contrast mode
+  @media (prefers-contrast: high) {
+    .error-card {
+      border-width: 3px;
+
+      .error-content {
+        .error-details summary:focus {
+          outline-width: 3px;
+        }
+      }
+    }
+  }
+
+  // Reduced motion
+  @media (prefers-reduced-motion: reduce) {
+    .error-card {
+      .error-content {
+        .error-details summary {
+          transition: none;
+        }
+      }
+    }
+  }
+
+  // Print styles
+  @media print {
+    .error-card {
+      border: 2px solid #000;
+      box-shadow: none;
+
+      .error-content {
+        .error-actions {
+          display: none;
+        }
+
+        .error-details {
+          summary {
+            display: none;
+          }
+
+          .error-content {
+            display: block !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animation for error appearance
+@keyframes errorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-boundary {
+  animation: errorSlideIn 0.3s ease-out;
+}
+
+// Focus management for accessibility
+.error-boundary {
+  .error-card {
+    &:focus-within {
+      .error-content {
+        .error-actions .p-button:first-child {
+          // Auto-focus first button for keyboard users
+        }
+      }
+    }
+  }
+}

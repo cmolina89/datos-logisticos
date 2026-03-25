@@ -1,0 +1,90 @@
+
+/* Importación de fuentes */
+
+@font-face {
+    font-family: 'Playfair Display';
+    font-display: swap;
+    src: url('../../../../public/fonts/PlayfairDisplay-Medium.ttf') format('woff2');
+}
+
+@font-face {
+    font-family: 'Playfair Display';
+    font-style: italic;
+    font-display: swap;
+    src: url('../../../../public/fonts/PlayfairDisplay-MediumItalic.ttf') format('woff2');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-display: swap;
+    src: url('../../../../public/fonts/Poppins-Regular.ttf') format('woff2');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-display: swap;
+    src: url('../../../../public/fonts/Poppins-SemiBold.ttf') format('woff2');
+}
+
+/* Estilos predeterminados para texto */
+
+.body, .small, .caption {
+    font-family: 'Poppins', sans-serif;
+    line-height: 150%;
+    font-weight: 400;
+}
+.cl-body {
+    font-size: 16px;
+}
+.cl-small {
+    font-size: 14px;
+}
+.cl-caption {
+    font-size: 12px;
+}
+
+/* Estilos predeterminados para título */
+
+.cl-display {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 130%;
+}
+
+.cl-header-1,
+.cl-header-2,
+.cl-header-3,
+.cl-subheader-1,
+.cl-subheader-2{
+    font-family: 'Poppins', sans-serif;
+    line-height: 130%;
+    font-weight: 600;
+}
+
+.cl-header-1 {
+    font-size: 36px;
+}
+.cl-header-2 {
+    font-size: 28px;
+}
+.cl-header-3 {
+    font-size: 24px;
+}
+.cl-subheader-1 {
+    font-size: 20px;
+}
+.cl-subheader-2 {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+@media only screen and (max-width: 768px) {
+    .cl-subheader-1 {
+        font-size: 18px;
+    }
+    .cl-subheader-2 {
+        font-size: 18px;
+    }
+}

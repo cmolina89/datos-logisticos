@@ -1,0 +1,49 @@
+@use './mixins/_interactive_content';
+@use './mixins/_interactive_background';
+@use './mixins/_interactive_border';
+
+[cl-button-core] {
+
+    height: var(--spacing-9);
+    min-width: 122px;
+    max-width: 376px;
+    border-radius: 999px;
+    padding: var(--spacing-2) var(--spacing-4);
+    margin: 1px;
+
+    font-size: var(--font-size-small);
+    font-weight: 700;
+    box-shadow: 0px 0px 0px 2px transparent;
+    border: 2px solid transparent;
+    cursor: pointer;
+
+    &[size="small"] {
+        height: var(--spacing-8);
+        padding: var(--spacing-2) var(--spacing-5);
+    }
+    &[size="large"] {
+        height: var(--spacing-10);
+        padding: var(--spacing-2) var(--spacing-7);
+    }
+}
+
+[cl-button] {
+    @extend [cl-button-core];
+    @extend [cl-interactive-content="inverted"];
+    @extend [cl-interactive-background];
+    @extend [cl-actionable-border];
+}
+[cl-button-outline] {
+    border: 2px solid var(--color-primary);
+    @extend [cl-button-core];
+    @extend [cl-interactive-content];
+    @extend [cl-interactive-background="inverted"];
+    @extend [cl-interactive-border];
+    @extend [cl-actionable-border];
+}
+[cl-button-flat] {
+    @extend [cl-button-core];
+    @extend [cl-interactive-content];
+    @extend [cl-interactive-background="inverted"];
+    @extend [cl-actionable-border];
+}

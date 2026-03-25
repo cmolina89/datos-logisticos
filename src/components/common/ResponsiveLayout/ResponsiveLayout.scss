@@ -1,0 +1,273 @@
+@import '../../../styles/breakpoints.scss';
+
+.responsive-layout {
+  width: 100%;
+  
+  // Contenedor con ancho máximo
+  &--container {
+    @include container-responsive;
+  }
+  
+  // Contenedor fluido (100% ancho)
+  &--fluid {
+    width: 100%;
+    max-width: none;
+  }
+  
+  // Padding responsive
+  &--padded {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    
+    @include media-up(sm) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    
+    @include media-up(md) {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+    
+    @include media-up(lg) {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
+  
+  // Contenido centrado
+  &--centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  // Anchos máximos específicos
+  &--max-xs {
+    @include media-up(xs) {
+      max-width: 100%;
+    }
+  }
+  
+  &--max-sm {
+    @include media-up(sm) {
+      max-width: 540px;
+    }
+  }
+  
+  &--max-md {
+    @include media-up(md) {
+      max-width: 720px;
+    }
+  }
+  
+  &--max-lg {
+    @include media-up(lg) {
+      max-width: 960px;
+    }
+  }
+  
+  &--max-xl {
+    @include media-up(xl) {
+      max-width: 1140px;
+    }
+  }
+  
+  &--max-xxl {
+    @include media-up(xxl) {
+      max-width: 1320px;
+    }
+  }
+}
+
+// Grid responsive
+.responsive-grid {
+  display: grid;
+  width: 100%;
+  
+  // Asegurar que los elementos del grid no se desborden
+  > * {
+    min-width: 0;
+    min-height: 0;
+  }
+}
+
+// Utilidades para elementos táctiles
+.touch-friendly {
+  @include touch-friendly;
+  @include touch-action;
+  
+  // Mejorar área de toque en móviles
+  @include media-down(md) {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.75rem;
+  }
+  
+  // Estados de hover solo en dispositivos que lo soportan
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
+      transition: all 0.2s ease;
+    }
+  }
+  
+  // Estados de focus para accesibilidad
+  &:focus {
+    outline: 2px solid var(--primary-color, #007bff);
+    outline-offset: 2px;
+  }
+  
+  // Reducir animaciones si el usuario lo prefiere
+  @include reduced-motion {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+// Utilidades responsive globales
+.text-responsive {
+  @include font-size-responsive(1rem, 1.125);
+}
+
+.spacing-responsive {
+  @include spacing-responsive(margin, 1rem, 1.25);
+}
+
+// Utilidades de visibilidad
+.hidden-xs {
+  @include media-only(xs) {
+    display: none !important;
+  }
+}
+
+.hidden-sm {
+  @include media-only(sm) {
+    display: none !important;
+  }
+}
+
+.hidden-md {
+  @include media-only(md) {
+    display: none !important;
+  }
+}
+
+.hidden-lg {
+  @include media-only(lg) {
+    display: none !important;
+  }
+}
+
+.hidden-xl {
+  @include media-only(xl) {
+    display: none !important;
+  }
+}
+
+.hidden-xxl {
+  @include media-only(xxl) {
+    display: none !important;
+  }
+}
+
+.visible-xs-only {
+  display: none !important;
+  
+  @include media-only(xs) {
+    display: block !important;
+  }
+}
+
+.visible-sm-only {
+  display: none !important;
+  
+  @include media-only(sm) {
+    display: block !important;
+  }
+}
+
+.visible-md-only {
+  display: none !important;
+  
+  @include media-only(md) {
+    display: block !important;
+  }
+}
+
+.visible-lg-only {
+  display: none !important;
+  
+  @include media-only(lg) {
+    display: block !important;
+  }
+}
+
+.visible-xl-only {
+  display: none !important;
+  
+  @include media-only(xl) {
+    display: block !important;
+  }
+}
+
+.visible-xxl-only {
+  display: none !important;
+  
+  @include media-only(xxl) {
+    display: block !important;
+  }
+}
+
+// Ocultar desde breakpoint hacia arriba
+.hidden-sm-up {
+  @include media-up(sm) {
+    display: none !important;
+  }
+}
+
+.hidden-md-up {
+  @include media-up(md) {
+    display: none !important;
+  }
+}
+
+.hidden-lg-up {
+  @include media-up(lg) {
+    display: none !important;
+  }
+}
+
+.hidden-xl-up {
+  @include media-up(xl) {
+    display: none !important;
+  }
+}
+
+// Ocultar desde breakpoint hacia abajo
+.hidden-sm-down {
+  @include media-down(sm) {
+    display: none !important;
+  }
+}
+
+.hidden-md-down {
+  @include media-down(md) {
+    display: none !important;
+  }
+}
+
+.hidden-lg-down {
+  @include media-down(lg) {
+    display: none !important;
+  }
+}
+
+.hidden-xl-down {
+  @include media-down(xl) {
+    display: none !important;
+  }
+}

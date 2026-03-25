@@ -1,0 +1,144 @@
+.lazy-image-container {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  background-color: var(--surface-100);
+  border-radius: var(--border-radius);
+
+  &.loading {
+    .lazy-image {
+      opacity: 0.7;
+    }
+  }
+
+  &.error {
+    background-color: var(--surface-200);
+  }
+}
+
+.lazy-image {
+  display: block;
+  object-fit: cover;
+  transition: opacity 0.3s ease-in-out;
+
+  &--loading {
+    opacity: 0.5;
+  }
+}
+
+.lazy-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-50);
+  backdrop-filter: blur(2px);
+}
+
+.lazy-image-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--surface-300);
+  border-top: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.lazy-image-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-100);
+  color: var(--text-color-secondary);
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 1rem;
+
+  span {
+    background-color: var(--surface-0);
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-1);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsive optimizations
+@media (max-width: 768px) {
+  .lazy-image-container {
+    border-radius: calc(var(--border-radius) * 0.75);
+  }
+
+  .lazy-image-spinner {
+    width: 20px;
+    height: 20px;
+  }
+
+  .lazy-image-error {
+    font-size: 0.7rem;
+    padding: 0.5rem;
+
+    span {
+      padding: 0.25rem 0.5rem;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .lazy-image-container {
+    border: 1px solid var(--surface-border);
+  }
+
+  .lazy-image-spinner {
+    border-width: 3px;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .lazy-image {
+    transition: none;
+  }
+
+  .lazy-image-spinner {
+    animation: none;
+    border-top-color: var(--primary-color);
+  }
+}
+
+// Dark theme optimizations
+.dark-theme {
+  .lazy-image-container {
+    background-color: var(--surface-800);
+
+    &.error {
+      background-color: var(--surface-700);
+    }
+  }
+
+  .lazy-image-placeholder {
+    background-color: var(--surface-900);
+  }
+
+  .lazy-image-error {
+    background-color: var(--surface-800);
+    
+    span {
+      background-color: var(--surface-900);
+    }
+  }
+}

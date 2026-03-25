@@ -1,0 +1,43 @@
+@use '_actions' as actions;
+
+[cl-interactive-border] {
+    @extend [cl-interactive-border-regular];
+    &:hover     { @extend [cl-interactive-border-selected]; }
+    &:focus     { @extend [cl-interactive-border-selected]; }
+    &:active    { @extend [cl-interactive-border-highlight]; }
+    &[aria-selected="true"] { @extend [cl-interactive-border-selected]; }
+}
+
+.cl-inverted [cl-interactive-border],
+[cl-interactive-border="inverted"]{
+    border-color: var(--color-text-invert);
+    &:hover, &:active, &:focus, &[aria-selected="true"] {
+        border-color: var(--color-text-invert);
+    }
+}
+[cl-actionable-border] {
+    &:focus:not(:active)    { @extend [cl-actionable-border-selected]; }
+    &[aria-selected="true"] { @extend [cl-actionable-border-selected]; }
+}
+
+[cl-interactive-border-regular]    {
+    @include actions.property-tokens("border-color", "regular",
+        $disabled-style: var(--color-background-neutral)
+    );
+}
+[cl-interactive-border-selected]     {
+    @include actions.property-tokens("border-color", "selected",
+        $disabled-style: var(--color-background-neutral)
+    );
+}
+[cl-interactive-border-highlight]  {
+    @include actions.property-tokens("border-color", "highlight",
+        $disabled-style: var(--color-background-neutral)
+    );
+}
+[cl-actionable-border-selected]     {
+    border-color: #F1F4FA;
+    @include actions.property-tokens("box-shadow", "selected",
+        $prefix: "0px 0px 0px 2px "
+    );
+}

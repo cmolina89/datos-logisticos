@@ -1,0 +1,36 @@
+
+@use 'variables' as v;
+
+#clt-submenu {
+    position: sticky;
+    width: 100%;
+    height: v.$submenu-height;
+    background-color: var(--color-background-neutral);
+    display: inline-flex;
+    align-items: center;
+    overflow-x: auto;
+    > * {
+        display: flex;
+        flex-grow: 1;
+        flex-basis: 0px;
+        justify-content: center;
+    }
+    [cl-option-core] {
+        text-decoration: none;
+        color: var(--color-icon-soft);
+        &:hover {
+            color: var(--color-text) !important;
+        }
+        .label {   text-align: center;      }
+        > *:first-child {   margin-left:    0      }
+        > *:last-child  {   margin-right:   0      }
+    }
+    .clt.icon {
+        display: none;
+    }
+    @media only screen and (min-width: 767px) {
+        .clt.icon {
+            display: block;
+        }
+    }
+}

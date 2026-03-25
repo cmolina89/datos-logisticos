@@ -1,0 +1,339 @@
+// Segmento Medidas con empaque individual - Estilo según imagen de referencia
+// HU 041, 042, 043
+// Campos: fondo blanco, bordes redondeados, borde gris oscuro, placeholder gris
+
+.segmento-medidas-empaque-individual {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18),
+  0 2px 12px rgba(0, 0, 0, 0.10);
+  border: none;
+  overflow: hidden;
+  font-family: 'Poppins', Arial, sans-serif;
+
+  .segmento-medidas-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    position: relative;
+    font-size: var(--font-size-subheader, 1.125rem);
+
+    .segmento-medidas-titulo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 1%;
+      width: 98%;
+      height: 2px;
+      background-color: var(--surface-border);
+    }
+  }
+
+  .segmento-titulo-texto {
+    margin: 0;
+    font-size: var(--font-size-subheader, 1.125rem);
+    font-weight: 700;
+    color: var(--text-color);
+    font-family: 'Poppins', Arial, sans-serif;
+  }
+
+  /* Botón colapsar: fondo blanco, bordes en semicírculos (pill) como en imagen */
+  .segmento-collapse {
+    background: #fff !important;
+    border: none;
+    padding: 0.35rem 0.5rem;
+    cursor: pointer;
+    color: var(--text-color-secondary);
+    border-radius: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      color: var(--text-color);
+      background: var(--surface-50) !important;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .segmento-medidas-intro {
+    margin: 0 1rem 1rem;
+    font-size: var(--font-size-body-mobile, 0.970rem);
+    color: #000;
+    line-height: 1.5;
+    font-family: "Poppins", Arial, sans-serif;
+  }
+
+  /* Pregunta ¿Mi producto tiene empaque individual? con radios Si/No en fila */
+  .segmento-medidas-pregunta {
+    margin: 0 1rem 1rem;
+  }
+
+  .segmento-medidas-radios-fila {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+  }
+
+  .segmento-medidas-radio-opcion {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    label {
+      margin: 0;
+      cursor: pointer;
+    }
+  }
+
+  /* Radio buttons: contorno y seleccionado en color morado (igual que Empaques del producto) */
+  .p-radiobutton {
+    .p-radiobutton-box {
+      width: 1.25rem !important;
+      height: 1.25rem !important;
+      border: 2px solid #7c3aed !important;
+      background: #fff !important;
+      box-shadow: none !important;
+
+      &:not(.p-disabled):hover {
+        border-color: #6d28d9 !important;
+        background: #fff !important;
+      }
+
+      &.p-highlight {
+        border-color: #7c3aed !important;
+        background: #fff !important;
+      }
+
+      .p-radiobutton-icon {
+        width: 0.5rem !important;
+        height: 0.5rem !important;
+        background-color: #7c3aed !important;
+        transform-origin: center;
+      }
+    }
+  }
+
+  .segmento-medidas-form-disabled {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .segmento-medidas-form {
+    padding: 0 1rem 1rem;
+
+    .segmento-label {
+      font-weight: 500;
+      color: var(--text-color);
+      margin-bottom: 0.35rem;
+    }
+
+    /* Fila Nombre: label e input en el mismo renglón */
+    .segmento-fila-nombre {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+
+      .segmento-label-inline {
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+
+      .segmento-input-nombre {
+        width: auto;
+        min-width: 12rem;
+        max-width: 18em;
+      }
+    }
+
+    /* Filas 2–4: layout con CSS Grid */
+    .segmento-medidas-fila {
+      display: grid;
+      gap: 0 1rem;
+      align-items: start;
+    }
+
+    .segmento-medidas-fila-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .segmento-medidas-fila-3 {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .segmento-medidas-campo {
+      min-width: 0;
+      .w-full,
+      .p-dropdown,
+      .p-inputnumber {
+        width: 100%;
+      }
+
+      &.segmento-medidas-campo-vacio {
+        min-height: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .segmento-medidas-fila-2 {
+        grid-template-columns: 1fr;
+      }
+      .segmento-medidas-fila-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .campo-requerido {
+      color: var(--color-text-error, #c8180d);
+    }
+
+    .p-invalid {
+      border-color: var(--color-border-error, #ff594d);
+    }
+
+    /* Campos: fondo blanco, bordes redondeados, contorno gris oscuro */
+    .p-inputtext,
+    .p-inputnumber-input {
+      background: #FFFFFF;
+      border: 1px solid #5a5a5a;
+      border-radius: 6px;
+      color: var(--text-color);
+
+      &::placeholder {
+        color: var(--color-text-soft, #a4a4a4);
+      }
+    }
+
+    /* Dropdown: evitar doble borde por p-inputwrapper + p-dropdown */
+    .p-inputwrapper {
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+      border-radius: 6px;
+    }
+
+    /* Select: borde gris oscuro igual que los demás campos */
+    .p-dropdown {
+      background: #FFFFFF;
+      border: 1px solid #5a5a5a !important;
+      border-radius: 6px;
+      box-shadow: none !important;
+      outline: none !important;
+
+      &:not(.p-disabled):hover {
+        border-color: #3a3a3a !important;
+      }
+
+      &:not(.p-disabled).p-focus {
+        border-color: #5a5a5a !important;
+        box-shadow: 0 0 0 0.2rem rgba(90, 90, 90, 0.2) !important;
+      }
+
+      .p-dropdown-label,
+      .p-dropdown-label-container,
+      .p-dropdown-trigger {
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      .p-dropdown-label {
+        color: var(--text-color);
+      }
+
+      .p-dropdown-label.p-placeholder {
+        color: var(--color-text-soft, #a4a4a4);
+      }
+    }
+
+    .p-inputnumber {
+      .p-inputnumber-input {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+      }
+    }
+
+    /* Stepper Número de piezas */
+    .segmento-stepper-piezas.p-inputnumber-buttons-horizontal {
+      display: flex;
+      border: 1px solid #5a5a5a;
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--surface-100);
+
+      .p-button {
+        background: var(--surface-200) !important;
+        color: var(--text-color);
+        border: 1px solid #5a5a5a;
+        border-radius: 0;
+        min-width: 2.5rem;
+
+        &:hover {
+          background: var(--surface-300) !important;
+        }
+
+        &:first-of-type {
+          border-right: none;
+        }
+      }
+
+      .p-inputnumber-input {
+        flex: 1;
+        min-width: 3rem;
+        text-align: center;
+        border-left: 1px solid #5a5a5a;
+        border-right: 1px solid #5a5a5a;
+      }
+    }
+
+    /* InputNumber sin botones (Peso, Alto, Frente, Fondo, Estiba) */
+    .p-inputnumber:not(.p-inputnumber-buttons-horizontal) .p-inputnumber-input {
+      border-radius: 6px;
+      border: 1px solid #5a5a5a;
+    }
+  }
+
+  /* Footer: botón Guardar alineado a la derecha */
+  .segmento-medidas-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    background: #FFFFFF;
+
+    .p-button {
+      width: auto !important;
+      min-width: auto !important;
+      background: #fff !important;
+      color: var(--primary-color) !important;
+      border: 1px solid var(--primary-color) !important;
+      border-radius: 2rem;
+      padding: 0.5rem 1.25rem;
+      font-weight: 500;
+
+      .p-button-icon {
+        color: var(--primary-color);
+      }
+
+      &:hover:not(.p-disabled) {
+        background: var(--surface-50) !important;
+        color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+      }
+    }
+  }
+}

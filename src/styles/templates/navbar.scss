@@ -1,0 +1,46 @@
+@use 'variables' as v;
+
+nav#clt-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    height: v.$navbar-height;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding-right: v.$padding-container;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &.primary {
+        background-color: var(--color-primary);
+        [cl-input-button]:not(:hover) {
+            background-color: var(--color-primary-hover);
+        }
+    }
+    > * {
+        display: flex;
+        align-items: center;
+    }
+    #left-menu {
+        text-align: center;
+        [cl-icon-button-core] {
+            color: var(--color-text-invert);
+        }
+        .sidebar-control {
+            width: v.$sidebar-collapsed-width;
+        }
+        .logo {
+            height: v.$logo-height;
+            padding-left: 2vw;
+        }
+    }
+    #right-menu {
+        > * {
+            height: v.$navbar-controls-height;
+        }
+    }
+
+}

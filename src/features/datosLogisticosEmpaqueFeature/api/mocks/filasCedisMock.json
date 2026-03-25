@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "receptor": true,
+    "cedis": "CEDIS Coppel Monterrey (MTRY)",
+    "frecuencia": "xxxxxxxxxxx",
+    "leadTime": "xxxxxxxxxxx",
+    "cedisDestino": "MTRY, CLNC, HILLO, LEON, GPLC"
+  },
+  {
+    "id": "2",
+    "receptor": true,
+    "cedis": "CEDIS Coppel Culiacán (CLCN)",
+    "frecuencia": "xxxxxxxxxxx",
+    "leadTime": "xxxxxxxxxxx",
+    "cedisDestino": "MTRY, CLNC, HILLO, LEON, GPLC"
+  },
+  {
+    "id": "3",
+    "receptor": true,
+    "cedis": "CEDIS Coppel Hermosillo (HLLO)",
+    "frecuencia": "xxxxxxxxxxx",
+    "leadTime": "xxxxxxxxxxx",
+    "cedisDestino": "MTRY, CLNC, HILLO, LEON, GPLC"
+  },
+  {
+    "id": "4",
+    "receptor": true,
+    "cedis": "CEDIS Coppel León (LEON)",
+    "frecuencia": "xxxxxxxxxxx",
+    "leadTime": "xxxxxxxxxxx",
+    "cedisDestino": "MTRY, CLNC, HILLO, LEON, GPLC"
+  },
+  {
+    "id": "5",
+    "receptor": true,
+    "cedis": "CEDIS Coppel Guadalajara (GPLC)",
+    "frecuencia": "xxxxxxxxxxx",
+    "leadTime": "xxxxxxxxxxx",
+    "cedisDestino": "MTRY, CLNC, HILLO, LEON, GPLC"
+  }
+]

@@ -1,0 +1,18 @@
+// src/features/postsFeature/components/PostCard.scss
+.post-card {
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover, 0 4px 20px rgba(0, 0, 0, 0.1));
+  }
+
+  .p-card-title {
+    font-size: 1.1rem; // Ajuste para mobile
+  }
+
+  .p-card-body {
+    padding: 1rem; // Padding más ajustado para mobile
+  }
+}
