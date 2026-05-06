@@ -48,6 +48,7 @@ function LayoutContent() {
   return (
     <div
       id="remote-app"
+      className="sgc-mfe-attributes"
       role="application"
       style={{
         position: 'relative',

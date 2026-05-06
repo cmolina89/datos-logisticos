@@ -1,0 +1,279 @@
+// src/styles/_overrides.scss
+// Overrides de PrimeReact scoped bajo .sgc-mfe-attributes
+// Homologado con sgc-mf-hardline-products-inventory-management
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.sgc-mfe-attributes {
+    /* Global Font Family Override */
+    &,
+    *,
+    *::before,
+    *::after {
+        box-sizing: inherit;
+        font-family: var(--font-family, $font-family-main) !important;
+    }
+
+    /* Base Button Styles */
+    .c-button,
+    button {
+        border: 0;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: 0.5s all;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    /* General Button and Input Styles */
+    .p-inputtext,
+    .p-button {
+        background: $color-white;
+        background: var(--surface-ground, $color-white);
+        border: 1px solid $color-primary;
+        border: 1px solid var(--surface-border, $color-primary);
+        color: $color-primary;
+        color: var(--text-color, $color-primary);
+        font-family: var(--font-family, $font-family-main);
+        font-size: 16px;
+        height: 40px;
+        padding: 8px 16px;
+        transition: all 0.2s ease;
+        width: 100%;
+    }
+
+    /* Specific Button Overrides */
+    .p-button:not(.cv-image-item-delete-btn, .cv-image-item-move-btn, .cv-add-color-button, .cv-image-item-add-button) {
+        border: 1px solid $color-primary-light;
+        color: $color-primary-light;
+        padding: 12px 24px;
+        transition: 0.2s;
+        width: auto;
+
+        &:hover,
+        &:active,
+        &:focus,
+        &:focus-visible {
+            border-radius: 30px;
+            outline: none;
+            border: 1px solid $color-primary-light;
+        }
+    }
+
+    .p-button-outlined {
+        color: $color-primary-press;
+    }
+
+    .p-radiobutton {
+        .p-radiobutton-input,
+        .p-radiobutton-box {
+            border: 3px solid $color-primary-light;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .p-radiobutton-box .p-radiobutton-icon {
+            background-color: $color-primary-light;
+            height: 11px;
+            margin: 0 2.5px 0 auto;
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+            width: 11px;
+        }
+
+        &.p-highlight {
+            .p-radiobutton-box {
+                background-color: $color-white;
+                border: 3px solid $color-primary-light;
+                color: $color-primary-light;
+
+                &:hover {
+                    border-color: $color-primary-light-hover;
+                    color: $color-primary-light-hover;
+
+                    .p-radiobutton-icon {
+                        background-color: $color-primary-light-hover;
+                    }
+                }
+            }
+        }
+    }
+
+    /* Accordion */
+    .p-accordion-toggle-icon {
+        margin-left: $spacing-sm;
+        margin-right: 0;
+    }
+
+    .p-accordion .p-accordion-header .p-accordion-header-link {
+        padding: 1.25rem;
+        border: 1px solid #e5e7eb;
+        color: #6b7280;
+        background: #f9fafb;
+        font-weight: 700;
+        border-radius: 6px;
+        transition: box-shadow 0.2s;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        text-decoration: none;
+
+        svg.p-icon {
+            height: 1.5rem;
+            transform: rotate(90deg);
+            transition: transform 0.2s ease;
+            width: 2rem;
+        }
+    }
+
+    .p-accordion .p-accordion-header:not(.p-disabled) {
+        background: $color-white;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-color: $color-border-soft;
+        border-left: none;
+        border-radius: $border-radius-lg;
+        border-right: none;
+        border-top: none;
+        color: $color-primary;
+
+        &.p-highlight .p-accordion-header-link svg.p-icon {
+            height: 1.5rem;
+            transform: rotate(180deg);
+            transition: transform 0.2s ease;
+            width: 2rem;
+        }
+    }
+
+    .p-accordion .p-accordion-content .contenido {
+        border-bottom-left-radius: var(--content-border-radius);
+        border-bottom-right-radius: var(--content-border-radius);
+        color: var(--text-color);
+        font-size: 18px;
+    }
+
+    .p-accordion .p-accordion-header .p-accordion-header-text[data-pc-section='headertitle'],
+    .p-accordion
+        .p-accordion-header
+        .p-accordion-header-text[data-pc-section='headertitle']
+        span.flex.align-items-center.font-bold {
+        color: var(--text-color, $color-primary);
+        font-family: var(--font-family);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 36px;
+    }
+
+    /* Panels */
+    .purchase-conditions-section.p-panel {
+        @include coppel-shadow-card;
+        background: var(--surface-card, $color-white);
+        border-radius: 16px !important;
+        overflow: hidden;
+    }
+
+    .purchase-conditions-section.p-panel .section-header__text {
+        color: var(--text-color, $color-primary);
+        font-family: var(--font-family);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 36px;
+    }
+
+    .p-dropdown {
+        border-radius: $border-radius-md;
+        overflow: hidden;
+    }
+
+    /* TabView Active Border */
+    .p-tabview {
+        .p-tabview-nav {
+            li.p-highlight {
+                padding: 2px;
+                .p-tabview-nav-link {
+                    border-bottom-width: 4px !important;
+                    border-color: $color-primary-light !important;
+                    color: $color-black !important;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                }
+            }
+            li:not(.p-highlight) .p-tabview-nav-link {
+                color: #6b7280;
+                font-size: 1.1rem;
+            }
+        }
+    }
+
+    .p-tabview-ink-bar {
+        display: none;
+    }
+
+    /* DataTable */
+    .p-datatable .p-datatable-tfoot > tr > td,
+    tfoot.p-datatable-tfoot {
+        background: $color-white;
+        border-top: 1px solid #c3c3c3 !important;
+    }
+
+    /* Save Button and Container Styles */
+    .cv-action-buttons-container {
+        align-items: center;
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+    }
+
+    .cv-button-save {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
+        transition: all 0.2s ease;
+        width: 200px;
+        border-radius: 30px !important;
+
+        &:not(:disabled) {
+            background-color: $color-white !important;
+            border: 1px solid $color-primary-light !important;
+            color: $color-primary-light !important;
+        }
+
+        &:not(:disabled):hover {
+            background: rgba(28, 66, 232, 0.1) !important;
+            box-shadow: 0 4px 12px rgba(28, 66, 232, 0.2);
+            transform: translateY(-2px);
+        }
+
+        &:disabled {
+            background-color: $color-background-gray !important;
+            border: 1px solid $color-border-soft !important;
+            color: #9ca3af !important;
+        }
+    }
+
+    /* Estilos comunes para campos requeridos y validación */
+    .campo-requerido {
+        color: var(--color-text-error, #c8180d);
+    }
+
+    .p-invalid {
+        border-color: var(--color-border-error, #ff594d);
+    }
+
+    .segmento-label {
+        font-weight: 500;
+        color: var(--text-color);
+        margin-bottom: 0.35rem;
+        font-family: $font-family-main;
+    }
+
+    .segmento-titulo-texto {
+        margin: 0;
+        font-size: var(--font-size-subheader, 1.125rem);
+        font-weight: 700;
+        color: var(--text-color);
+        font-family: $font-family-main;
+    }
+}
+

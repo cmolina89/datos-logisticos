@@ -1,12 +1,11 @@
-// Enhanced i18n implementation with multiple language support
+// Enhanced i18n implementation - Español e Inglés (español por defecto)
 
 import enTranslations from '../locales/en/common.json'
 import esTranslations from '../locales/es/common.json'
-import frTranslations from '../locales/fr/common.json'
 
 type TranslationKey = string
 type TranslationParams = Record<string, string | number>
-type SupportedLanguage = 'es' | 'en' | 'fr'
+export type SupportedLanguage = 'es' | 'en'
 
 interface I18nInstance {
   language: SupportedLanguage
@@ -43,20 +42,12 @@ const languageInfo: Record<SupportedLanguage, LanguageInfo> = {
     flag: '🇺🇸',
     rtl: false,
   },
-  fr: {
-    code: 'fr',
-    name: 'French',
-    nativeName: 'Français',
-    flag: '🇫🇷',
-    rtl: false,
-  },
 }
 
 class EnhancedI18n implements I18nInstance {
   private translations = {
     es: esTranslations,
     en: enTranslations,
-    fr: frTranslations,
   }
 
   private listeners: Array<(language: SupportedLanguage) => void> = []
@@ -91,7 +82,7 @@ class EnhancedI18n implements I18nInstance {
   }
 
   private isValidLanguage(lng: string): lng is SupportedLanguage {
-    return ['es', 'en', 'fr'].includes(lng)
+    return ['es', 'en'].includes(lng)
   }
 
   private updateDocumentLanguage(): void {
@@ -153,7 +144,7 @@ class EnhancedI18n implements I18nInstance {
   }
 
   public getSupportedLanguages = (): SupportedLanguage[] => {
-    return ['es', 'en', 'fr']
+    return ['es', 'en']
   }
 
   public getLanguageInfo = (lng: SupportedLanguage): LanguageInfo => {
@@ -201,4 +192,4 @@ class EnhancedI18n implements I18nInstance {
 const i18n = new EnhancedI18n()
 
 export default i18n
-export type { LanguageInfo, SupportedLanguage }
+export type { LanguageInfo }

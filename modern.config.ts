@@ -4,7 +4,7 @@ import { moduleFederationPlugin } from '@module-federation/modern-js'
 
 const normalizeAssetPrefix = (value?: string | null) => {
   if (!value || value === 'auto') {
-    return 'http://localhost:3001/'
+    return 'http://localhost:3006/'
   }
 
   return value.endsWith('/') ? value : `${value}/`
@@ -17,14 +17,12 @@ const assetPrefix = normalizeAssetPrefix(
 export default defineConfig({
   runtime: { router: true },
   dev: {
-    port: 3001,
-    host: 'localhost', // Forzamos consistencia
+    port: 3006,
   },
   server: {
     ssr: false,
-    // El puerto se define preferiblemente en dev.port, pero dejarlo aquí está ok
   },
-  plugins: [appTools({ bundler: 'webpack' }), moduleFederationPlugin()],
+  plugins: [appTools(), moduleFederationPlugin()],
   resolve: {
     alias: {
       '@': './src', // Simplificado
@@ -38,7 +36,7 @@ export default defineConfig({
   },
 
   tools: {
-    webpack: (config, { env }) => {
+    rspack: (config, { env }) => {
       config.output = config.output || {}
       config.output.publicPath = assetPrefix
 

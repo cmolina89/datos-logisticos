@@ -22,7 +22,6 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { InputNumber } from 'primereact/inputnumber'
 import { Dropdown } from 'primereact/dropdown'
 import { RadioButton } from 'primereact/radiobutton'
-import { Message } from 'primereact/message'
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import './TarjetaMedidasEmpaqueIndividual.scss'
@@ -39,7 +38,7 @@ const TECLAS_PERMITIDAS = new Set([
 /** Helpers de validación inline por campo */
 function validarCampoNumericoPositivo(val: number | null | undefined): string | undefined {
   if (val === null || val === undefined) return undefined // no mostrar error si está vacío (se valida al guardar)
-  if (typeof val !== 'number' || Number.isNaN(val)) return 'validation.positiveNumber'
+  if (Number.isNaN(val)) return 'validation.positiveNumber'
   if (val <= 0) return 'validation.positiveNumber'
   return undefined
 }
@@ -174,7 +173,11 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
         error = validarCampoNumericoPositivo(valor as number | null) || validarFondoMax(valor as number | null) || validarMaxDecimales(valor as number | null)
         break
       case 'estibaMaxima':
-        error = validarEstibaMaxima(valor as number | null)
+        if (valor === null || valor === undefined || valor === '') {
+          error = 'validation.requiredField'
+        } else {
+          error = validarEstibaMaxima(valor as number | null)
+        }
         break
       default:
         break
@@ -190,10 +193,16 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
     })
   }, [setErrors])
 
-  const deshabilitado = m.tieneEmpaqueIndividual === false
+  const deshabilitado = !m.tieneEmpaqueIndividual
 
   const opcionesUnidadPeso = useOpcionesUnidadPeso()
   const opcionesUnidadMedidaDimensiones = useOpcionesUnidadMedidaDimensiones()
+
+  // Mensajes de error generales (ejemplo, puedes adaptar la lógica según tu validación global)
+  const mensajesErrorGenerales = [
+    errors._global1 && t(errors._global1),
+    errors._global2 && t(errors._global2)
+  ].filter(Boolean)
 
   return (
       <div className="segmento-medidas-empaque-individual">
@@ -228,21 +237,21 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
                 <div className="segmento-medidas-radios-fila">
                   <div className="segmento-medidas-radio-opcion">
                     <RadioButton
-                        inputId="tiene-empaque-si"
-                        name="tieneEmpaqueIndividual"
-                        value={true}
-                        checked={m.tieneEmpaqueIndividual === true}
-                        onChange={() => handleTieneEmpaqueChange(true)}
+                      inputId="tiene-empaque-si"
+                      name="tieneEmpaqueIndividual"
+                      value={true}
+                      checked={m.tieneEmpaqueIndividual}
+                      onChange={() => handleTieneEmpaqueChange(true)}
                     />
                     <label htmlFor="tiene-empaque-si">{t('datosLogisticos.segmento2.yes')}</label>
                   </div>
                   <div className="segmento-medidas-radio-opcion">
                     <RadioButton
-                        inputId="tiene-empaque-no"
-                        name="tieneEmpaqueIndividual"
-                        value={false}
-                        checked={m.tieneEmpaqueIndividual === false}
-                        onChange={() => handleTieneEmpaqueChange(false)}
+                      inputId="tiene-empaque-no"
+                      name="tieneEmpaqueIndividual"
+                      value={false}
+                      checked={!m.tieneEmpaqueIndividual}
+                      onChange={() => handleTieneEmpaqueChange(false)}
                     />
                     <label htmlFor="tiene-empaque-no">{t('datosLogisticos.segmento2.no')}</label>
                   </div>
@@ -269,36 +278,51 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
                         className={errors.unidadPeso ? 'p-invalid w-full' : 'w-full'}
                         disabled={deshabilitado}
                     />
+                    {/* Mensaje de error inline con ícono para cada campo */}
                     {errors.unidadPeso && (
-                        <Message severity="error" text={t(errors.unidadPeso)} className="p-mt-1 p-mb-0" />
+                      <div className="campo-error-inline">
+                        <i className="pi pi-exclamation-circle campo-error-icon" />
+                        <span>{t(errors.unidadPeso)}</span>
+                      </div>
                     )}
                   </div>
                   <div className="segmento-medidas-campo">
                     <label htmlFor="peso" className="p-block segmento-label">
                       {t('datosLogisticos.segmento2.peso')} <span className="campo-requerido">*</span>
                     </label>
-                    <InputNumber
-                        id="peso"
-                        value={m.peso}
-                        onValueChange={e => {
-                          const v = e.value ?? null
-                          setMedidas({ peso: v })
-                          validarCampoInline('peso', v)
-                        }}
-                        onKeyDown={e => handleKeyDownNumerico('peso', e)}
-                        min={0.01}
-                        minFractionDigits={0}
-                        maxFractionDigits={2}
-                        placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
-                        className={errors.peso || alertaNoNumerico.peso ? 'p-invalid w-full' : 'w-full'}
-                        disabled={deshabilitado}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="peso"
+                          value={m.peso}
+                          onValueChange={e => {
+                            const v = e.value ?? null
+                            setMedidas({ peso: v })
+                            validarCampoInline('peso', v)
+                          }}
+                          onKeyDown={e => handleKeyDownNumerico('peso', e)}
+                          min={0.01}
+                          minFractionDigits={0}
+                          maxFractionDigits={2}
+                          placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
+                          className={alertaNoNumerico.peso ? 'campo-warning-input w-full' : errors.peso ? 'p-invalid w-full' : 'w-full'}
+                          disabled={deshabilitado}
+                      />
+                      {(errors.peso || alertaNoNumerico.peso) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.peso ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.peso && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.peso && !alertaNoNumerico.peso && (
-                        <Message severity="error" text={t(errors.peso)} className="p-mt-1 p-mb-0" />
-                    )}
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.peso)}</span>
+                        </div>
+                     )}
                   </div>
                   <div className="segmento-medidas-campo segmento-medidas-campo-vacio" />
                 </div>
@@ -323,64 +347,89 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
                         disabled={deshabilitado}
                     />
                     {errors.unidadMedida && (
-                        <Message severity="error" text={t(errors.unidadMedida)} className="p-mt-1 p-mb-0" />
+                      <div className="campo-error-inline">
+                        <i className="pi pi-exclamation-circle campo-error-icon" />
+                        <span>{t(errors.unidadMedida)}</span>
+                      </div>
                     )}
                   </div>
                   <div className="segmento-medidas-campo">
                     <label htmlFor="alto" className="p-block segmento-label">
                       {t('datosLogisticos.segmento2.alto')} <span className="campo-requerido">*</span>
                     </label>
-                    <InputNumber
-                        id="alto"
-                        value={m.alto}
-                        onValueChange={e => {
-                          const v = e.value ?? null
-                          setMedidas({ alto: v })
-                          validarCampoInline('alto', v)
-                        }}
-                        onKeyDown={e => handleKeyDownNumerico('alto', e)}
-                        min={0.01}
-                        max={500}
-                        minFractionDigits={0}
-                        maxFractionDigits={2}
-                        placeholder={t('datosLogisticos.segmento2.placeholderAlto')}
-                        className={errors.alto || alertaNoNumerico.alto ? 'p-invalid w-full' : 'w-full'}
-                        disabled={deshabilitado}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="alto"
+                          value={m.alto}
+                          onValueChange={e => {
+                            const v = e.value ?? null
+                            setMedidas({ alto: v })
+                            validarCampoInline('alto', v)
+                          }}
+                          onKeyDown={e => handleKeyDownNumerico('alto', e)}
+                          min={0.01}
+                          max={500}
+                          minFractionDigits={0}
+                          maxFractionDigits={2}
+                          placeholder={t('datosLogisticos.segmento2.placeholderAlto')}
+                          className={alertaNoNumerico.alto ? 'campo-warning-input w-full' : errors.alto ? 'p-invalid w-full' : 'w-full'}
+                          disabled={deshabilitado}
+                      />
+                      {(errors.alto || alertaNoNumerico.alto) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.alto ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.alto && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.alto && !alertaNoNumerico.alto && (
-                        <Message severity="error" text={t(errors.alto)} className="p-mt-1 p-mb-0" />
-                    )}
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.alto)}</span>
+                        </div>
+                     )}
                   </div>
                   <div className="segmento-medidas-campo">
                     <label htmlFor="frente" className="p-block segmento-label">
                       {t('datosLogisticos.segmento2.frente')} <span className="campo-requerido">*</span>
                     </label>
-                    <InputNumber
-                        id="frente"
-                        value={m.frente}
-                        onValueChange={e => {
-                          const v = e.value ?? null
-                          setMedidas({ frente: v })
-                          validarCampoInline('frente', v)
-                        }}
-                        onKeyDown={e => handleKeyDownNumerico('frente', e)}
-                        min={0.01}
-                        max={500}
-                        minFractionDigits={0}
-                        maxFractionDigits={2}
-                        placeholder={t('datosLogisticos.segmento2.placeholderFrente')}
-                        className={errors.frente || alertaNoNumerico.frente ? 'p-invalid w-full' : 'w-full'}
-                        disabled={deshabilitado}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="frente"
+                          value={m.frente}
+                          onValueChange={e => {
+                            const v = e.value ?? null
+                            setMedidas({ frente: v })
+                            validarCampoInline('frente', v)
+                          }}
+                          onKeyDown={e => handleKeyDownNumerico('frente', e)}
+                          min={0.01}
+                          max={500}
+                          minFractionDigits={0}
+                          maxFractionDigits={2}
+                          placeholder={t('datosLogisticos.segmento2.placeholderFrente')}
+                          className={alertaNoNumerico.frente ? 'campo-warning-input w-full' : errors.frente ? 'p-invalid w-full' : 'w-full'}
+                          disabled={deshabilitado}
+                      />
+                      {(errors.frente || alertaNoNumerico.frente) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.frente ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.frente && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.frente && !alertaNoNumerico.frente && (
-                        <Message severity="error" text={t(errors.frente)} className="p-mt-1 p-mb-0" />
-                    )}
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.frente)}</span>
+                        </div>
+                     )}
                   </div>
                 </div>
 
@@ -390,64 +439,94 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
                     <label htmlFor="fondo" className="p-block segmento-label">
                       {t('datosLogisticos.segmento2.fondo')} <span className="campo-requerido">*</span>
                     </label>
-                    <InputNumber
-                        id="fondo"
-                        value={m.fondo}
-                        onValueChange={e => {
-                          const v = e.value ?? null
-                          setMedidas({ fondo: v })
-                          validarCampoInline('fondo', v)
-                        }}
-                        onKeyDown={e => handleKeyDownNumerico('fondo', e)}
-                        min={0.01}
-                        max={500}
-                        minFractionDigits={0}
-                        maxFractionDigits={2}
-                        placeholder={t('datosLogisticos.segmento2.placeholderFondo')}
-                        className={errors.fondo || alertaNoNumerico.fondo ? 'p-invalid w-full' : 'w-full'}
-                        disabled={deshabilitado}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="fondo"
+                          value={m.fondo}
+                          onValueChange={e => {
+                            const v = e.value ?? null
+                            setMedidas({ fondo: v })
+                            validarCampoInline('fondo', v)
+                          }}
+                          onKeyDown={e => handleKeyDownNumerico('fondo', e)}
+                          min={0.01}
+                          max={500}
+                          minFractionDigits={0}
+                          maxFractionDigits={2}
+                          placeholder={t('datosLogisticos.segmento2.placeholderFondo')}
+                          className={alertaNoNumerico.fondo ? 'campo-warning-input w-full' : errors.fondo ? 'p-invalid w-full' : 'w-full'}
+                          disabled={deshabilitado}
+                      />
+                      {(errors.fondo || alertaNoNumerico.fondo) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.fondo ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.fondo && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.fondo && !alertaNoNumerico.fondo && (
-                        <Message severity="error" text={t(errors.fondo)} className="p-mt-1 p-mb-0" />
-                    )}
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.fondo)}</span>
+                        </div>
+                     )}
                   </div>
                   <div className="segmento-medidas-campo">
                     <label htmlFor="estibaMaxima" className="p-block segmento-label">
                       {t('datosLogisticos.segmento2.estibaMaxima')}
                     </label>
-                    <InputNumber
-                        id="estibaMaxima"
-                        value={m.estibaMaxima}
-                        onValueChange={e => {
-                          const v = e.value ?? null
-                          setMedidas({ estibaMaxima: v })
-                          validarCampoInline('estibaMaxima', v)
-                        }}
-                        onKeyDown={e => handleKeyDownNumerico('estibaMaxima', e)}
-                        min={1}
-                        max={999}
-                        useGrouping={false}
-                        placeholder={t('datosLogisticos.segmento2.placeholderEstibaMaxima')}
-                        className={errors.estibaMaxima || alertaNoNumerico.estibaMaxima ? 'p-invalid w-full' : 'w-full'}
-                        disabled={deshabilitado}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="estibaMaxima"
+                          value={m.estibaMaxima}
+                          onValueChange={e => {
+                            const v = e.value ?? null
+                            setMedidas({ estibaMaxima: v })
+                            validarCampoInline('estibaMaxima', v)
+                          }}
+                          onKeyDown={e => handleKeyDownNumerico('estibaMaxima', e)}
+                          min={1}
+                          max={999}
+                          useGrouping={false}
+                          placeholder={t('datosLogisticos.segmento2.placeholderEstibaMaxima')}
+                          className={alertaNoNumerico.estibaMaxima ? 'campo-warning-input w-full' : errors.estibaMaxima ? 'p-invalid w-full' : 'w-full'}
+                          disabled={deshabilitado}
+                      />
+                      {(errors.estibaMaxima || alertaNoNumerico.estibaMaxima) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.estibaMaxima ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.estibaMaxima && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.estibaMaxima && !alertaNoNumerico.estibaMaxima && (
-                        <Message
-                            severity="error"
-                            text={t(errors.estibaMaxima)}
-                            className="p-mt-1 p-mb-0"
-                        />
-                    )}
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.estibaMaxima)}</span>
+                        </div>
+                     )}
                   </div>
                   <div className="segmento-medidas-campo segmento-medidas-campo-vacio" />
                 </div>
               </div>
+
+              {/* Mensajes de error generales al inicio del formulario */}
+              {mensajesErrorGenerales.length > 0 && (
+                <div className="alerta-formulario-error">
+                  {mensajesErrorGenerales.map((msg, idx) => (
+                    <div className="alerta-formulario-error-item" key={idx}>
+                      <i className="pi pi-exclamation-circle alerta-formulario-error-icon" />
+                      <span>{msg}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Footer: botón Guardar (HU 043) */}
               <div className="segmento-medidas-footer">
@@ -460,3 +539,4 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
 }
 
 export default TarjetaMedidasEmpaqueIndividual
+

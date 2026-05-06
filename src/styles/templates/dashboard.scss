@@ -1,10 +1,9 @@
 
 @use 'variables' as v;
-
-@import url('navbar.scss');
-@import url('sidebar.scss');
-@import url('submenu.scss');
-@import url('footer.scss');
+@use 'navbar';
+@use 'sidebar';
+@use 'submenu';
+@use 'footer';
 
 app-full-layout {
 

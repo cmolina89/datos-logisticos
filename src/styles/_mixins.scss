@@ -1,0 +1,200 @@
+// src/styles/_mixins.scss
+// Mixins reutilizables — Homologado con sgc-mf-hardline-products-inventory-management
+@use 'variables' as *;
+
+@mixin shadow-2 {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@mixin focus-state {
+    &:focus {
+        outline: 2px solid $color-primary-light;
+        outline-offset: 2px;
+        border-radius: $border-radius-sm;
+    }
+}
+
+@mixin hover-transition {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        transform: translateY(-1px);
+    }
+}
+
+@mixin coppel-shadow-card {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@mixin scrollbar-custom {
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
+
+// Mixin para tarjetas de sección (cards con sombra pronunciada)
+@mixin segmento-card {
+    background: $color-white;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 12px rgba(0, 0, 0, 0.10);
+    border: none;
+    overflow: hidden;
+    font-family: $font-family-main;
+}
+
+// Mixin para header de sección colapsable
+@mixin segmento-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 1%;
+        width: 98%;
+        height: 2px;
+        background-color: var(--surface-border);
+    }
+}
+
+// Mixin para botón colapsar
+@mixin segmento-collapse-btn {
+    background: $color-white !important;
+    border: none;
+    padding: 0.35rem 0.5rem;
+    cursor: pointer;
+    color: var(--text-color-secondary);
+    border-radius: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        color: var(--text-color);
+        background: var(--surface-50) !important;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
+// Mixin para campos de formulario (input, dropdown)
+@mixin segmento-field-base {
+    background: $color-white;
+    border: 1px solid #5a5a5a;
+    border-radius: 6px;
+    color: var(--text-color);
+
+    &::placeholder {
+        color: var(--color-text-soft, #a4a4a4);
+    }
+}
+
+// Mixin para dropdown sin doble borde
+@mixin segmento-dropdown {
+    background: $color-white;
+    border: 1px solid #5a5a5a !important;
+    border-radius: 6px;
+    box-shadow: none !important;
+    outline: none !important;
+
+    &:not(.p-disabled):hover {
+        border-color: #3a3a3a !important;
+    }
+
+    &:not(.p-disabled).p-focus {
+        border-color: #5a5a5a !important;
+        box-shadow: 0 0 0 0.2rem rgba(90, 90, 90, 0.2) !important;
+    }
+
+    .p-dropdown-label,
+    .p-dropdown-label-container,
+    .p-dropdown-trigger {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .p-dropdown-label {
+        color: var(--text-color);
+    }
+
+    .p-dropdown-label.p-placeholder {
+        color: var(--color-text-soft, #a4a4a4);
+    }
+}
+
+// Mixin para botón guardar (pill, borde azul, fondo blanco)
+@mixin segmento-save-button {
+    background: $color-white !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color) !important;
+    border-radius: 2rem;
+    padding: 0.5rem 1.25rem;
+    font-weight: 500;
+
+    .p-button-icon {
+        color: var(--primary-color);
+    }
+
+    &:hover:not(.p-disabled) {
+        background: var(--surface-50) !important;
+        color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+    }
+}
+
+// Mixin para footer de sección
+@mixin segmento-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    background: $color-white;
+}
+
+// Mixin para radio buttons estilo morado
+@mixin segmento-radio-purple {
+    .p-radiobutton-box {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        border: 2px solid #7c3aed !important;
+        background: $color-white !important;
+        box-shadow: none !important;
+
+        &:not(.p-disabled):hover {
+            border-color: #6d28d9 !important;
+            background: $color-white !important;
+        }
+
+        &.p-highlight {
+            border-color: #7c3aed !important;
+            background: $color-white !important;
+        }
+
+        .p-radiobutton-icon {
+            width: 0.5rem !important;
+            height: 0.5rem !important;
+            background-color: #7c3aed !important;
+            transform-origin: center;
+        }
+    }
+}
+

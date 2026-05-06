@@ -290,30 +290,37 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
                     <i className="pi pi-info-circle" />
                   </span>
                     </label>
-                    <InputNumber
-                        id="cantidadUdsCartonMaster"
-                        value={e.cantidadUdsCartonMaster}
-                        onValueChange={ev => {
-                          const v = ev.value ?? null
-                          setEmpaques({ cantidadUdsCartonMaster: v })
-                          validarCampoInline('cantidadUdsCartonMaster', v)
-                        }}
-                        onKeyDown={ev => handleKeyDownNumerico('cantidadUdsCartonMaster', ev)}
-                        min={1}
-                        max={99999}
-                        useGrouping={false}
-                        placeholder={t('datosLogisticos.segmento3.placeholderCantidadUds')}
-                        className={errors.cantidadUdsCartonMaster || alertaNoNumerico.cantidadUdsCartonMaster ? 'p-invalid w-full' : 'w-full'}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="cantidadUdsCartonMaster"
+                          value={e.cantidadUdsCartonMaster}
+                          onValueChange={ev => {
+                            const v = ev.value ?? null
+                            setEmpaques({ cantidadUdsCartonMaster: v })
+                            validarCampoInline('cantidadUdsCartonMaster', v)
+                          }}
+                          onKeyDown={ev => handleKeyDownNumerico('cantidadUdsCartonMaster', ev)}
+                          min={1}
+                          max={99999}
+                          useGrouping={false}
+                          placeholder={t('datosLogisticos.segmento3.placeholderCantidadUds')}
+                          className={alertaNoNumerico.cantidadUdsCartonMaster ? 'campo-warning-input w-full' : errors.cantidadUdsCartonMaster ? 'p-invalid w-full' : 'w-full'}
+                      />
+                      {(errors.cantidadUdsCartonMaster || alertaNoNumerico.cantidadUdsCartonMaster) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.cantidadUdsCartonMaster ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.cantidadUdsCartonMaster && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.cantidadUdsCartonMaster && !alertaNoNumerico.cantidadUdsCartonMaster && (
-                        <Message
-                            severity="error"
-                            text={t(errors.cantidadUdsCartonMaster)}
-                            className="p-mt-1 p-mb-0"
-                        />
+                      <div className="campo-error-inline">
+                        <i className="pi pi-exclamation-circle campo-error-icon" />
+                        <span>{t(errors.cantidadUdsCartonMaster)}</span>
+                      </div>
                     )}
                   </div>
                   <div className="segmento-carton-campo">
@@ -328,30 +335,37 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
                     <i className="pi pi-info-circle" />
                   </span>
                     </label>
-                    <InputNumber
-                        id="multiploCartonMaster"
-                        value={e.multiploCartonMaster}
-                        onValueChange={ev => {
-                          const v = ev.value ?? null
-                          setEmpaques({ multiploCartonMaster: v })
-                          validarCampoInline('multiploCartonMaster', v)
-                        }}
-                        onKeyDown={ev => handleKeyDownNumerico('multiploCartonMaster', ev)}
-                        min={1}
-                        max={99999}
-                        useGrouping={false}
-                        placeholder={t('datosLogisticos.segmento3.placeholderMultiplo')}
-                        className={errors.multiploCartonMaster || alertaNoNumerico.multiploCartonMaster ? 'p-invalid w-full' : 'w-full'}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="multiploCartonMaster"
+                          value={e.multiploCartonMaster}
+                          onValueChange={ev => {
+                            const v = ev.value ?? null
+                            setEmpaques({ multiploCartonMaster: v })
+                            validarCampoInline('multiploCartonMaster', v)
+                          }}
+                          onKeyDown={ev => handleKeyDownNumerico('multiploCartonMaster', ev)}
+                          min={1}
+                          max={99999}
+                          useGrouping={false}
+                          placeholder={t('datosLogisticos.segmento3.placeholderMultiplo')}
+                          className={alertaNoNumerico.multiploCartonMaster ? 'campo-warning-input w-full' : errors.multiploCartonMaster ? 'p-invalid w-full' : 'w-full'}
+                      />
+                      {(errors.multiploCartonMaster || alertaNoNumerico.multiploCartonMaster) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.multiploCartonMaster ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.multiploCartonMaster && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.multiploCartonMaster && !alertaNoNumerico.multiploCartonMaster && (
-                        <Message
-                            severity="error"
-                            text={t(errors.multiploCartonMaster)}
-                            className="p-mt-1 p-mb-0"
-                        />
+                      <div className="campo-error-inline">
+                        <i className="pi pi-exclamation-circle campo-error-icon" />
+                        <span>{t(errors.multiploCartonMaster)}</span>
+                      </div>
                     )}
                   </div>
                   <div className="segmento-carton-campo segmento-carton-campo-vacio" aria-hidden="true" />
@@ -376,33 +390,47 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
                         className={errors.unidadPeso ? 'p-invalid w-full' : 'w-full'}
                     />
                     {errors.unidadPeso && (
-                        <Message severity="error" text={t(errors.unidadPeso)} className="p-mt-1 p-mb-0" />
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.unidadPeso)}</span>
+                        </div>
                     )}
                   </div>
                   <div className="segmento-carton-campo">
                     <label htmlFor="empaques-peso" className="p-block segmento-label">
                       {t('datosLogisticos.segmento2.peso')} <span className="campo-requerido">*</span>
                     </label>
-                    <InputNumber
-                        id="empaques-peso"
-                        value={e.peso}
-                        onValueChange={ev => {
-                          const v = ev.value ?? null
-                          setEmpaques({ peso: v })
-                          validarCampoInline('peso', v)
-                        }}
-                        onKeyDown={ev => handleKeyDownNumerico('peso', ev)}
-                        min={0.01}
-                        minFractionDigits={0}
-                        maxFractionDigits={2}
-                        placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
-                        className={errors.peso || alertaNoNumerico.peso ? 'p-invalid w-full' : 'w-full'}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="empaques-peso"
+                          value={e.peso}
+                          onValueChange={ev => {
+                            const v = ev.value ?? null
+                            setEmpaques({ peso: v })
+                            validarCampoInline('peso', v)
+                          }}
+                          onKeyDown={ev => handleKeyDownNumerico('peso', ev)}
+                          min={0.01}
+                          minFractionDigits={0}
+                          maxFractionDigits={2}
+                          placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
+                          className={alertaNoNumerico.peso ? 'campo-warning-input w-full' : errors.peso ? 'p-invalid w-full' : 'w-full'}
+                      />
+                      {(errors.peso || alertaNoNumerico.peso) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.peso ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.peso && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.peso && !alertaNoNumerico.peso && (
-                        <Message severity="error" text={t(errors.peso)} className="p-mt-1 p-mb-0" />
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.peso)}</span>
+                        </div>
                     )}
                   </div>
                   <div className="segmento-carton-campo segmento-carton-campo-vacio" aria-hidden="true" />
@@ -427,61 +455,86 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
                         className={errors.unidadMedida ? 'p-invalid w-full' : 'w-full'}
                     />
                     {errors.unidadMedida && (
-                        <Message severity="error" text={t(errors.unidadMedida)} className="p-mt-1 p-mb-0" />
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.unidadMedida)}</span>
+                        </div>
                     )}
                   </div>
                   <div className="segmento-carton-campo">
                     <label htmlFor="empaques-alto" className="p-block segmento-label">
                       {t('datosLogisticos.segmento2.alto')} <span className="campo-requerido">*</span>
                     </label>
-                    <InputNumber
-                        id="empaques-alto"
-                        value={e.alto}
-                        onValueChange={ev => {
-                          const v = ev.value ?? null
-                          setEmpaques({ alto: v })
-                          validarCampoInline('alto', v)
-                        }}
-                        onKeyDown={ev => handleKeyDownNumerico('alto', ev)}
-                        min={0.01}
-                        max={500}
-                        minFractionDigits={0}
-                        maxFractionDigits={2}
-                        placeholder={t('datosLogisticos.segmento2.placeholderAlto')}
-                        className={errors.alto || alertaNoNumerico.alto ? 'p-invalid w-full' : 'w-full'}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="empaques-alto"
+                          value={e.alto}
+                          onValueChange={ev => {
+                            const v = ev.value ?? null
+                            setEmpaques({ alto: v })
+                            validarCampoInline('alto', v)
+                          }}
+                          onKeyDown={ev => handleKeyDownNumerico('alto', ev)}
+                          min={0.01}
+                          max={500}
+                          minFractionDigits={0}
+                          maxFractionDigits={2}
+                          placeholder={t('datosLogisticos.segmento2.placeholderAlto')}
+                          className={alertaNoNumerico.alto ? 'campo-warning-input w-full' : errors.alto ? 'p-invalid w-full' : 'w-full'}
+                      />
+                      {(errors.alto || alertaNoNumerico.alto) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.alto ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.alto && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.alto && !alertaNoNumerico.alto && (
-                        <Message severity="error" text={t(errors.alto)} className="p-mt-1 p-mb-0" />
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.alto)}</span>
+                        </div>
                     )}
                   </div>
                   <div className="segmento-carton-campo">
                     <label htmlFor="empaques-frente" className="p-block segmento-label">
                       {t('datosLogisticos.segmento2.frente')} <span className="campo-requerido">*</span>
                     </label>
-                    <InputNumber
-                        id="empaques-frente"
-                        value={e.frente}
-                        onValueChange={ev => {
-                          const v = ev.value ?? null
-                          setEmpaques({ frente: v })
-                          validarCampoInline('frente', v)
-                        }}
-                        onKeyDown={ev => handleKeyDownNumerico('frente', ev)}
-                        min={0.01}
-                        max={500}
-                        minFractionDigits={0}
-                        maxFractionDigits={2}
-                        placeholder={t('datosLogisticos.segmento2.placeholderFrente')}
-                        className={errors.frente || alertaNoNumerico.frente ? 'p-invalid w-full' : 'w-full'}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="empaques-frente"
+                          value={e.frente}
+                          onValueChange={ev => {
+                            const v = ev.value ?? null
+                            setEmpaques({ frente: v })
+                            validarCampoInline('frente', v)
+                          }}
+                          onKeyDown={ev => handleKeyDownNumerico('frente', ev)}
+                          min={0.01}
+                          max={500}
+                          minFractionDigits={0}
+                          maxFractionDigits={2}
+                          placeholder={t('datosLogisticos.segmento2.placeholderFrente')}
+                          className={alertaNoNumerico.frente ? 'campo-warning-input w-full' : errors.frente ? 'p-invalid w-full' : 'w-full'}
+                      />
+                      {(errors.frente || alertaNoNumerico.frente) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.frente ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.frente && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.frente && !alertaNoNumerico.frente && (
-                        <Message severity="error" text={t(errors.frente)} className="p-mt-1 p-mb-0" />
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.frente)}</span>
+                        </div>
                     )}
                   </div>
                 </div>
@@ -492,27 +545,38 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
                     <label htmlFor="empaques-fondo" className="p-block segmento-label">
                       {t('datosLogisticos.segmento2.fondo')} <span className="campo-requerido">*</span>
                     </label>
-                    <InputNumber
-                        id="empaques-fondo"
-                        value={e.fondo}
-                        onValueChange={ev => {
-                          const v = ev.value ?? null
-                          setEmpaques({ fondo: v })
-                          validarCampoInline('fondo', v)
-                        }}
-                        onKeyDown={ev => handleKeyDownNumerico('fondo', ev)}
-                        min={0.01}
-                        max={500}
-                        minFractionDigits={0}
-                        maxFractionDigits={2}
-                        placeholder={t('datosLogisticos.segmento2.placeholderFondo')}
-                        className={errors.fondo || alertaNoNumerico.fondo ? 'p-invalid w-full' : 'w-full'}
-                    />
+                    <div className="input-con-icono-error">
+                      <InputNumber
+                          id="empaques-fondo"
+                          value={e.fondo}
+                          onValueChange={ev => {
+                            const v = ev.value ?? null
+                            setEmpaques({ fondo: v })
+                            validarCampoInline('fondo', v)
+                          }}
+                          onKeyDown={ev => handleKeyDownNumerico('fondo', ev)}
+                          min={0.01}
+                          max={500}
+                          minFractionDigits={0}
+                          maxFractionDigits={2}
+                          placeholder={t('datosLogisticos.segmento2.placeholderFondo')}
+                          className={alertaNoNumerico.fondo ? 'campo-warning-input w-full' : errors.fondo ? 'p-invalid w-full' : 'w-full'}
+                      />
+                      {(errors.fondo || alertaNoNumerico.fondo) && (
+                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.fondo ? ' icono-error-input-warning' : ''}`} />
+                      )}
+                    </div>
                     {alertaNoNumerico.fondo && (
-                        <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                      <div className="campo-warning-inline">
+                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                        <span>{t('validation.numericOnly')}</span>
+                      </div>
                     )}
                     {errors.fondo && !alertaNoNumerico.fondo && (
-                        <Message severity="error" text={t(errors.fondo)} className="p-mt-1 p-mb-0" />
+                        <div className="campo-error-inline">
+                          <i className="pi pi-exclamation-circle campo-error-icon" />
+                          <span>{t(errors.fondo)}</span>
+                        </div>
                     )}
                   </div>
                   <div className="segmento-carton-campo segmento-carton-campo-vacio" aria-hidden="true" />

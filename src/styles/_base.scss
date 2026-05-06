@@ -1,0 +1,118 @@
+// src/styles/_base.scss
+// Estilos base scoped bajo .sgc-mfe-attributes
+// Homologado con sgc-mf-hardline-products-inventory-management
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.sgc-mfe-attributes {
+    // CSS Variables scoped al MFE
+    --bs-danger-rgb: 255, 89, 77;
+    --color-primary-press: #{$color-primary-press};
+    --content-border-radius: #{$border-radius-md};
+    --custom-border-radius: 15px;
+    --font-family: 'Poppins', Arial, sans-serif !important;
+    --p-border-color-primary: #{$color-primary-light};
+    --p-border-radius: #{$border-radius-md};
+    --p-font-family: 'Poppins', Arial, sans-serif !important;
+    --p-green-500: #{$color-success};
+    --surface-border: #{$color-surface-border};
+    --text: #{$color-primary};
+    --text-color: #4b5563;
+
+    // Base scoping y reset
+    & {
+        box-sizing: border-box;
+        color: var(--text-color, $color-primary);
+        font-family: var(--font-family);
+        line-height: 1.6;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: inherit;
+        font-family: var(--font-family) !important;
+    }
+
+    /* Accessibility */
+    .sr-only {
+        border: 0;
+        clip: rect(0, 0, 0, 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    /* Form Elements */
+    input[type='checkbox'] {
+        cursor: pointer;
+        margin-left: 0;
+        position: absolute;
+    }
+
+    .p-inputtext,
+    .p-button {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .p-dialog {
+        font-family: var(--font-family);
+    }
+}
+
+// Contenedor principal del MFE
+.sgc-mfe-attributes {
+    -moz-box-direction: normal;
+    -moz-box-orient: vertical;
+    background-color: $color-white;
+    background-color: var(--color-background-body, #f8f9fa);
+    border-radius: $border-radius-lg;
+    color: $color-primary;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    margin: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow: hidden;
+    padding: $spacing-lg;
+    position: relative;
+}
+
+// Dark Theme Support
+body.dark-theme {
+    background-color: #212529;
+    color: #f8f9fa;
+
+    .sgc-mfe-attributes {
+        .p-message,
+        .p-accordion-header,
+        .p-accordion-header-link,
+        .p-accordion-content {
+            background-color: var(--surface-card) !important;
+            border-color: var(--surface-border) !important;
+            color: var(--text-color) !important;
+        }
+
+        .p-tabview {
+            background-color: var(--surface-card) !important;
+            .p-tabview-nav,
+            .p-tabview-panels {
+                background-color: var(--surface-card) !important;
+                color: var(--text-color) !important;
+            }
+        }
+
+        .p-card {
+            background-color: var(--surface-card) !important;
+            color: var(--text-color) !important;
+            border-color: var(--surface-border) !important;
+        }
+    }
+}
+

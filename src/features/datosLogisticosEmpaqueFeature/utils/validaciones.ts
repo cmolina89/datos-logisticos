@@ -61,7 +61,10 @@ export function validarMedidasEmpaqueIndividual(
   if (!esNumeroPositivo(data.fondo)) errors.fondo = KEY_NUMERO_POSITIVO
   else if (data.fondo != null && data.fondo > 500) errors.fondo = KEY_FONDO_MAX
   else if (data.fondo != null && !maxDecimales(data.fondo)) errors.fondo = KEY_MAX_DECIMALES
-  if (data.estibaMaxima != null) {
+  // Cambiar aquí para que si estibaMaxima es null o undefined, marque como requerido
+  if (data.estibaMaxima == null) {
+    errors.estibaMaxima = KEY_REQUERIDO
+  } else {
     if (!esNumeroPositivo(data.estibaMaxima)) errors.estibaMaxima = KEY_NUMERO_POSITIVO
     else if (!Number.isInteger(data.estibaMaxima)) errors.estibaMaxima = KEY_ENTERO
     else if (data.estibaMaxima > 999) errors.estibaMaxima = KEY_ESTIBA_MAX

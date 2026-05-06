@@ -21,7 +21,6 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { InputNumber } from 'primereact/inputnumber'
 import { Dropdown } from 'primereact/dropdown'
 import { RadioButton } from 'primereact/radiobutton'
-import { Message } from 'primereact/message'
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import './TarjetaEntregaManipulacion.scss'
@@ -212,7 +211,10 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
               </div>
             </div>
             {errors.entregaPaletizable && (
-              <Message severity="error" text={t(errors.entregaPaletizable)} className="p-mt-1 p-mb-0" />
+              <div className="campo-error-inline">
+                <i className="pi pi-exclamation-circle campo-error-icon" />
+                <span>{t(errors.entregaPaletizable)}</span>
+              </div>
             )}
           </div>
 
@@ -237,59 +239,84 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
                     className={errors.unidadMedidaPallet ? 'p-invalid w-full' : 'w-full'}
                   />
                   {errors.unidadMedidaPallet && (
-                    <Message severity="error" text={t(errors.unidadMedidaPallet)} className="p-mt-1 p-mb-0" />
+                    <div className="campo-error-inline">
+                      <i className="pi pi-exclamation-circle campo-error-icon" />
+                      <span>{t(errors.unidadMedidaPallet)}</span>
+                    </div>
                   )}
                 </div>
                 <div className="segmento-entrega-campo">
                   <label htmlFor="layoutLargo" className="p-block segmento-label">
                     {t('datosLogisticos.segmento4.layoutLargo')} <span className="campo-requerido">*</span>
                   </label>
-                  <InputNumber
-                    id="layoutLargo"
-                    value={en.layoutLargo}
-                    onValueChange={ev => {
-                      const v = ev.value ?? null
-                      setEntrega({ layoutLargo: v })
-                      validarCampoInline('layoutLargo', v)
-                    }}
-                    onKeyDown={ev => handleKeyDownNumerico('layoutLargo', ev)}
-                    min={0.01}
-                    minFractionDigits={0}
-                    maxFractionDigits={2}
-                    placeholder={t('datosLogisticos.segmento4.layoutLargo')}
-                    className={errors.layoutLargo || alertaNoNumerico.layoutLargo ? 'p-invalid w-full' : 'w-full'}
-                  />
+                  <div className="input-con-icono-error">
+                    <InputNumber
+                      id="layoutLargo"
+                      value={en.layoutLargo}
+                      onValueChange={ev => {
+                        const v = ev.value ?? null
+                        setEntrega({ layoutLargo: v })
+                        validarCampoInline('layoutLargo', v)
+                      }}
+                      onKeyDown={ev => handleKeyDownNumerico('layoutLargo', ev)}
+                      min={0.01}
+                      minFractionDigits={0}
+                      maxFractionDigits={2}
+                      placeholder={t('datosLogisticos.segmento4.layoutLargo')}
+                      className={alertaNoNumerico.layoutLargo ? 'campo-warning-input w-full' : errors.layoutLargo ? 'p-invalid w-full' : 'w-full'}
+                    />
+                    {(errors.layoutLargo || alertaNoNumerico.layoutLargo) && (
+                      <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.layoutLargo ? ' icono-error-input-warning' : ''}`} />
+                    )}
+                  </div>
                   {alertaNoNumerico.layoutLargo && (
-                    <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                    <div className="campo-warning-inline">
+                      <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                      <span>{t('validation.numericOnly')}</span>
+                    </div>
                   )}
                   {errors.layoutLargo && !alertaNoNumerico.layoutLargo && (
-                    <Message severity="error" text={t(errors.layoutLargo)} className="p-mt-1 p-mb-0" />
+                    <div className="campo-error-inline">
+                      <i className="pi pi-exclamation-circle campo-error-icon" />
+                      <span>{t(errors.layoutLargo)}</span>
+                    </div>
                   )}
                 </div>
                 <div className="segmento-entrega-campo">
                   <label htmlFor="layoutAncho" className="p-block segmento-label">
                     {t('datosLogisticos.segmento4.layoutAncho')} <span className="campo-requerido">*</span>
                   </label>
-                  <InputNumber
-                    id="layoutAncho"
-                    value={en.layoutAncho}
-                    onValueChange={ev => {
-                      const v = ev.value ?? null
-                      setEntrega({ layoutAncho: v })
-                      validarCampoInline('layoutAncho', v)
-                    }}
-                    onKeyDown={ev => handleKeyDownNumerico('layoutAncho', ev)}
-                    min={0.01}
-                    minFractionDigits={0}
-                    maxFractionDigits={2}
-                    placeholder={t('datosLogisticos.segmento4.layoutAncho')}
-                    className={errors.layoutAncho || alertaNoNumerico.layoutAncho ? 'p-invalid w-full' : 'w-full'}
-                  />
+                  <div className="input-con-icono-error">
+                    <InputNumber
+                      id="layoutAncho"
+                      value={en.layoutAncho}
+                      onValueChange={ev => {
+                        const v = ev.value ?? null
+                        setEntrega({ layoutAncho: v })
+                        validarCampoInline('layoutAncho', v)
+                      }}
+                      onKeyDown={ev => handleKeyDownNumerico('layoutAncho', ev)}
+                      min={0.01}
+                      minFractionDigits={0}
+                      maxFractionDigits={2}
+                      placeholder={t('datosLogisticos.segmento4.layoutAncho')}
+                      className={alertaNoNumerico.layoutAncho ? 'campo-warning-input w-full' : errors.layoutAncho ? 'p-invalid w-full' : 'w-full'}
+                    />
+                    {(errors.layoutAncho || alertaNoNumerico.layoutAncho) && (
+                      <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.layoutAncho ? ' icono-error-input-warning' : ''}`} />
+                    )}
+                  </div>
                   {alertaNoNumerico.layoutAncho && (
-                    <Message severity="warn" text={t('validation.numericOnly')} className="p-mt-1 p-mb-0" />
+                    <div className="campo-warning-inline">
+                      <i className="pi pi-exclamation-triangle campo-warning-icon" />
+                      <span>{t('validation.numericOnly')}</span>
+                    </div>
                   )}
                   {errors.layoutAncho && !alertaNoNumerico.layoutAncho && (
-                    <Message severity="error" text={t(errors.layoutAncho)} className="p-mt-1 p-mb-0" />
+                    <div className="campo-error-inline">
+                      <i className="pi pi-exclamation-circle campo-error-icon" />
+                      <span>{t(errors.layoutAncho)}</span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -326,7 +353,10 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
               </div>
             </div>
             {errors.puedeAcomodarseDistintasFormas && (
-              <Message severity="error" text={t(errors.puedeAcomodarseDistintasFormas)} className="p-mt-1 p-mb-0" />
+              <div className="campo-error-inline">
+                <i className="pi pi-exclamation-circle campo-error-icon" />
+                <span>{t(errors.puedeAcomodarseDistintasFormas)}</span>
+              </div>
             )}
           </div>
 

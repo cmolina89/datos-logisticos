@@ -1,12 +1,11 @@
 /**
  * Página principal: Datos logísticos y de empaque (Alta SKU)
- * Menú horizontal superior, 4 frames en columna vertical con scroll.
+ * 4 frames en columna vertical con scroll.
  * Orden: Datos logísticos, Medidas con empaque individual, Empaques del producto, Entrega y manipulación.
  */
 
 import SEOHead from '@/components/common/SEOHead/SEOHead'
 import { useTranslation } from '@/hooks/useTranslation'
-import { Link, useLocation } from '@modern-js/runtime/router'
 import {useAtomValue, useSetAtom} from 'jotai'
 import { Button } from 'primereact/button'
 import { Card } from 'primereact/card'
@@ -172,19 +171,6 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
         }, 1000)
     }, [state.entregaManipulacion, setErroresEntrega, setGuardadoStatus, setGuardadoMensaje, setGuardadoSection, setCollapseSectionAfterSave, setSavedSections, t])
 
-    const location = useLocation()
-    const isDatosLogisticosEmpaque = location.pathname.includes('datos-logisticos-empaque')
-
-    const menuItems = [
-        { to: '/', label: t('datosLogisticos.menu.general') },
-        { to: '/', label: t('datosLogisticos.menu.estrategia') },
-        { to: '/', label: t('datosLogisticos.menu.datosPorCo') },
-        { to: '/', label: t('datosLogisticos.menu.atributos') },
-        { to: '/datos-logisticos-empaque', label: t('datosLogisticos.menu.logisticosEmpaque') },
-        { to: '/', label: t('datosLogisticos.menu.costos') },
-        { to: '/', label: t('datosLogisticos.menu.administracion') },
-    ]
-
     return (
         <>
             <SEOHead
@@ -193,20 +179,6 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
                 keywords="Alta SKU, datos logísticos, empaque, medidas, entrega, manipulación"
             />
             <div className="datos-logisticos-empaque-page datos-logisticos-empaque-layout">
-                {/* Menú horizontal superior */}
-                <nav className="menu-horizontal" aria-label="Navegación principal">
-                    <div className="menu-horizontal-inner">
-                        {menuItems.map(item => (
-                            <Link
-                                key={item.label}
-                                to={item.to}
-                                className={`menu-horizontal-link ${item.to === '/datos-logisticos-empaque' && isDatosLogisticosEmpaque ? 'active' : ''}`}
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
-                    </div>
-                </nav>
 
                 {/* Área de contenido con scroll - 4 frames en columna vertical */}
                 {/* Modal de éxito al guardar (reemplaza la alerta) */}
@@ -323,19 +295,6 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Footer */}
-                <footer className="page-footer">
-                    <Link to="/" className="page-footer-link">
-                        {t('datosLogisticos.footer.goHome')}
-                    </Link>
-                    <a href="#terminos" className="page-footer-link">
-                        {t('datosLogisticos.footer.terms')}
-                    </a>
-                    <a href="#privacidad" className="page-footer-link">
-                        {t('datosLogisticos.footer.privacy')}
-                    </a>
-                </footer>
             </div>
         </>
     )

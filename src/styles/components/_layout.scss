@@ -1,0 +1,56 @@
+// src/styles/components/_layout.scss
+// Layout principal del MFE
+// Homologado con sgc-mf-hardline-products-inventory-management
+@use '../variables' as *;
+
+.sgc-mfe-attributes {
+    flex-direction: column;
+    gap: $spacing-lg;
+    margin: 0.5rem 3.1rem;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow: hidden;
+    padding: 0 $spacing-lg 0 $spacing-lg;
+    position: relative;
+
+    .cv-main-content {
+        -moz-box-direction: normal;
+        -moz-box-orient: vertical;
+        background-color: $color-white;
+        background-color: var(--color-background-body, #f8f9fa);
+        color: $color-primary;
+        display: -moz-box;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-lg;
+        margin: 0;
+        min-height: 100vh;
+        padding: 0;
+        position: relative;
+    }
+
+    .cv-skip-link {
+        background: #007bff;
+        border-radius: 4px;
+        color: white;
+        left: 6px;
+        padding: 8px;
+        position: absolute;
+        text-decoration: none;
+        top: -40px;
+        transition: top 0.3s;
+        z-index: 1000;
+
+        &:focus {
+            top: 6px;
+        }
+    }
+}
+
+@media (max-width: 800px) {
+    .sgc-mfe-attributes {
+        padding: 1rem 0;
+        gap: 1rem;
+        margin: 0rem;
+    }
+}

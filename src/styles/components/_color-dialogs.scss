@@ -1,0 +1,220 @@
+// src/styles/components/_color-dialogs.scss
+// Estilos para diálogos, modales y alertas
+// Homologado con sgc-mf-hardline-products-inventory-management
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.sgc-mfe-attributes {
+
+    // ═══════════════════════════════════════════════
+    //  DIÁLOGOS PRIMEREACT
+    // ═══════════════════════════════════════════════
+
+    .p-dialog .p-dialog-header-icons {
+        position: absolute;
+        left: 93%;
+        top: 2%;
+    }
+
+    .cv-dialog-confirm,
+    .cv-dialog-preview,
+    .cv-dialog-pdf,
+    .cv-dialog-main {
+        min-width: 600px;
+        width: 40vw;
+
+        .p-dialog-footer {
+            display: flex;
+            justify-content: center;
+            padding: $spacing-md;
+            text-align: center;
+            width: 100%;
+        }
+
+        @media screen and (max-width: 576px) {
+            min-width: 100vw;
+            width: 100vw;
+            margin: 0;
+        }
+    }
+
+    .cv-dialog-header {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-md;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .cv-dialog-icon-large {
+        align-items: center;
+        display: flex;
+        font-size: 4rem !important;
+        height: auto !important;
+        justify-content: center;
+        width: auto !important;
+
+        &::before {
+            font-size: 4rem !important;
+        }
+    }
+
+    .cv-dialog-title {
+        font-size: 1.9375rem;
+        font-weight: 700;
+    }
+
+    // ═══════════════════════════════════════════════
+    //  BOTONES DE DIÁLOGO
+    // ═══════════════════════════════════════════════
+
+    .cv-dialog-button-cancel,
+    .cv-dialog-button-close,
+    .cv-dialog-button-confirm,
+    .cv-dialog-button-select {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        padding-bottom: $spacing-sm;
+        padding-top: $spacing-sm;
+        transition: all 0.2s ease;
+        width: 200px;
+
+        &:not(:disabled) {
+            background-color: $color-white;
+            border: 1px solid $color-primary-light !important;
+            color: $color-primary-light !important;
+            &:hover {
+                background: rgba(28, 66, 232, 0.1);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(28, 66, 232, 0.2);
+            }
+        }
+
+        &:disabled {
+            background-color: $color-background-gray !important;
+            border: 1px solid $color-border-soft !important;
+            color: #9ca3af !important;
+        }
+    }
+
+    // ═══════════════════════════════════════════════
+    //  MODAL DE ÉXITO (Guardado exitoso)
+    // ═══════════════════════════════════════════════
+
+    .modal-exito-guardado {
+        .p-dialog {
+            border-radius: $border-radius-md;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .p-dialog-content {
+            padding: 0;
+            overflow: visible;
+        }
+    }
+
+    .modal-exito-guardado-content {
+        padding: 0;
+    }
+
+    .modal-exito-body {
+        position: relative;
+        padding: 2rem 2rem 1.75rem;
+        text-align: center;
+        min-width: 320px;
+    }
+
+    .modal-exito-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        padding: 0.35rem;
+        cursor: pointer;
+        color: #1a1a1a;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+
+        &:hover {
+            background: var(--surface-hover);
+            color: var(--text-color);
+        }
+
+        .pi-times {
+            font-size: 1.25rem;
+        }
+    }
+
+    .modal-exito-icon {
+        width: 4rem;
+        height: 4rem;
+        margin: 0 auto 1.25rem;
+        border-radius: 50%;
+        background: var(--color-text-success, #2e8a41);
+        color: $color-white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .pi-check {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    }
+
+    .modal-exito-title {
+        margin: 0 0 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a1a1a;
+    }
+
+    .modal-exito-message {
+        margin: 0 0 1.5rem;
+        font-size: 0.9375rem;
+        color: var(--text-color-secondary);
+        line-height: 1.4;
+    }
+
+    .modal-exito-btn {
+        min-width: 8rem;
+        border-radius: 2rem;
+        padding: 0.5rem 1.5rem;
+        font-weight: 500;
+    }
+
+    // ═══════════════════════════════════════════════
+    //  AVISO INCOMPLETO (Alerta dentro de sección)
+    // ═══════════════════════════════════════════════
+
+    .segmento-datos-logisticos-aviso-incompleto {
+        margin: 1rem;
+        padding: 1rem;
+        background: var(--surface-100);
+        border-radius: $border-radius-sm;
+        border-left: 4px solid var(--primary-color);
+
+        .aviso-title {
+            margin: 0 0 0.5rem;
+            font-weight: 700;
+            font-size: var(--font-size-subheader, 1.125rem);
+            color: var(--text-color);
+        }
+
+        .aviso-message {
+            margin: 0;
+            font-size: var(--font-size-body-mobile, 0.970rem);
+            color: var(--text-color-secondary);
+            line-height: 1.5;
+        }
+    }
+}
+

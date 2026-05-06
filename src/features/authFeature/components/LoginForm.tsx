@@ -5,6 +5,7 @@ import { InputText } from 'primereact/inputtext'
 import { Password } from 'primereact/password'
 import type React from 'react'
 import { useId, useState } from 'react'
+import useTranslation from '@/hooks/useTranslation'
 
 interface LoginFormProps {
   onLogin: () => void
@@ -12,14 +13,31 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading = false }) => {
+  const { t } = useTranslation()
   const [email, setEmail] = useState('')
   // SECURITY FIX: Usar undefined en lugar de cadena vacía para evitar detección de campos vacíos
   const [password, setPassword] = useState<string | undefined>(undefined)
+  const [isEmailInvalid, setIsEmailInvalid] = useState(false)
+  const [isPasswordInvalid, setIsPasswordInvalid] = useState(false)
   const emailId = useId()
   const passwordId = useId()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    let valid = true
+    if (!email) {
+      setIsEmailInvalid(true)
+      valid = false
+    } else {
+      setIsEmailInvalid(false)
+    }
+    if (!password) {
+      setIsPasswordInvalid(true)
+      valid = false
+    } else {
+      setIsPasswordInvalid(false)
+    }
+    if (!valid) return
     onLogin()
   }
 
@@ -81,6 +99,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading = false }) => 
             style={{ width: '100%' }}
             className="w-full"
           />
+          {/* Mensaje de error eliminado por solicitud */}
         </div>
 
         <div style={{ marginBottom: '2rem' }}>
@@ -106,6 +125,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading = false }) => 
             style={{ width: '100%' }}
             inputStyle={{ width: '100%' }}
           />
+          {/* Mensaje de error eliminado por solicitud */}
         </div>
 
         <Button

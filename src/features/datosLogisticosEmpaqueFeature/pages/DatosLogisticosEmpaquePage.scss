@@ -1,5 +1,5 @@
 // Página: Datos logísticos y de empaque
-// Layout: menú horizontal, contenido con scroll vertical, 4 frames en columna, footer
+// Layout: contenido con scroll vertical, 4 frames en columna
 
 // Modal de éxito al guardar (sustituye alerta)
 .modal-exito-guardado {
@@ -97,43 +97,6 @@
   overflow: hidden;
 }
 
-// Menú horizontal superior (como en imagen)
-.menu-horizontal {
-  flex-shrink: 0;
-  background: var(--surface-card);
-  border-bottom: 1px solid var(--surface-border);
-  padding: 0 1rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.menu-horizontal-inner {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  flex-wrap: wrap;
-  min-height: 48px;
-}
-
-.menu-horizontal-link {
-  padding: 0.75rem 1rem;
-  color: var(--text-color);
-  text-decoration: none;
-  font-size: var(--font-size-small, 0.875rem);
-  font-weight: 500;
-  border-bottom: 3px solid transparent;
-  transition: background 0.2s, color 0.2s;
-
-  &:hover {
-    background: var(--surface-hover);
-    color: var(--primary-color);
-  }
-
-  &.active {
-    background: rgba(28, 66, 232, 0.08);
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-  }
-}
 
 // Área de contenido con scroll
 .content-scroll {
@@ -223,28 +186,6 @@
   padding: 0;
 }
 
-// Footer (barra azul oscuro)
-.page-footer {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  padding: 0.75rem 1rem;
-  background: var(--color-primary-hover, #081754);
-  color: var(--color-text-invert, #fff);
-}
-
-.page-footer-link {
-  color: var(--color-text-invert, #fff);
-  text-decoration: none;
-  font-size: var(--font-size-small, 0.875rem);
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
 
 // Utilidades formularios
 .tarjeta-form {
@@ -263,24 +204,10 @@
   }
 }
 
-// Responsive menú
+// Responsive
 @media (max-width: 768px) {
-  .menu-horizontal-inner {
-    min-height: auto;
-  }
-
-  .menu-horizontal-link {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8125rem;
-  }
-
   .content-scroll-inner {
     padding: 0.75rem;
-  }
-
-  .page-footer {
-    gap: 1rem;
-    padding: 0.5rem 0.75rem;
   }
 }
 

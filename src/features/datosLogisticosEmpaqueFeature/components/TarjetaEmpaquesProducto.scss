@@ -234,7 +234,13 @@
     }
 
     .p-invalid {
-      border-color: var(--color-border-error, #ff594d);
+      border: 2px solid #F44336 !important;
+      box-shadow: none !important;
+    }
+
+    .campo-warning-input .p-inputnumber-input {
+      border: 2px solid #F7B500 !important;
+      box-shadow: none !important;
     }
 
     /* Campos: fondo blanco, bordes redondeados, contorno gris oscuro */
@@ -294,6 +300,80 @@
     .p-inputnumber .p-inputnumber-input {
       border-radius: 6px;
       border: 1px solid #5a5a5a;
+    }
+  }
+
+  // Mensaje de error inline debajo de un campo
+  .campo-error-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #fff;
+    color: #F44336;
+    font-size: 0.97rem;
+    margin-top: 0.15rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 8px;
+    border: 1.5px solid #F44336;
+    font-weight: 500;
+    width: 100%;
+    box-sizing: border-box;
+
+    .campo-error-icon {
+      color: #F44336;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      margin-right: 0.2rem;
+    }
+  }
+
+  // Mensaje de advertencia inline debajo de un campo (warning)
+  .campo-warning-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #fff;
+    color: #F7B500;
+    font-size: 0.97rem;
+    margin-top: 0.15rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 8px;
+    border: 1.5px solid #F7B500;
+    font-weight: 500;
+    width: 100%;
+    box-sizing: border-box;
+
+    .campo-warning-icon {
+      color: #F7B500;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      margin-right: 0.2rem;
+    }
+  }
+
+  // Input con ícono de error a la derecha
+  .input-con-icono-error {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .p-inputnumber-input {
+      padding-right: 2.2rem !important;
+    }
+
+    .icono-error-input {
+      position: absolute;
+      right: 0.85rem;
+      color: #F44336;
+      font-size: 1.2rem;
+      pointer-events: none;
+      z-index: 2;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .icono-error-input-warning {
+      color: #F7B500;
     }
   }
 
