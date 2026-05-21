@@ -125,6 +125,24 @@ interface ResponsiveVisibilityProps {
   hideOnDown?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
 }
 
+type BreakpointKey = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
+
+const BREAKPOINT_ORDER: BreakpointKey[] = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']
+
+const getBreakpointIndex = (value: BreakpointKey): number => BREAKPOINT_ORDER.indexOf(value)
+
+const isBelow = (current: BreakpointKey, target: BreakpointKey): boolean =>
+  getBreakpointIndex(current) < getBreakpointIndex(target)
+
+const isAtOrAbove = (current: BreakpointKey, target: BreakpointKey): boolean =>
+  getBreakpointIndex(current) >= getBreakpointIndex(target)
+
+const isAbove = (current: BreakpointKey, target: BreakpointKey): boolean =>
+  getBreakpointIndex(current) > getBreakpointIndex(target)
+
+const isAtOrBelow = (current: BreakpointKey, target: BreakpointKey): boolean =>
+  getBreakpointIndex(current) <= getBreakpointIndex(target)
+
 export const ResponsiveVisibility: React.FC<ResponsiveVisibilityProps> = ({
   children,
   showOn,
@@ -137,57 +155,16 @@ export const ResponsiveVisibility: React.FC<ResponsiveVisibilityProps> = ({
   const breakpoint = useBreakpoint()
 
   const shouldShow = (): boolean => {
-    // Si se especifica showOn, solo mostrar en esos breakpoints
-    if (showOn && !showOn.includes(breakpoint.current)) {
-      return false
-    }
+    const currentBreakpoint = breakpoint.current as BreakpointKey
 
-    // Si se especifica hideOn, ocultar en esos breakpoints
-    if (hideOn && hideOn.includes(breakpoint.current)) {
-      return false
-    }
-
-    // Si se especifica showOnUp, mostrar desde ese breakpoint hacia arriba
-    if (showOnUp) {
-      const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']
-      const currentIndex = breakpoints.indexOf(breakpoint.current)
-      const targetIndex = breakpoints.indexOf(showOnUp)
-      if (currentIndex < targetIndex) {
-        return false
-      }
-    }
-
-    // Si se especifica hideOnUp, ocultar desde ese breakpoint hacia arriba
-    if (hideOnUp) {
-      const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']
-      const currentIndex = breakpoints.indexOf(breakpoint.current)
-      const targetIndex = breakpoints.indexOf(hideOnUp)
-      if (currentIndex >= targetIndex) {
-        return false
-      }
-    }
-
-    // Si se especifica showOnDown, mostrar desde ese breakpoint hacia abajo
-    if (showOnDown) {
-      const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']
-      const currentIndex = breakpoints.indexOf(breakpoint.current)
-      const targetIndex = breakpoints.indexOf(showOnDown)
-      if (currentIndex > targetIndex) {
-        return false
-      }
-    }
-
-    // Si se especifica hideOnDown, ocultar desde ese breakpoint hacia abajo
-    if (hideOnDown) {
-      const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']
-      const currentIndex = breakpoints.indexOf(breakpoint.current)
-      const targetIndex = breakpoints.indexOf(hideOnDown)
-      if (currentIndex <= targetIndex) {
-        return false
-      }
-    }
-
-    return true
+    return (
+      !(showOn && !showOn.includes(currentBreakpoint)) &&
+      !(hideOn && hideOn.includes(currentBreakpoint)) &&
+      !(showOnUp && isBelow(currentBreakpoint, showOnUp)) &&
+      !(hideOnUp && isAtOrAbove(currentBreakpoint, hideOnUp)) &&
+      !(showOnDown && isAbove(currentBreakpoint, showOnDown)) &&
+      !(hideOnDown && isAtOrBelow(currentBreakpoint, hideOnDown))
+    )
   }
 
   if (!shouldShow()) {

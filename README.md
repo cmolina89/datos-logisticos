@@ -1,59 +1,68 @@
-# Estándar de Desarrollo Frontend: CoppelFramework - WebClient React
+# MFE Logistics Packaging Config - Configuración de Empaque Logístico
 
-[![ModernJS](https://img.shields.io/badge/ModernJS-2.69.4-red.svg)](https://angular.io/)
+[![ModernJS](https://img.shields.io/badge/ModernJS-2.69.5-red.svg)](https://modernjs.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-blue.svg)](https://www.typescriptlang.org/)
-[![PrimeNG](https://img.shields.io/badge/PrimeReact-10.9.7-orange.svg)](https://primereact.org/)
+[![PrimeReact](https://img.shields.io/badge/PrimeReact-10.9.7-orange.svg)](https://primereact.org/)
+[![React](https://img.shields.io/badge/React-19.2.3-blue.svg)](https://react.dev/)
 [![Coltrane](https://img.shields.io/badge/ColtraneCSS-3.0.0-yellow.svg)](https://coltrane.coppel.com/)
 
-**Versión: 1.2.1**
+**Versión: 1.2.0** | **Tipo: Microfrontend (MFE) Remoto** | **Puerto: 3006**
 
-¡Bienvenido! Este documento es la guía oficial y la fuente de verdad para el **Estándar de Desarrollo Frontend de Coppel para aplicaciones React**. Su propósito es proporcionar una base de conocimiento, herramientas y arquitecturas para construir productos digitales de alta calidad, que sean robustos, mantenibles y escalables.
+¡Bienvenido! Este es un **Microfrontend remoto** que forma parte de la **Súper-Aplicación de Logística de Coppel**. Su propósito es proporcionar una suite completa de herramientas para configurar y gestionar aspectos críticos del empaque logístico, incluyendo datos logísticos, configuraciones de empaque, documentación del servidor y ejemplos de consumo de APIs.
 
-Para acelerar el desarrollo y garantizar el cumplimiento de estas directrices, este estándar viene acompañado de una **plantilla de inicio** (`CoppelFramework - WebClient React`). Esta plantilla es la implementación de referencia y el punto de partida **obligatorio** para todos los nuevos proyectos web orientados al cliente externo.
+Este MFE está construido siguiendo el **Estándar de Desarrollo Frontend de Coppel**, utilizando las mejores prácticas de render híbrido (SSR + CSR), arquitectura por features, Module Federation y testing integral.
 
 ---
 
 ## 📜 Tabla de Contenidos
 
-1.  [**Visión y Enfoque Estratégico**](#1-visión-y-enfoque-estratégico)
+1.  [**Acerca de este MFE**](#1-acerca-de-este-mfe)
 2.  [**Primeros Pasos: Instalación y Entorno**](#2-primeros-pasos-instalación-y-entorno)
 3.  [**Arquitectura y Estructura del Proyecto**](#3-arquitectura-y-estructura-del-proyecto)
-4.  [**Guías de Desarrollo Esenciales**](#4-guías-de-desarrollo-esenciales)
-5.  [**Ejemplos Prácticos en la Plantilla**](#5-ejemplos-prácticos-en-la-plantilla)
-6.  [**Estrategia de Pruebas**](#6-estrategia-de-pruebas)
-7.  [**Contribución y Licencia**](#7-contribución-y-licencia)
-8.  [**SEO y Accesibilidad**](#8-seo-y-accesibilidad)
-9.  [**Code Splitting**](#9-code-splitting)
-10. [**Lighthouse**](#10-lighthouse)
+4.  [**Features del Proyecto**](#4-features-del-proyecto)
+5.  [**Configuración de Module Federation**](#5-configuración-de-module-federation)
+6.  [**Guías de Desarrollo Esenciales**](#6-guías-de-desarrollo-esenciales)
+7.  [**Estrategia de Pruebas**](#7-estrategia-de-pruebas)
+8.  [**Variables de Entorno**](#8-variables-de-entorno)
+9.  [**SEO y Accesibilidad**](#9-seo-y-accesibilidad)
+10. [**Contribución y Licencia**](#10-contribución-y-licencia)
 
 ---
 
-## 1. Visión y Enfoque Estratégico
+## 1. Acerca de este MFE
 
-### ¿Por qué existe este Estándar?
+### ¿Qué es este Proyecto?
 
-El objetivo principal es simple: **construir mejores productos, más rápido y de forma unificada**. Este estándar ataca varios frentes para lograrlo:
+Este es un **Microfrontend Remoto** que forma parte de la arquitectura de Module Federation de Coppel. Específicamente, proporciona funcionalidades para la gestión de **configuración y datos logísticos de empaque**.
 
-*   **Estandarización:** Define un conjunto único de herramientas y arquitecturas. Esto significa que un programador puede moverse entre proyectos con una curva de aprendizaje mínima, ya que la base tecnológica es la misma.
-*   **Productividad Acelerada:** La plantilla inicial elimina días (o incluso semanas) de configuración. Viene con todo lo necesario para empezar a desarrollar la lógica de negocio desde el primer día.
-*   **Calidad Incorporada:** Fomentamos prácticas de alta calidad desde el principio, como el tipado estático con TypeScript, pruebas automatizadas, y un código bien estructurado que es más fácil de leer y mantener.
-*   **Escalabilidad a Futuro:** La arquitectura no solo está pensada para el proyecto actual, sino para que pueda crecer y, eventualmente, integrarse en ecosistemas más grandes como los **microfrontends**.
+**Características Principales:**
 
-### El Enfoque Híbrido: Optimizando para el Cliente
+-   **Datos Logísticos de Empaque:** Gestión centralizada de información logística relacionada con la configuración de empaque.
+-   **Ejemplo de Consumo de API:** Implementación funcional de llamadas a APIs externas con SSR habilitado.
+-   **Información de Servidor:** Página de diagnóstico para verificar configuración SSR.
+-   **Sistema de Autenticación:** Control de acceso mediante cookies y Jotai.
+-   **Totalmente Tipado:** TypeScript 5.9.3 con tipos estrictos en toda la base de código.
 
-Para las aplicaciones que nuestros clientes usan, la experiencia lo es todo. Por ello, este estándar se basa en un modelo de **Renderizado Híbrido**, combinando las fortalezas de dos mundos:
+### Tecnologías Principales
 
--   **Server-Side Rendering (SSR):** La primera vez que un usuario o un motor de búsqueda visita una página, nuestro servidor construye el HTML completo y lo envía.
-    -   **Beneficio para el Usuario:** La página se vuelve visible y utilizable casi instantáneamente. Esto reduce la tasa de rebote y mejora drásticamente la percepción de velocidad.
-    -   **Beneficio para el Negocio:** Un excelente posicionamiento en Google (SEO) es crucial. Al enviar HTML completo, facilitamos que los motores de búsqueda entiendan e indexen nuestro contenido, lo que se traduce en mayor visibilidad.
+| Tecnología | Versión | Propósito |
+|------------|---------|----------|
+| **Modern.js** | 2.69.5 | Framework base con SSR y Module Federation |
+| **React** | 19.2.3 | Librería UI |
+| **TypeScript** | 5.9.3 | Lenguaje tipado |
+| **Jotai** | 2.16.0 | Gestión de estado global |
+| **PrimeReact** | 10.9.7 | Componentes UI |
+| **Axios** | 1.13.2 | Cliente HTTP |
+| **Jest** | 30.2.0 | Testing unitario |
+| **Playwright** | 1.57.0 | Testing E2E |
+| **Biome** | 2.3.10 | Linting y formateo |
 
--   **Client-Side Rendering (CSR):** Una vez que la aplicación ha cargado en el navegador, React toma el control. La navegación entre diferentes secciones se siente instantánea, como en una aplicación de escritorio, porque ya no se necesita recargar la página completa.
+### Información de Deploymento
 
-### Preparación para Microfrontends con Module Federation
-
-Este estándar mira hacia el futuro. La elección de **Modern.js** como framework base no es casual. Modern.js tiene un soporte nativo y de primera clase para **Module Federation**, la tecnología que permite que diferentes aplicaciones (microfrontends) se compongan en una sola experiencia de usuario cohesiva.
-
-Esto significa que un proyecto que comienza hoy como una aplicación mediana, mañana puede convertirse en una "feature" dentro de una súper-aplicación sin necesidad de reescribir todo desde cero. Dominar este estándar es prepararse para los desafíos arquitectónicos más importantes de Coppel.
+| Ambiente | Puerto Local | Ruta Remota |
+|----------|--------------|------------|
+| **Desarrollo** | `3006` | `http://localhost:3006/remoteEntry.js` |
+| **Producción** | Variable | Configurado en CI/CD |
 
 ## 2. Primeros Pasos: Instalación y Entorno
 
@@ -61,26 +70,34 @@ Esto significa que un proyecto que comienza hoy como una aplicación mediana, ma
 
 Asegúrate de tener instalado el siguiente software en tu máquina:
 
--   **Node.js:** Versión `18.x` o superior. Se recomienda usar un gestor de versiones como [nvm](https://github.com/nvm-sh/nvm) para manejar diferentes versiones de Node.js.
--   **npm:** Versión `8.x` o superior (generalmente viene con Node.js).
+-   **Node.js:** Versión `20.x` o superior (requerido por las dependencias actuales). Se recomienda usar un gestor de versiones como [nvm](https://github.com/nvm-sh/nvm) para manejar diferentes versiones de Node.js.
+-   **pnpm:** Se recomienda uses `pnpm` como gestor de paquetes (versión `8.x` o superior).
 -   **Git:** Para el control de versiones.
 
 ### Instalación y Ejecución
 
-1.  **Obtén el código:** Clona la plantilla desde el repositorio oficial de Coppel.
+1.  **Obtén el código:** Clona este repositorio desde Azure DevOps.
+    ```bash
+    git clone https://Coppel-Retail@dev.azure.com/Coppel-Retail/Logistics/_git/com-sgc-mfe-LogisticsPackagingConfig_2
+    cd com-sgc-mfe-LogisticsPackagingConfig_2
     ```
-    git clone https://Coppel-Retail@dev.azure.com/Coppel-Retail/Frameworks_Coppel/_git/coppelframework-webclient-reactjs
-    cd coppelframework-webclient-reactjs
+2.  **Instala las dependencias:** Este proyecto utiliza `pnpm` como gestor de paquetes.
+    ```bash
+    pnpm install
     ```
-2.  **Instala las dependencias:** Este comando leerá el `package.json` y descargará todas las librerías necesarias en la carpeta `node_modules`.
-    ```
+    Alternativamente, si usas npm:
+    ```bash
     npm install
     ```
 3.  **Inicia el servidor de desarrollo:**
+    ```bash
+    pnpm dev
     ```
+    o
+    ```bash
     npm run dev
     ```
-    Este comando inicia un servidor local (generalmente en ``http://localhost:8080``) con *Hot-Reloading*, lo que significa que cada vez que guardes un cambio en tu código, la página se actualizará automáticamente en el navegador.
+    El MFE estará disponible en `http://localhost:3006` con *Hot-Reloading*. El archivo `remoteEntry.js` se servará en `http://localhost:3006/remoteEntry.js` para su integración con la host app.
 
 ### Scripts Clave del Proyecto
 
@@ -88,68 +105,201 @@ El archivo `package.json` contiene una serie de scripts preconfigurados para fac
 
 | Script                 | Descripción                                                                                                 |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------- |
-| ``npm run dev``        | Inicia la aplicación en modo desarrollo.                                                                    |
-| ``npm run build``      | Compila y optimiza la aplicación para producción. Genera la carpeta `dist/`.                                |
-| ``npm run start``      | Ejecuta la aplicación en modo producción (requiere un `build` previo).                                      |
-| ``npm run lint``       | Analiza el código en busca de errores de estilo y calidad usando Biome.                                     |
-| ``npm run format``     | Formatea automáticamente todo el código para que cumpla con las reglas de estilo de Biome.                  |
-| ``npm test``           | Ejecuta todas las pruebas unitarias y de integración con Jest.                                              |
-| ``npm run test:unit `` | Ejecuta las pruebas unitarias que encuentra en src/*.test.tsx incluyendo el coverage de las pruebas         |
-| ``npm run test:watch`` | Ejecuta las pruebas en "modo observador", volviéndolas a correr automáticamente al detectar cambios.        |
-| ``npm run coverage``   | Ejecuta las pruebas y genera un reporte de cobertura de código.                                             |
-| ``npm run e2e``        | Ejecuta las pruebas End-to-End con Playwright en modo headless (sin interfaz gráfica).                      |
-| ``npm run e2e:ui``     | Abre la potente interfaz de usuario de Playwright para ejecutar y depurar pruebas E2E de forma visual.      |
-| ``npm run reset ``     | Elimina node_modules para poder hacer una reinstalación de las dependencias limpia                          |
+| ``pnpm dev``           | Inicia el MFE en modo desarrollo (puerto 3006) con remoteEntry.js exportado.                                |
+| ``pnpm build``         | Compila y optimiza el MFE para producción. Genera la carpeta `dist/` con Module Federation.                 |
+| ``pnpm start``         | Ejecuta el MFE en modo producción (requiere un `build` previo).                                             |
+| ``pnpm serve``         | Sirve el build generado localmente para testing previo a deploymento.                                       |
+| ``pnpm lint``          | Analiza el código en busca de errores de estilo y calidad usando Biome.                                     |
+| ``pnpm format``        | Formatea automáticamente todo el código para que cumpla con las reglas de estilo de Biome.                  |
+| ``pnpm test``          | Ejecuta todas las pruebas unitarias y de integración con Jest.                                              |
+| ``pnpm test:unit``     | Ejecuta las pruebas unitarias con cobertura de código.                                                      |
+| ``pnpm test:watch``    | Ejecuta las pruebas en "modo observador", volviéndolas a correr automáticamente al detectar cambios.        |
+| ``pnpm coverage``      | Ejecuta las pruebas y genera un reporte de cobertura de código.                                             |
+| ``pnpm e2e``           | Ejecuta las pruebas End-to-End con Playwright en modo headless (sin interfaz gráfica).                      |
+| ``pnpm e2e:ui``        | Abre la potente interfaz de usuario de Playwright para ejecutar y depurar pruebas E2E de forma visual.      |
+| ``pnpm upgrade``       | Actualiza las dependencias de Modern.js a la última versión.                                                |
+| ``pnpm reset``         | Elimina node_modules para poder hacer una reinstalación limpia de las dependencias.                         |
+| ``pnpm clean``         | Limpia dist, .modern.js y node_modules para un reseteo completo.                                           |
 
 ## 3. Arquitectura y Estructura del Proyecto
 
-Una arquitectura bien definida es la base de un software mantenible. Este estándar promueve una organización clara del código para facilitar la colaboración y el crecimiento a largo plazo.
+### Estructura de Directorios
 
-### Entendiendo el Scaffolding
-
-Al iniciar un proyecto con la plantilla, encontrarás una estructura de directorios predefinida. Todo el código de tu aplicación reside dentro de la carpeta ``src/``.
+Al iniciar un proyecto con esta plantilla, encontrarás la siguiente estructura de directorios. Todo el código de tu aplicación reside dentro de la carpeta ``src/``.
 
 ```bash
 /
-├── public/                # Archivos estáticos (favicons, temas CSS) que se copian tal cual al build.
-├── src/                   # CÓDIGO FUENTE DE LA APLICACIÓN
-│   ├── app/               # Lógica y configuración global de la aplicación (Providers, Store global).
-│   ├── components/        # Componentes UI GENÉRICOS, reutilizables en cualquier parte de la aplicación.
-│   ├── features/          # ¡EL CORAZÓN DE LA ARQUITECTURA! Módulos de negocio autocontenidos.
-│   ├── hooks/             # Hooks de React personalizados y de uso global.
-│   ├── lib/               # Clientes de librerías configurados (ej. instancia de Axios).
-│   ├── routes/            # Definición de las páginas y su mapeo a URLs (convención de Modern.js).
-│   ├── styles/            # Archivos SCSS globales (variables, resets, tema base).
-│   ├── types/             # Definiciones de tipos TypeScript globales.
-│   └── utils/             # Funciones de utilidad que no son hooks y son de uso general.
-├── tests/                 # Pruebas End-to-End (E2E) con Playwright.
-├── .env.example           # Archivo de ejemplo para variables de entorno.
-├── jest.config.ts         # Configuración de Jest para pruebas unitarias/integración.
-├── modern.config.ts       # Configuración principal de Modern.js (build, rutas, SSR/CSR).
-└── package.json           # Dependencias y scripts del proyecto.
+├── public/                          # Archivos estáticos (favicons, temas CSS, remoteEntry.js)
+├── src/                             # CÓDIGO FUENTE DEL MFE
+│   ├── app/                         # Lógica y configuración global (Providers, Store)
+│   ├── components/                  # Componentes UI GENÉRICOS reutilizables
+│   ├── features/                    # 🎯 Features específicas del MFE:
+│   │   ├── authFeature/            # Autenticación y control de acceso
+│   │   ├── datosLogisticosEmpaqueFeature/  # ⭐ Feature principal: Datos logísticos de empaque
+│   │   ├── postsFeature/           # Ejemplo funcional de consumo de API
+│   │   └── serverDocsFeature/      # Página de diagnóstico SSR
+│   ├── hooks/                       # Hooks personalizados (useBreakpoint, useSEO, etc.)
+│   ├── lib/                         # Clientes configurados (httpClient)
+│   ├── routes/                      # Definición de páginas y rutas (convención Modern.js)
+│   ├── styles/                      # Archivos SCSS globales (variables, temas)
+│   ├── types/                       # Definiciones de tipos TypeScript globales
+│   └── utils/                       # Funciones utilitarias
+├── tests/                           # Pruebas E2E con Playwright
+├── module-federation.config.ts      # Configuración de Module Federation
+├── modern.config.ts                 # Configuración principal de Modern.js
+├── jest.config.ts                   # Configuración de Jest
+└── package.json                     # Dependencias y scripts
 ```
 
 ### La Arquitectura por "Features"
 
-La estrategia principal para organizar el código es la **arquitectura por features**. En lugar de agrupar archivos por su tipo (todos los componentes en una carpeta, todos los hooks en otra), los agrupamos por la **funcionalidad de negocio** a la que pertenecen.
+La estrategia principal es la **arquitectura por features**. Los archivos se agrupan por **funcionalidad de negocio**, no por tipo de archivo.
 
-**¿Por qué?**
--   **Cohesión:** Todo lo relacionado con una funcionalidad (ej. "Perfil de Usuario") está junto, facilitando su localización y modificación.
--   **Bajo Acoplamiento:** Cada feature debe ser lo más independiente posible de las demás. Esto reduce el riesgo de que un cambio en una feature rompa otra inesperadamente.
--   **Escalabilidad:** Añadir nuevas funcionalidades es tan simple como crear una nueva carpeta de feature, sin "contaminar" el resto del código.
+**Ventajas:**
+-   **Cohesión:** Todo lo relacionado con una funcionalidad está junto.
+-   **Bajo Acoplamiento:** Cada feature es independiente.
+-   **Escalabilidad:** Añadir nuevas funcionalidades es simple y limpio.
 
-Una feature típica (ej. ``userProfile``) tendría la siguiente estructura interna:
-```bash
-/userProfile
-├── api/          # Funciones para llamar a los endpoints de la API del perfil.
-├── components/   # Componentes React que SÓLO se usan dentro de la feature del perfil.
-├── hooks/        # Hooks personalizados para la lógica de esta feature (ej. `useUserProfileData`).
-├── pages/        # Componentes de página completos que ensamblan los componentes de la feature.
-├── store/        # Átomos de Jotai para el estado específico del perfil.
-└── types/        # Tipos de TypeScript que solo conciernen a esta feature.
+## 4. Features del Proyecto
+
+Este MFE incluye cuatro features principales:
+
+### 4.1 `authFeature` - Sistema de Autenticación
+
+Sistema de autenticación simulado con integración real de cookies y Jotai.
+
+**Ubicación:** `src/features/authFeature/`
+
+**Características:**
+- Flujo de login/logout con cookies
+- Estado global persistente
+- HOC `withAuthentication` para proteger rutas
+- Validación de tokens en peticiones HTTP
+
+**Rutas asociadas:**
+- `/login` - Página de autenticación
+
+---
+
+### 4.2 `datosLogisticosEmpaqueFeature` - Datos Logísticos de Empaque ⭐
+
+**Esta es la feature principal del MFE.** Gestiona toda la información logística relacionada con empaque.
+
+**Ubicación:** `src/features/datosLogisticosEmpaqueFeature/`
+
+**Características:**
+- Gestión de parámetros de empaque
+- Validación de datos logísticos
+- Integración con APIs de backend
+- Almacenamiento en estado global
+- Soporte SSR para SEO
+
+**Rutas asociadas:**
+- `/datos-logisticos-empaque/*` - Rutas específicas de empaque
+
+---
+
+### 4.3 `postsFeature` - Ejemplo Funcional de API
+
+Implementación completa de consumo de API externa con SSR, lazy loading y manejo de estados.
+
+**Ubicación:** `src/features/postsFeature/`
+
+**Características:**
+- Consumo de la API JSONPlaceholder (externa)
+- Loader SSR para precarga de datos
+- Estado de carga, error y éxito
+- Code splitting automático
+- Demostración de buenas prácticas
+
+**Rutas asociadas:**
+- `/posts` - Lista de posts (requiere autenticación)
+
+**Tecnologías demostrables:**
+- Uso de `useLoaderData()` para SSR
+- Axios con interceptores
+- Jotai para estado
+- Error handling
+
+---
+
+### 4.4 `serverDocsFeature` - Diagnóstico SSR
+
+Página interactiva para verificar la configuración SSR y debuggear problemas de renderizado.
+
+**Ubicación:** `src/features/serverDocsFeature/`
+
+**Características:**
+- Información del servidor (Node.js version, hora, entorno)
+- Validación del setup SSR
+- Explicación visual del flujo de renderizado
+- Útil para debugging en desarrollo
+
+**Rutas asociadas:**
+- `/server-side-info` - Página de diagnóstico
+
+---
+
+## 5. Configuración de Module Federation
+
+Este MFE está configurado como un **remote** en la arquitectura Module Federation. Esto significa que puede ser consumido como un módulo desde una aplicación "host".
+
+### Archivo de Configuración
+
+```typescript
+// modern.config.ts
+export default defineConfig({
+  dev: {
+    port: 3006,  // Puerto de desarrollo
+  },
+  plugins: [appTools(), moduleFederationPlugin()],
+  output: {
+    assetPrefix,  // URL pública del MFE
+    copy: [{ from: './public', to: './' }],
+  },
+})
 ```
 
-## 4. Guías de Desarrollo Esenciales
+### Integración con Host App
+
+**En la aplicación host**, configura este MFE como remoto:
+
+```typescript
+remotes: {
+  'com-sgc-mfe-logisticspackagingconfig': 'https://logistics-packaging.tu-dominio.com/remoteEntry.js'
+}
+```
+
+**En desarrollo local:**
+```typescript
+remotes: {
+  'com-sgc-mfe-logisticspackagingconfig': 'http://localhost:3006/remoteEntry.js'
+}
+```
+
+### Consumir Componentes del MFE
+
+Desde la host app, puedes importar componentes del MFE:
+
+```tsx
+import { LogisticsPackagingPage } from 'com-sgc-mfe-logisticspackagingconfig/components'
+
+export function App() {
+  return <LogisticsPackagingPage />
+}
+```
+
+### Recursos Generados
+
+Al ejecutar `npm run build`, se generan:
+
+- `dist/remoteEntry.js` - Punto de entrada Module Federation (OBLIGATORIO para host app)
+- `dist/` - Resto de bundled chunks y assets
+- `dist/manifest.json` - Metadatos del MFE
+
+---
+
+## 6. Guías de Desarrollo Esenciales
 
 ### Renderizado: ¿Cuándo y Cómo Usar SSR?
 
@@ -195,68 +345,18 @@ const [contador, setContador] = useAtom(contadorAtom);
 
 ### Estilos y Sistema de Temas
 
--   **Tokens de Diseño:** Las variables de marca (colores, fuentes, espaciados) se definen como variables CSS en ``src/styles/base/_theme-coppel.scss``. Estas son la única fuente de verdad para el diseño visual.
--   **Uso:** En tus archivos SCSS, utiliza siempre estas variables: ``background-color: var(--primary-color);``.
--   **Switch de Tema:** La plantilla incluye un switch de tema (claro/oscuro) que actualiza dinámicamente tanto las variables CSS como el tema de PrimeReact, asegurando una consistencia visual total.
--   **Layouts:** Usa las clases de utilidad de **PrimeFlex** (ej. ``p-d-flex``, ``p-jc-between``, ``p-col-12``, ``p-md-6``) para construir layouts responsivos sin escribir CSS personalizado.
+-   **Tokens de Diseño:** Las variables de marca (colores, fuentes, espaciados) se definen como variables CSS en los archivos SCSS. Estas son la única fuente de verdad para el diseño visual.
+-   **Sistema de Temas:** El MFE incluye un switch de tema (claro/oscuro) que actualiza dinámicamente tanto las variables CSS como el tema de PrimeReact.
+-   **Layouts Responsivos:** Usa las clases de utilidad de **PrimeFlex** (ej. ``p-d-flex``, ``p-jc-between``, ``p-col-12``, ``p-md-6``) para construir layouts que se adapten a diferentes pantallas.
 
 ### Peticiones a APIs con Axios
 
--   **Instancia Centralizada:** Utiliza siempre la instancia de Axios configurada en ``src/lib/axios.ts``. No crees nuevas instancias.
+-   **Instancia Centralizada:** Utiliza siempre la instancia de Axios configurada en ``src/lib/httpClient.ts``. No crees nuevas instancias.
 -   **Interceptores:** Esta instancia ya incluye interceptores para:
     -   **Request Interceptor:** Añade automáticamente el token de autenticación (si existe en las cookies) a las cabeceras de cada solicitud.
-    -   **Response Interceptor:** Maneja errores HTTP comunes de forma centralizada. Por ejemplo, si una API devuelve un error `401 No Autorizado`, puede redirigir al login (lógica a implementar según necesidad).
+    -   **Response Interceptor:** Maneja errores HTTP comunes de forma centralizada.
 
-### Variables de Entorno
-
--   Define tus variables en un archivo ``.env`` en la raíz (y **añádelo a ``.gitignore``**).
--   **Variables para el Cliente:** Para que una variable esté disponible en el navegador, su nombre **debe** comenzar con el prefijo **``MODERN_APP_``**.
--   **Variables para el Servidor:** Cualquier otra variable solo estará disponible en el entorno Node.js (es decir, dentro de un `loader` en un archivo `page.data.tsx`).
-
-## 5. Ejemplos Prácticos en la Plantilla
-
-La mejor forma de aprender el estándar es viendo cómo se aplican sus principios en la práctica. La plantilla incluye una aplicación de demostración con varias rutas que sirven como "documentación viva". Se recomienda explorar su código fuente para entender a fondo la implementación.
-
-### Demostración 1: Ruta de Documentación Principal (`/`)
-
-La página de inicio no es solo una bienvenida; es una versión interactiva de este mismo `README`. Sirve como un ejemplo de:
--   **Componente de Página Simple:** Estructura básica de un componente de página en ``src/routes/page.tsx``.
--   **Uso de Componentes PrimeReact:** Implementa ``<TabView>``, ``<Card>``, ``<Chip>`` y otros para crear una interfaz organizada y agradable.
--   **Renderizado Estático:** Como esta página no tiene un archivo `page.data.tsx`, se renderiza estáticamente (o en el cliente si se navega a ella), ideal para contenido que no cambia frecuentemente.
-
-### Demostración 2: Ruta Exclusiva de Servidor (`/server-side-info`)
-
-Esta página es una herramienta de diagnóstico y aprendizaje diseñada para mostrar el poder del SSR.
-
--   **¿Qué hace?**
-    -   Utiliza un `loader` en ``page.data.tsx`` para obtener información que solo está disponible en el servidor (como la versión de Node.js y la hora exacta del servidor).
-    -   Muestra estos datos en la interfaz, probando que el renderizado ocurrió en el servidor.
--   **Comportamiento Condicional:**
-    -   **Si SSR está activado:** Verás los datos del servidor y una explicación detallada de cómo funcionó el flujo SSR.
-    -   **Si SSR está desactivado:** La página lo detectará y en su lugar mostrará una explicación del modo CSR y cómo activar el SSR en ``modern.config.ts``.
--   **¿Para qué sirve?** Úsala para verificar que tu entorno SSR está funcionando correctamente y para entender visualmente la diferencia entre ambos modos de renderizado.
-
-### Demostración 3: Ruta Protegida y Consumo de API (`/posts`)
-
-Esta ruta es el ejemplo más completo, simulando un caso de uso muy común: mostrar datos de una API en una página que requiere que el usuario esté autenticado.
-
--   **Flujo de Autenticación:**
-    1.  **Estado:** La autenticación se simula mediante una cookie (`accessToken`) y un estado global de Jotai.
-    2.  **Protección:** La ruta está envuelta en un High-Order Component (HOC) llamado `withAuthentication`. Este HOC comprueba la existencia de la cookie.
-    3.  **Redirección:** Si la cookie no existe, el usuario es redirigido automáticamente a la página de ``/login``.
-    4.  **Login:** La página ``/login`` permite simular un inicio de sesión, que crea la cookie necesaria y redirige al usuario de vuelta a la página que intentaba acceder.
-
--   **Flujo de Datos (Data Fetching):**
-    1.  **Llamada a la API:** El `loader` en ``src/routes/posts/page.data.tsx`` utiliza nuestra instancia de Axios configurada para llamar a una API externa (JSONPlaceholder).
-    2.  **Manejo de Estado:** El resultado de la API se guarda en un átomo de Jotai. La UI reacciona al estado de la petición (mostrando un spinner mientras carga, un mensaje de error si falla, o la lista de posts si tiene éxito).
-    3.  **Renderizado SSR:** Como los datos se obtienen en el `loader`, la lista de posts se renderiza en el servidor, lo que significa que el usuario y los motores de búsqueda ven el contenido inmediatamente.
-
--   **Buenas Prácticas Demostradas:**
-    -   **Lazy Loading:** El código de esta página se carga de forma perezosa para optimizar la carga inicial de la aplicación.
-    -   **SEO:** La página define sus propios metadatos (`<title>`, `<description>`) para SEO a través de la función `meta`.
-    -   **Arquitectura por Features:** Toda la lógica (API, componentes, estado, tipos) está organizada dentro de ``src/features/postsFeature`` y ``src/features/authFeature``.
-
-## 6. Estrategia de Pruebas
+## 7. Estrategia de Pruebas
 
 Una aplicación de calidad se apoya en una sólida estrategia de pruebas. La plantilla viene preconfigurada para facilitar este proceso.
 
@@ -279,64 +379,141 @@ Una aplicación de calidad se apoya en una sólida estrategia de pruebas. La pla
     -   ``npm run e2e``: Corre las pruebas en modo "headless" (sin interfaz gráfica), ideal para pipelines de CI/CD.
     -   ``npm run e2e:ui``: Abre la potente interfaz de usuario de Playwright para ejecutar y depurar pruebas de forma visual, una herramienta excelente para el desarrollo.
 
-    ## 7. Contribución y Licencia
+## 8. Variables de Entorno
 
-### Contribución
+Las variables de entorno permiten configurar el comportamiento del MFE en diferentes ambientes (desarrollo, staging, producción).
 
-Este estándar es un proyecto vivo y colaborativo. Las contribuciones que ayuden a mejorarlo, corregir errores o mantenerlo actualizado son siempre bienvenidas.
+### Configuración de Variables
 
-**Flujo de Contribución Sugerido:**
+**Archivo base:** `/.env` (crea este archivo en la raíz del proyecto)
 
-1.  **Abrir un Issue:** Antes de realizar un cambio significativo, por favor abre un "issue" en el repositorio para discutir la propuesta, el bug encontrado o la mejora sugerida.
-2.  **Crear una Pull Request (PR):**
-    *   Crea una nueva rama para tus cambios.
-    *   Asegúrate de que tu código siga las convenciones de estilo (puedes usar `npm run format`).
-    *   Asegúrate de que todas las pruebas existentes pasen (`npm test`).
-    *   Si añades una nueva funcionalidad, incluye pruebas para ella.
-    *   Actualiza el `CHANGELOG.md` siguiendo el formato establecido.
-    *   Envía la Pull Request detallando los cambios realizados.
-3.  **Revisión de Código:** La PR será revisada por el equipo de Arquitectura o los mantenedores del estándar.
+**Variables importantes:**
 
-## 8. SEO y Accesibilidad
+```bash
+# ===== ASSET PREFIX (OBLIGATORIO PARA PRODUCCIÓN) =====
+# URL pública donde se servará el remoteEntry.js en producción
+MODERN_APP_REMOTE_PUBLIC_PATH=https://logistics-packaging-prod.coppel.com/
 
-**SEO (Optimización para Motores de Búsqueda):**
-SEO es el proceso de mejorar la visibilidad de un sitio web en los resultados de búsqueda de los motores como Google. En este proyecto, utilizamos el componente `SEOHead` para definir metadatos importantes como el título de la página, la descripción y las palabras clave. Estos metadatos ayudan a los motores de búsqueda a entender de qué trata la página, mejorando así su indexación y visibilidad.
+# En desarrollo local (opcional, por defecto es http://localhost:3006/)
+# MODERN_APP_ASSET_PREFIX=http://localhost:3006/
 
-- **Título (`title`):** Es el texto que aparece en la pestaña del navegador y en los resultados de búsqueda. Debe ser descriptivo y contener palabras clave relevantes.
-- **Descripción (`description`):** Un resumen breve de la página que aparece en los resultados de búsqueda. Debe ser atractivo para animar a los usuarios a hacer clic.
-- **Palabras Clave (`keywords`):** Palabras o frases que describen el contenido de la página. Aunque su importancia ha disminuido, siguen siendo útiles para algunos motores de búsqueda.
+# ===== APIs EXTERNAS =====
+# Endpoint de la API de logística
+MODERN_APP_API_LOGISTICS_ENDPOINT=https://api.coppel.com/logistics/v1
 
-**Accesibilidad:**
-La accesibilidad web asegura que las aplicaciones sean utilizables por personas con discapacidades. Esto incluye el uso de etiquetas semánticas, atributos `alt` en imágenes, y asegurarse de que el contenido sea navegable con un teclado. La accesibilidad es crucial para cumplir con estándares legales y para proporcionar una mejor experiencia de usuario a todos.
+# Endpoint de datos de empaque
+MODERN_APP_API_PACKAGING_ENDPOINT=https://api.coppel.com/packaging/v1
 
-## 9. Code Splitting
+# Timeout para peticiones HTTP (en ms)
+MODERN_APP_API_TIMEOUT=30000
 
-**Code Splitting (División de Código):**
-Es una técnica utilizada para dividir el código de una aplicación en "chunks" o partes más pequeñas que se cargan bajo demanda. Esto mejora el tiempo de carga inicial de la aplicación, ya que solo se carga el código necesario para la vista actual.
+# ===== CONFIGURACIÓN DE APLICACIÓN =====
+# Ambiente actual
+MODERN_APP_ENV=development
 
-- **Carga Perezosa (Lazy Loading):** Permite cargar componentes o rutas solo cuando son necesarios. Esto se logra utilizando la función `React.lazy()` y el componente `Suspense` de React.
-- **Beneficios:** Reduce el tamaño del bundle inicial, mejora el rendimiento y proporciona una mejor experiencia de usuario.
+# Modo debug
+MODERN_APP_DEBUG=false
+```
 
-## 10. Lighthouse
+### Distinción: Cliente vs Servidor
 
-**Lighthouse:**
-Lighthouse es una herramienta automatizada de código abierto para mejorar la calidad de las páginas web. Se puede ejecutar en cualquier página web, pública o que requiera autenticación. Proporciona auditorías sobre rendimiento, accesibilidad, mejores prácticas y SEO.
+- **Variables del Cliente:** Deben tener el prefijo `MODERN_APP_` para estar disponibles en el navegador.
+- **Variables del Servidor:** Cualquier otra variable solo está disponible en Node.js (dentro de `page.data.tsx`).
 
-**Cómo usar Lighthouse:**
+### Ejemplo de Uso en Código
 
-1. **Abrir Herramientas de Desarrollo:** Presiona F12 en tu navegador para abrir las herramientas de desarrollo.
-2. **Navegar a la Pestaña Lighthouse:** Selecciona la pestaña "Lighthouse".
-3. **Ejecutar una Auditoría:** Haz clic en "Generate report" para ejecutar una auditoría. Lighthouse analizará la página y proporcionará un informe detallado con sugerencias para mejorar.
+```tsx
+// En el cliente
+const apiUrl = process.env.MODERN_APP_API_LOGISTICS_ENDPOINT
+
+// En el servidor (page.data.tsx)
+export const loader = async () => {
+  const token = process.env.API_SECRET_TOKEN  // Variable solo servidor
+  const endpoint = process.env.MODERN_APP_API_LOGISTICS_ENDPOINT
+  // ...
+}
+```
+
+---
+
+---
+
+## 9. SEO y Accesibilidad
+
+### SEO (Optimización para Motores de Búsqueda)
+
+SEO es el proceso de mejorar la visibilidad de un sitio web en los resultados de búsqueda. En este MFE:
+
+- **Renderizado en Servidor (SSR):** Los datos se precargan en el servidor, generando HTML completo que los motores de búsqueda pueden indexar inmediatamente.
+- **Metadatos:** Utiliza el componente `SEOHead` para definir títulos, descripciones y palabras clave por ruta.
+- **URLs Limpias:** Las rutas están organizadas de forma semántica para mejorar SEO.
+
+### Accesibilidad
+
+La accesibilidad web asegura que el MFE sea utilizable por personas con discapacidades:
+
+- **Etiquetas Semánticas:** Usa `<article>`, `<section>`, `<nav>`, etc.
+- **Atributos `alt`:** Todas las imágenes tienen descripciones en `alt`.
+- **Navegación por Teclado:** Todos los componentes interactivos son accesibles sin ratón.
+- **Contraste de Color:** Cumple con estándares WCAG 2.1 AA.
+- **ARIA Labels:** Usa atributos `aria-*` cuando es necesario.
+
+## 10. Contribución y Licencia
+
+### Guía de Contribución
+
+Este proyecto es parte del ecosistema de Coppel y sigue un flujo de contribución estándar:
+
+**Flujo de Contribución:**
+
+1.  **Abrir un Issue:** Antes de realizar un cambio significativo, abre un "issue" en Azure DevOps para discutir la propuesta, el bug o la mejora.
+2.  **Crear una rama:**
+    ```bash
+    git checkout -b feature/mi-nueva-funcionalidad
+    ```
+3.  **Realizar cambios y commits:**
+    ```bash
+    git add .
+    git commit -m "feat: agregar nueva funcionalidad de empaque"
+    ```
+4.  **Asegurar calidad:**
+    ```bash
+    pnpm lint      # Verificar errores de linting
+    pnpm format    # Formatear código
+    pnpm test      # Ejecutar pruebas
+    pnpm build     # Verificar que el build es exitoso
+    ```
+5.  **Push y Pull Request:**
+    ```bash
+    git push origin feature/mi-nueva-funcionalidad
+    ```
+    - Actualiza el `CHANGELOG.md` siguiendo el formato establecido
+    - Describe los cambios en la PR
+    - Espera revisión del equipo
+
+### Convenciones de Commits
+
+Usamos [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat: agregar nueva funcionalidad
+fix: corregir bug
+docs: actualizar documentación
+style: cambios de formato
+refactor: refactorizar código
+test: agregar pruebas
+chore: actualizar dependencias
+```
 
 ### Licencia
 
-Este proyecto y su plantilla se distribuyen bajo la **Licencia ISC**. Puedes encontrar el texto completo de la licencia en el archivo `LICENSE` del repositorio.
+Este proyecto y su plantilla se distribuyen bajo la **Licencia ISC**. Puedes encontrar el texto completo en el archivo `LICENSE` del repositorio.
 
 ---
 
 ## 📚 Apéndice: Enlaces y Recursos Útiles
 
-Para profundizar en las tecnologías utilizadas en este estándar, consulta su documentación oficial:
+Para profundizar en las tecnologías utilizadas en este MFE, consulta la documentación oficial:
 
 *   **Frameworks y Librerías Principales:**
     *   [**Modern.js** - Documentación Oficial](https://modernjs.dev/)
@@ -354,10 +531,14 @@ Para profundizar en las tecnologías utilizadas en este estándar, consulta su d
     *   [**Biome** - Documentación del Linter y Formateador](https://biomejs.dev/docs/)
     *   [**react-cookie** - Documentación en GitHub](https://github.com/react-hook/react-cookie)
 
-*   **Conceptos Clave:**
+*   **Conceptos Clave y Estándares:**
+    *   [**Module Federation** - Webpack Documentation](https://webpack.js.org/concepts/module-federation/)
     *   [**Keep a Changelog** - Formato para CHANGELOG.md](https://keepachangelog.com/en/1.0.0/)
     *   [**Semantic Versioning (SemVer)** - Especificación](https://semver.org/spec/v2.0.0.html)
+    *   [**Conventional Commits** - Especificación](https://www.conventionalcommits.org/)
 
 ---
 
-**Autor:** Arquitectura Desarrollo - Coppel
+**Autor:** Equipo de Arquitectura Digital - Coppel  
+**Última Actualización:** 2026-05-15  
+**Estado:** Mantenido Activamente

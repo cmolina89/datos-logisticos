@@ -46,29 +46,61 @@ interface TarjetaDatosLogisticosProps {
   saved?: boolean
 }
 
+type CampoFiltro = 'cedis' | 'frecuencia' | 'leadTime' | 'cedisDestino'
+type FiltroConstraint = { value?: unknown; matchMode?: string }
+type FiltroCampo = {
+  value?: unknown
+  matchMode?: string
+  operator?: string
+  constraints?: FiltroConstraint[]
+}
+type FiltrosDataTable = Record<string, FiltroCampo> | null | undefined
+
+const CAMPOS_FILTRABLES: CampoFiltro[] = ['cedis', 'frecuencia', 'leadTime', 'cedisDestino']
+
+const normalizarValorFiltro = (value: unknown): string | null => {
+  if (value == null || value === '') return null
+  return String(value).toLowerCase()
+}
+
+const cumpleMatchMode = (valorFila: string, valorFiltro: string, matchMode?: string): boolean => {
+  const mode = matchMode || FilterMatchMode.CONTAINS
+
+  if (mode === FilterMatchMode.STARTS_WITH) {
+    return valorFila.startsWith(valorFiltro)
+  }
+
+  if (mode === FilterMatchMode.EQUALS) {
+    return valorFila === valorFiltro
+  }
+
+  return valorFila.includes(valorFiltro)
+}
+
+const cumpleFiltroCampo = (row: FilaCedis, campo: CampoFiltro, filtroCampo?: FiltroCampo): boolean => {
+  if (!filtroCampo) return true
+
+  // Soporta filtros simples (value/matchMode) y filtros con constraints.
+  const constraint = filtroCampo.constraints?.[0] ?? {
+    value: filtroCampo.value,
+    matchMode: filtroCampo.matchMode,
+  }
+
+  const valorFiltro = normalizarValorFiltro(constraint.value)
+  if (valorFiltro == null) return true
+
+  const valorFila = String(row[campo] ?? '').toLowerCase()
+  return cumpleMatchMode(valorFila, valorFiltro, constraint.matchMode)
+}
+
 /** Aplica filtros al estilo PrimeReact DataTable para calcular filas visibles (para select all) */
 function aplicarFiltrosDataTable(
     filas: FilaCedis[],
-    filters: Record<string, { value?: unknown; matchMode?: string; operator?: string; constraints?: Array<{ value?: unknown; matchMode?: string }> }> | null | undefined
+    filters: FiltrosDataTable
 ): FilaCedis[] {
   if (!filters) return filas
-  return filas.filter(row => {
-    const campos: (keyof FilaCedis)[] = ['cedis', 'frecuencia', 'leadTime', 'cedisDestino']
-    for (const campo of campos) {
-      const fc = filters[campo]
-      if (!fc) continue
-      // Soportar filtros simples (value/matchMode) y con constraints
-      const c = fc.constraints?.[0] ?? { value: fc.value, matchMode: fc.matchMode }
-      const val = String((row[campo] ?? '')).toLowerCase()
-      const filtroVal = c.value != null && c.value !== '' ? String(c.value).toLowerCase() : null
-      if (filtroVal == null) continue
-      const mode = c.matchMode || FilterMatchMode.CONTAINS
-      if (mode === FilterMatchMode.CONTAINS && !val.includes(filtroVal)) return false
-      if (mode === FilterMatchMode.STARTS_WITH && !val.startsWith(filtroVal)) return false
-      if (mode === FilterMatchMode.EQUALS && val !== filtroVal) return false
-    }
-    return true
-  })
+
+  return filas.filter(row => CAMPOS_FILTRABLES.every(campo => cumpleFiltroCampo(row, campo, filters[campo])))
 }
 
 const TarjetaDatosLogisticos: React.FC<TarjetaDatosLogisticosProps> = ({ children, saved }) => {

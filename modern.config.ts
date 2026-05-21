@@ -1,10 +1,11 @@
 // modern.config.ts
 import { appTools, defineConfig } from '@modern-js/app-tools'
 import { moduleFederationPlugin } from '@module-federation/modern-js'
+import { RESPONSE_SECURITY_HEADERS } from './src/config/securityHeaders'
 
 const normalizeAssetPrefix = (value?: string | null) => {
   if (!value || value === 'auto') {
-    return 'http://localhost:3006/'
+    return 'http://localhost:3002/'
   }
 
   return value.endsWith('/') ? value : `${value}/`
@@ -17,26 +18,33 @@ const assetPrefix = normalizeAssetPrefix(
 export default defineConfig({
   runtime: { router: true },
   dev: {
-    port: 3006,
+    port: 3002,
   },
   server: {
     ssr: false,
   },
-  plugins: [appTools(), moduleFederationPlugin()],
+  plugins: [appTools({ bundler: 'webpack' }), moduleFederationPlugin()],
   resolve: {
     alias: {
-      '@': './src', // Simplificado
+      '@': './src',
     },
   },
 
   output: {
-    // Asegura que el host siempre recibe URLs absolutas hacia este remoto
     assetPrefix,
     copy: [{ from: './public', to: './' }],
   },
 
   tools: {
-    rspack: (config, { env }) => {
+    devServer: {
+      headers: {
+        ...RESPONSE_SECURITY_HEADERS,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    },
+    webpack: (config, { env }) => {
       config.output = config.output || {}
       config.output.publicPath = assetPrefix
 
@@ -50,7 +58,6 @@ export default defineConfig({
           ...config.optimization,
           splitChunks: {
             chunks: 'all',
-            // ... tus configuraciones de splitChunks
           },
         }
       }

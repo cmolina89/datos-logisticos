@@ -2,6 +2,7 @@
 
 import { config } from '@/config/environment'
 import { applySecurityHeaders } from '@/utils/securityHeaders'
+import { validateSecurityHeaders } from '@/utils/securityHeaders'
 import axios, {
   type AxiosError,
   type AxiosInstance,
@@ -45,6 +46,13 @@ httpClient.interceptors.request.use(
 // Interceptor de Respuestas (Response)
 httpClient.interceptors.response.use(
   (response: AxiosResponse) => {
+    // Validar headers de seguridad en todas las respuestas
+    try {
+      validateSecurityHeaders(response as unknown as Response)
+    } catch (error) {
+      console.error('Security headers validation error:', error)
+    }
+
     // Procesar la respuesta antes de devolverla
     return response
   },

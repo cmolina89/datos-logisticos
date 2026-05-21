@@ -109,16 +109,8 @@ export class SecureStorage {
         return null
       }
 
-      // SECURITY FIX: Detectar tokens sensibles y leerlos solo de memoria interna
-      const isSensitiveToken = ['auth_token', 'refresh_token', 'csrf_token'].includes(key)
-
-      if (isSensitiveToken) {
-        // Leer tokens sensibles SOLO de memoria interna
-        value = this.memoryStorage.get(key) || null
-      } else {
-        // SECURITY FIX: Leer TODOS los datos de memoria interna para máxima seguridad
-        value = this.memoryStorage.get(key) || null
-      }
+      // SECURITY FIX: Leer TODOS los datos solo desde memoria interna.
+      value = this.memoryStorage.get(key) || null
 
       if (!value) return null
 

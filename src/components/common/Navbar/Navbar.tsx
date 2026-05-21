@@ -1,5 +1,4 @@
 import { Link } from '@modern-js/runtime/router'
-import { useState, useEffect } from 'react'
 import './Navbar.scss'
 
 export interface NavbarProps {
@@ -8,60 +7,43 @@ export interface NavbarProps {
   companyName?: string
 }
 
+// Obtiene un origin explícito para postMessage, priorizando el host que embebe el MFE.
+const resolvePostMessageOrigin = (): string => {
+  if (typeof document !== 'undefined' && document.referrer) {
+    try {
+      return new URL(document.referrer).origin
+    } catch {
+      // Si el referrer no es una URL válida, se usa el origin actual como fallback seguro.
+    }
+  }
+
+  return window.location.origin
+}
+
 export default function Navbar({
   navbarStyle = 'primary',
   appLogo = '/grupo-coppel-regular.svg',
   companyName = 'Coppel',
 }: NavbarProps) {
-  const [expandedSearch, setExpandedSearch] = useState(false)
-  const [expandedNotifications, setExpandedNotifications] = useState(false)
-  const [expandedProfile, setExpandedProfile] = useState(false)
-
-  const openMenu = (): void => {
+  const openMenu = () => {
     console.log('Navbar: openMenu clicked - sending message to host')
 
-    // Usar window.postMessage para comunicarse con el host
-    window.postMessage(
+    const targetOrigin = resolvePostMessageOrigin()
+    const targetWindow = window.parent !== window ? window.parent : window
+
+    // Comunica el toggle del sidebar al host usando un target origin explícito.
+    targetWindow.postMessage(
       {
         type: 'MFE_SIDEBAR_TOGGLE',
         source: 'remote-navbar',
         timestamp: Date.now(),
       },
-      '*'
+      targetOrigin
     )
 
     console.log('[Remote] Sent sidebar toggle message to host')
   }
 
-  // Funciones para controlar los menús expandidos (listas para usar cuando se agreguen los elementos del menú)
-  const toggleSearch = (): void => {
-    reset()
-    setExpandedSearch(!expandedSearch)
-  }
-
-  const toggleNotifications = (): void => {
-    reset()
-    setExpandedNotifications(!expandedNotifications)
-  }
-
-  const toggleProfile = (): void => {
-    reset()
-    setExpandedProfile(!expandedProfile)
-  }
-
-  const reset = (): void => {
-    setExpandedSearch(false)
-    setExpandedNotifications(false)
-    setExpandedProfile(false)
-  }
-
-  const formatIcon = (icon: string): string => 'clt icon clt-' + icon
-
-  // Evitar warnings de variables no utilizadas - estas funciones están listas para usar
-  void toggleSearch
-  void toggleNotifications
-  void toggleProfile
-  void formatIcon
 
   return (
     <nav id="clt-navbar" className={navbarStyle}>

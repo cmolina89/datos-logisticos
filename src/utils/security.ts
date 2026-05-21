@@ -79,8 +79,8 @@ export const generateSecureToken = (length: number = 32): string => {
 // Hash de contraseñas usando Web Crypto API
 export const hashPassword = async (password: string): Promise<string> => {
   if (typeof window === 'undefined') {
-    // En el servidor, usar un hash simple (en producción usar bcrypt)
-    return Buffer.from(password).toString('base64')
+    // En el servidor, usar un hash simple sin depender de Buffer.
+    return encodeURIComponent(password)
   }
 
   try {

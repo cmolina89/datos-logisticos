@@ -90,6 +90,185 @@ interface TarjetaMedidasEmpaqueIndividualProps {
   saved?: boolean
 }
 
+type CampoMedidas =
+  | 'unidadPeso'
+  | 'peso'
+  | 'unidadMedida'
+  | 'alto'
+  | 'frente'
+  | 'fondo'
+  | 'estibaMaxima'
+
+type CampoNumericoMedidas = Exclude<CampoMedidas, 'unidadPeso' | 'unidadMedida'>
+type CampoTextoMedidas = Extract<CampoMedidas, 'unidadPeso' | 'unidadMedida'>
+
+type ErrorMap = Record<string, string | undefined>
+type AlertaMap = Record<string, boolean>
+type ValidadorCampo = (valor: number | string | null | undefined) => string | undefined
+
+const validarCampoRequeridoTexto: ValidadorCampo = valor => {
+  if (!valor || (typeof valor === 'string' && !valor.trim())) {
+    return 'validation.requiredField'
+  }
+  return undefined
+}
+
+const VALIDADORES_INLINE: Record<CampoMedidas, ValidadorCampo> = {
+  unidadPeso: validarCampoRequeridoTexto,
+  unidadMedida: validarCampoRequeridoTexto,
+  peso: valor =>
+    validarCampoNumericoPositivo(valor as number | null) || validarMaxDecimales(valor as number | null),
+  alto: valor =>
+    validarCampoNumericoPositivo(valor as number | null) ||
+    validarAltoMax(valor as number | null) ||
+    validarMaxDecimales(valor as number | null),
+  frente: valor =>
+    validarCampoNumericoPositivo(valor as number | null) ||
+    validarFrenteMax(valor as number | null) ||
+    validarMaxDecimales(valor as number | null),
+  fondo: valor =>
+    validarCampoNumericoPositivo(valor as number | null) ||
+    validarFondoMax(valor as number | null) ||
+    validarMaxDecimales(valor as number | null),
+  estibaMaxima: valor => {
+    if (valor === null || valor === undefined || valor === '') {
+      return 'validation.requiredField'
+    }
+    return validarEstibaMaxima(valor as number | null)
+  },
+}
+
+const obtenerErrorCampoInline = (
+  campo: CampoMedidas,
+  valor: number | string | null | undefined
+): string | undefined => VALIDADORES_INLINE[campo](valor)
+
+const obtenerClaseCampo = (warning: boolean, error: boolean): string => {
+  if (warning) return 'campo-warning-input w-full'
+  if (error) return 'p-invalid w-full'
+  return 'w-full'
+}
+
+interface CampoDropdownProps {
+  id: string
+  label: string
+  placeholder: string
+  value: string
+  options: Array<{ value: string; label: string }>
+  error?: string
+  required?: boolean
+  disabled?: boolean
+  onChange: (value: string) => void
+  t: (key: string) => string
+}
+
+const CampoDropdown: React.FC<CampoDropdownProps> = ({
+  id,
+  label,
+  placeholder,
+  value,
+  options,
+  error,
+  required = true,
+  disabled = false,
+  onChange,
+  t,
+}) => (
+  <div className="segmento-medidas-campo">
+    <label htmlFor={id} className="p-block segmento-label">
+      {label} {required && <span className="campo-requerido">*</span>}
+    </label>
+    <Dropdown
+      id={id}
+      value={value}
+      options={options}
+      onChange={ev => onChange(ev.value ?? '')}
+      placeholder={placeholder}
+      className={error ? 'p-invalid w-full' : 'w-full'}
+      disabled={disabled}
+    />
+    {error && (
+      <div className="campo-error-inline">
+        <i className="pi pi-exclamation-circle campo-error-icon" />
+        <span>{t(error)}</span>
+      </div>
+    )}
+  </div>
+)
+
+interface CampoNumericoProps {
+  id: string
+  label: string
+  placeholder: string
+  value: number | null
+  error?: string
+  warning?: boolean
+  required?: boolean
+  min?: number
+  max?: number
+  maxFractionDigits?: number
+  useGrouping?: boolean
+  disabled?: boolean
+  onChange: (value: number | null) => void
+  onKeyDown: (ev: React.KeyboardEvent) => void
+  t: (key: string) => string
+}
+
+const CampoNumerico: React.FC<CampoNumericoProps> = ({
+  id,
+  label,
+  placeholder,
+  value,
+  error,
+  warning = false,
+  required = true,
+  min,
+  max,
+  maxFractionDigits,
+  useGrouping,
+  disabled = false,
+  onChange,
+  onKeyDown,
+  t,
+}) => (
+  <div className="segmento-medidas-campo">
+    <label htmlFor={id} className="p-block segmento-label">
+      {label} {required && <span className="campo-requerido">*</span>}
+    </label>
+    <div className="input-con-icono-error">
+      <InputNumber
+        id={id}
+        value={value}
+        onValueChange={ev => onChange(ev.value ?? null)}
+        onKeyDown={onKeyDown}
+        min={min}
+        max={max}
+        minFractionDigits={0}
+        maxFractionDigits={maxFractionDigits}
+        useGrouping={useGrouping}
+        placeholder={placeholder}
+        className={obtenerClaseCampo(warning, Boolean(error))}
+        disabled={disabled}
+      />
+      {(error || warning) && (
+        <i className={`pi pi-exclamation-circle icono-error-input${warning ? ' icono-error-input-warning' : ''}`} />
+      )}
+    </div>
+    {warning && (
+      <div className="campo-warning-inline">
+        <i className="pi pi-exclamation-triangle campo-warning-icon" />
+        <span>{t('validation.numericOnly')}</span>
+      </div>
+    )}
+    {error && !warning && (
+      <div className="campo-error-inline">
+        <i className="pi pi-exclamation-circle campo-error-icon" />
+        <span>{t(error)}</span>
+      </div>
+    )}
+  </div>
+)
+
 const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualProps> = ({ children, saved }) => {
   const { t } = useTranslation()
   const state = useAtomValue(datosLogisticosEmpaqueStateAtom)
@@ -100,11 +279,17 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
   const setErrors = useSetAtom(erroresMedidasAtom)
   const [collapsed, setCollapsed] = useState(false)
   /** Mapa de campo → true cuando se debe mostrar alerta "solo numéricos" */
-  const [alertaNoNumerico, setAlertaNoNumerico] = useState<Record<string, boolean>>({})
-  const timersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
+  const [alertaNoNumerico, setAlertaNoNumerico] = useState<AlertaMap>({})
+  const timersRef = useRef<Record<CampoNumericoMedidas, ReturnType<typeof setTimeout> | undefined>>({
+    peso: undefined,
+    alto: undefined,
+    frente: undefined,
+    fondo: undefined,
+    estibaMaxima: undefined,
+  })
 
   /** Handler onKeyDown para campos numéricos: detecta letras y muestra alerta temporal */
-  const handleKeyDownNumerico = useCallback((campo: string, e: React.KeyboardEvent) => {
+  const handleKeyDownNumerico = useCallback((campo: CampoNumericoMedidas, e: React.KeyboardEvent) => {
     // Permitir combinaciones con Ctrl/Cmd (copiar, pegar, seleccionar todo)
     if (e.ctrlKey || e.metaKey) return
     if (!TECLAS_PERMITIDAS.has(e.key) && e.key.length === 1) {
@@ -151,38 +336,9 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
   }, [setMedidas, setErrors])
 
   /** Validación inline: valida un campo individual y actualiza errores en tiempo real */
-  const validarCampoInline = useCallback((campo: string, valor: number | string | null | undefined) => {
-    let error: string | undefined
-    switch (campo) {
-      case 'unidadPeso':
-      case 'unidadMedida':
-        if (!valor || (typeof valor === 'string' && !valor.trim())) {
-          error = 'validation.requiredField'
-        }
-        break
-      case 'peso':
-        error = validarCampoNumericoPositivo(valor as number | null) || validarMaxDecimales(valor as number | null)
-        break
-      case 'alto':
-        error = validarCampoNumericoPositivo(valor as number | null) || validarAltoMax(valor as number | null) || validarMaxDecimales(valor as number | null)
-        break
-      case 'frente':
-        error = validarCampoNumericoPositivo(valor as number | null) || validarFrenteMax(valor as number | null) || validarMaxDecimales(valor as number | null)
-        break
-      case 'fondo':
-        error = validarCampoNumericoPositivo(valor as number | null) || validarFondoMax(valor as number | null) || validarMaxDecimales(valor as number | null)
-        break
-      case 'estibaMaxima':
-        if (valor === null || valor === undefined || valor === '') {
-          error = 'validation.requiredField'
-        } else {
-          error = validarEstibaMaxima(valor as number | null)
-        }
-        break
-      default:
-        break
-    }
-    setErrors((prev: Record<string, string | undefined>) => {
+  const validarCampoInline = useCallback((campo: CampoMedidas, valor: number | string | null | undefined) => {
+    const error = obtenerErrorCampoInline(campo, valor)
+    setErrors((prev: ErrorMap) => {
       const next = { ...prev }
       if (error) {
         next[campo] = error
@@ -192,6 +348,35 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
       return next
     })
   }, [setErrors])
+
+  const actualizarCampo = useCallback(
+    (campo: CampoMedidas, valor: number | string | null) => {
+      setMedidas({ [campo]: valor })
+      validarCampoInline(campo, valor)
+    },
+    [setMedidas, validarCampoInline]
+  )
+
+  const handleNumeroChange = useCallback(
+    (campo: CampoNumericoMedidas) => (valor: number | null) => {
+      actualizarCampo(campo, valor)
+    },
+    [actualizarCampo]
+  )
+
+  const handleTextoChange = useCallback(
+    (campo: CampoTextoMedidas) => (valor: string) => {
+      actualizarCampo(campo, valor)
+    },
+    [actualizarCampo]
+  )
+
+  const handleNumeroKeyDown = useCallback(
+    (campo: CampoNumericoMedidas) => (ev: React.KeyboardEvent) => {
+      handleKeyDownNumerico(campo, ev)
+    },
+    [handleKeyDownNumerico]
+  )
 
   const deshabilitado = !m.tieneEmpaqueIndividual
 
@@ -259,259 +444,111 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
               </div>
 
               <div className={`segmento-medidas-form p-fluid ${deshabilitado ? 'segmento-medidas-form-disabled' : ''}`}>
-                {/* Fila 1: Unidad de peso, Peso, (vacío) — 3 columnas */}
                 <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
-                  <div className="segmento-medidas-campo">
-                    <label htmlFor="unidadPeso" className="p-block segmento-label">
-                      {t('datosLogisticos.segmento2.unidadPeso')} <span className="campo-requerido">*</span>
-                    </label>
-                    <Dropdown
-                        id="unidadPeso"
-                        value={m.unidadPeso}
-                        options={opcionesUnidadPeso}
-                        onChange={e => {
-                          const v = e.value ?? ''
-                          setMedidas({ unidadPeso: v })
-                          validarCampoInline('unidadPeso', v)
-                        }}
-                        placeholder={t('datosLogisticos.segmento2.placeholderUnidadPeso')}
-                        className={errors.unidadPeso ? 'p-invalid w-full' : 'w-full'}
-                        disabled={deshabilitado}
-                    />
-                    {/* Mensaje de error inline con ícono para cada campo */}
-                    {errors.unidadPeso && (
-                      <div className="campo-error-inline">
-                        <i className="pi pi-exclamation-circle campo-error-icon" />
-                        <span>{t(errors.unidadPeso)}</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="segmento-medidas-campo">
-                    <label htmlFor="peso" className="p-block segmento-label">
-                      {t('datosLogisticos.segmento2.peso')} <span className="campo-requerido">*</span>
-                    </label>
-                    <div className="input-con-icono-error">
-                      <InputNumber
-                          id="peso"
-                          value={m.peso}
-                          onValueChange={e => {
-                            const v = e.value ?? null
-                            setMedidas({ peso: v })
-                            validarCampoInline('peso', v)
-                          }}
-                          onKeyDown={e => handleKeyDownNumerico('peso', e)}
-                          min={0.01}
-                          minFractionDigits={0}
-                          maxFractionDigits={2}
-                          placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
-                          className={alertaNoNumerico.peso ? 'campo-warning-input w-full' : errors.peso ? 'p-invalid w-full' : 'w-full'}
-                          disabled={deshabilitado}
-                      />
-                      {(errors.peso || alertaNoNumerico.peso) && (
-                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.peso ? ' icono-error-input-warning' : ''}`} />
-                      )}
-                    </div>
-                    {alertaNoNumerico.peso && (
-                      <div className="campo-warning-inline">
-                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
-                        <span>{t('validation.numericOnly')}</span>
-                      </div>
-                    )}
-                    {errors.peso && !alertaNoNumerico.peso && (
-                        <div className="campo-error-inline">
-                          <i className="pi pi-exclamation-circle campo-error-icon" />
-                          <span>{t(errors.peso)}</span>
-                        </div>
-                     )}
-                  </div>
+                  <CampoDropdown
+                    id="unidadPeso"
+                    value={m.unidadPeso}
+                    label={t('datosLogisticos.segmento2.unidadPeso')}
+                    placeholder={t('datosLogisticos.segmento2.placeholderUnidadPeso')}
+                    options={opcionesUnidadPeso as Array<{ value: string; label: string }>}
+                    error={errors.unidadPeso}
+                    disabled={deshabilitado}
+                    onChange={handleTextoChange('unidadPeso')}
+                    t={t}
+                  />
+                  <CampoNumerico
+                    id="peso"
+                    value={m.peso}
+                    label={t('datosLogisticos.segmento2.peso')}
+                    min={0.01}
+                    maxFractionDigits={2}
+                    placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
+                    error={errors.peso}
+                    warning={Boolean(alertaNoNumerico.peso)}
+                    disabled={deshabilitado}
+                    onChange={handleNumeroChange('peso')}
+                    onKeyDown={handleNumeroKeyDown('peso')}
+                    t={t}
+                  />
                   <div className="segmento-medidas-campo segmento-medidas-campo-vacio" />
                 </div>
 
-                {/* Fila 2: Unidad de medida, Alto, Frente — 3 columnas */}
                 <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
-                  <div className="segmento-medidas-campo">
-                    <label htmlFor="unidadMedida" className="p-block segmento-label">
-                      {t('datosLogisticos.segmento2.unidadMedida')} <span className="campo-requerido">*</span>
-                    </label>
-                    <Dropdown
-                        id="unidadMedida"
-                        value={m.unidadMedida}
-                        options={opcionesUnidadMedidaDimensiones}
-                        onChange={e => {
-                          const v = e.value ?? ''
-                          setMedidas({ unidadMedida: v })
-                          validarCampoInline('unidadMedida', v)
-                        }}
-                        placeholder={t('datosLogisticos.segmento2.placeholderUnidadMedida')}
-                        className={errors.unidadMedida ? 'p-invalid w-full' : 'w-full'}
-                        disabled={deshabilitado}
-                    />
-                    {errors.unidadMedida && (
-                      <div className="campo-error-inline">
-                        <i className="pi pi-exclamation-circle campo-error-icon" />
-                        <span>{t(errors.unidadMedida)}</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="segmento-medidas-campo">
-                    <label htmlFor="alto" className="p-block segmento-label">
-                      {t('datosLogisticos.segmento2.alto')} <span className="campo-requerido">*</span>
-                    </label>
-                    <div className="input-con-icono-error">
-                      <InputNumber
-                          id="alto"
-                          value={m.alto}
-                          onValueChange={e => {
-                            const v = e.value ?? null
-                            setMedidas({ alto: v })
-                            validarCampoInline('alto', v)
-                          }}
-                          onKeyDown={e => handleKeyDownNumerico('alto', e)}
-                          min={0.01}
-                          max={500}
-                          minFractionDigits={0}
-                          maxFractionDigits={2}
-                          placeholder={t('datosLogisticos.segmento2.placeholderAlto')}
-                          className={alertaNoNumerico.alto ? 'campo-warning-input w-full' : errors.alto ? 'p-invalid w-full' : 'w-full'}
-                          disabled={deshabilitado}
-                      />
-                      {(errors.alto || alertaNoNumerico.alto) && (
-                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.alto ? ' icono-error-input-warning' : ''}`} />
-                      )}
-                    </div>
-                    {alertaNoNumerico.alto && (
-                      <div className="campo-warning-inline">
-                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
-                        <span>{t('validation.numericOnly')}</span>
-                      </div>
-                    )}
-                    {errors.alto && !alertaNoNumerico.alto && (
-                        <div className="campo-error-inline">
-                          <i className="pi pi-exclamation-circle campo-error-icon" />
-                          <span>{t(errors.alto)}</span>
-                        </div>
-                     )}
-                  </div>
-                  <div className="segmento-medidas-campo">
-                    <label htmlFor="frente" className="p-block segmento-label">
-                      {t('datosLogisticos.segmento2.frente')} <span className="campo-requerido">*</span>
-                    </label>
-                    <div className="input-con-icono-error">
-                      <InputNumber
-                          id="frente"
-                          value={m.frente}
-                          onValueChange={e => {
-                            const v = e.value ?? null
-                            setMedidas({ frente: v })
-                            validarCampoInline('frente', v)
-                          }}
-                          onKeyDown={e => handleKeyDownNumerico('frente', e)}
-                          min={0.01}
-                          max={500}
-                          minFractionDigits={0}
-                          maxFractionDigits={2}
-                          placeholder={t('datosLogisticos.segmento2.placeholderFrente')}
-                          className={alertaNoNumerico.frente ? 'campo-warning-input w-full' : errors.frente ? 'p-invalid w-full' : 'w-full'}
-                          disabled={deshabilitado}
-                      />
-                      {(errors.frente || alertaNoNumerico.frente) && (
-                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.frente ? ' icono-error-input-warning' : ''}`} />
-                      )}
-                    </div>
-                    {alertaNoNumerico.frente && (
-                      <div className="campo-warning-inline">
-                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
-                        <span>{t('validation.numericOnly')}</span>
-                      </div>
-                    )}
-                    {errors.frente && !alertaNoNumerico.frente && (
-                        <div className="campo-error-inline">
-                          <i className="pi pi-exclamation-circle campo-error-icon" />
-                          <span>{t(errors.frente)}</span>
-                        </div>
-                     )}
-                  </div>
+                  <CampoDropdown
+                    id="unidadMedida"
+                    value={m.unidadMedida}
+                    label={t('datosLogisticos.segmento2.unidadMedida')}
+                    placeholder={t('datosLogisticos.segmento2.placeholderUnidadMedida')}
+                    options={opcionesUnidadMedidaDimensiones as Array<{ value: string; label: string }>}
+                    error={errors.unidadMedida}
+                    disabled={deshabilitado}
+                    onChange={handleTextoChange('unidadMedida')}
+                    t={t}
+                  />
+                  <CampoNumerico
+                    id="alto"
+                    value={m.alto}
+                    label={t('datosLogisticos.segmento2.alto')}
+                    min={0.01}
+                    max={500}
+                    maxFractionDigits={2}
+                    placeholder={t('datosLogisticos.segmento2.placeholderAlto')}
+                    error={errors.alto}
+                    warning={Boolean(alertaNoNumerico.alto)}
+                    disabled={deshabilitado}
+                    onChange={handleNumeroChange('alto')}
+                    onKeyDown={handleNumeroKeyDown('alto')}
+                    t={t}
+                  />
+                  <CampoNumerico
+                    id="frente"
+                    value={m.frente}
+                    label={t('datosLogisticos.segmento2.frente')}
+                    min={0.01}
+                    max={500}
+                    maxFractionDigits={2}
+                    placeholder={t('datosLogisticos.segmento2.placeholderFrente')}
+                    error={errors.frente}
+                    warning={Boolean(alertaNoNumerico.frente)}
+                    disabled={deshabilitado}
+                    onChange={handleNumeroChange('frente')}
+                    onKeyDown={handleNumeroKeyDown('frente')}
+                    t={t}
+                  />
                 </div>
 
-                {/* Fila 3: Fondo, Estiba máxima, (vacío) — 3 columnas */}
                 <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
-                  <div className="segmento-medidas-campo">
-                    <label htmlFor="fondo" className="p-block segmento-label">
-                      {t('datosLogisticos.segmento2.fondo')} <span className="campo-requerido">*</span>
-                    </label>
-                    <div className="input-con-icono-error">
-                      <InputNumber
-                          id="fondo"
-                          value={m.fondo}
-                          onValueChange={e => {
-                            const v = e.value ?? null
-                            setMedidas({ fondo: v })
-                            validarCampoInline('fondo', v)
-                          }}
-                          onKeyDown={e => handleKeyDownNumerico('fondo', e)}
-                          min={0.01}
-                          max={500}
-                          minFractionDigits={0}
-                          maxFractionDigits={2}
-                          placeholder={t('datosLogisticos.segmento2.placeholderFondo')}
-                          className={alertaNoNumerico.fondo ? 'campo-warning-input w-full' : errors.fondo ? 'p-invalid w-full' : 'w-full'}
-                          disabled={deshabilitado}
-                      />
-                      {(errors.fondo || alertaNoNumerico.fondo) && (
-                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.fondo ? ' icono-error-input-warning' : ''}`} />
-                      )}
-                    </div>
-                    {alertaNoNumerico.fondo && (
-                      <div className="campo-warning-inline">
-                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
-                        <span>{t('validation.numericOnly')}</span>
-                      </div>
-                    )}
-                    {errors.fondo && !alertaNoNumerico.fondo && (
-                        <div className="campo-error-inline">
-                          <i className="pi pi-exclamation-circle campo-error-icon" />
-                          <span>{t(errors.fondo)}</span>
-                        </div>
-                     )}
-                  </div>
-                  <div className="segmento-medidas-campo">
-                    <label htmlFor="estibaMaxima" className="p-block segmento-label">
-                      {t('datosLogisticos.segmento2.estibaMaxima')}
-                    </label>
-                    <div className="input-con-icono-error">
-                      <InputNumber
-                          id="estibaMaxima"
-                          value={m.estibaMaxima}
-                          onValueChange={e => {
-                            const v = e.value ?? null
-                            setMedidas({ estibaMaxima: v })
-                            validarCampoInline('estibaMaxima', v)
-                          }}
-                          onKeyDown={e => handleKeyDownNumerico('estibaMaxima', e)}
-                          min={1}
-                          max={999}
-                          useGrouping={false}
-                          placeholder={t('datosLogisticos.segmento2.placeholderEstibaMaxima')}
-                          className={alertaNoNumerico.estibaMaxima ? 'campo-warning-input w-full' : errors.estibaMaxima ? 'p-invalid w-full' : 'w-full'}
-                          disabled={deshabilitado}
-                      />
-                      {(errors.estibaMaxima || alertaNoNumerico.estibaMaxima) && (
-                        <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.estibaMaxima ? ' icono-error-input-warning' : ''}`} />
-                      )}
-                    </div>
-                    {alertaNoNumerico.estibaMaxima && (
-                      <div className="campo-warning-inline">
-                        <i className="pi pi-exclamation-triangle campo-warning-icon" />
-                        <span>{t('validation.numericOnly')}</span>
-                      </div>
-                    )}
-                    {errors.estibaMaxima && !alertaNoNumerico.estibaMaxima && (
-                        <div className="campo-error-inline">
-                          <i className="pi pi-exclamation-circle campo-error-icon" />
-                          <span>{t(errors.estibaMaxima)}</span>
-                        </div>
-                     )}
-                  </div>
+                  <CampoNumerico
+                    id="fondo"
+                    value={m.fondo}
+                    label={t('datosLogisticos.segmento2.fondo')}
+                    min={0.01}
+                    max={500}
+                    maxFractionDigits={2}
+                    placeholder={t('datosLogisticos.segmento2.placeholderFondo')}
+                    error={errors.fondo}
+                    warning={Boolean(alertaNoNumerico.fondo)}
+                    disabled={deshabilitado}
+                    onChange={handleNumeroChange('fondo')}
+                    onKeyDown={handleNumeroKeyDown('fondo')}
+                    t={t}
+                  />
+                  <CampoNumerico
+                    id="estibaMaxima"
+                    value={m.estibaMaxima}
+                    label={t('datosLogisticos.segmento2.estibaMaxima')}
+                    required={false}
+                    min={1}
+                    max={999}
+                    useGrouping={false}
+                    placeholder={t('datosLogisticos.segmento2.placeholderEstibaMaxima')}
+                    error={errors.estibaMaxima}
+                    warning={Boolean(alertaNoNumerico.estibaMaxima)}
+                    disabled={deshabilitado}
+                    onChange={handleNumeroChange('estibaMaxima')}
+                    onKeyDown={handleNumeroKeyDown('estibaMaxima')}
+                    t={t}
+                  />
                   <div className="segmento-medidas-campo segmento-medidas-campo-vacio" />
                 </div>
               </div>

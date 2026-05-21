@@ -2,18 +2,6 @@
 import type { Config } from 'jest'
 
 const config: Config = {
-  // Reportes de pruebas: configuración de reportes de Jest.
-  reporters: [
-    'default',
-    [
-      '@casualbot/jest-sonar-reporter',
-      {
-        relativePaths: true,
-        outputName: 'test-report.xml',
-      },
-    ],
-  ],
-
   // Entorno de prueba: 'jsdom' simula un entorno de navegador para pruebas de UI.
   testEnvironment: 'jsdom',
 
@@ -82,6 +70,7 @@ const config: Config = {
 
   // Opcional: Si tus pruebas son lentas, puedes ajustar esto
   maxWorkers: 4, // O un número específico como 4
+  // Reportes de pruebas: configuración de reportes de Jest.
 
   // Configuración de Reportes
   reporters: [
