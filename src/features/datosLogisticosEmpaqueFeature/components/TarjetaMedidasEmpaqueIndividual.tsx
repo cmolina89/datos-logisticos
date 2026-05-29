@@ -17,7 +17,10 @@ import {
   erroresMedidasAtom,
   setMedidasEmpaqueIndividualAtom,
 } from '../store/datosLogisticosEmpaqueAtoms'
-import { useOpcionesUnidadMedidaDimensiones, useOpcionesUnidadPeso } from '../hooks/useOpcionesSelect'
+import {
+  useOpcionesUnidadMedidaDimensiones,
+  useOpcionesUnidadPeso,
+} from '../hooks/useOpcionesSelect'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { InputNumber } from 'primereact/inputnumber'
 import { Dropdown } from 'primereact/dropdown'
@@ -28,11 +31,30 @@ import './TarjetaMedidasEmpaqueIndividual.scss'
 
 /** Teclas permitidas en un InputNumber (números, navegación, decimales, etc.) */
 const TECLAS_PERMITIDAS = new Set([
-  'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
-  'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
-  'Home', 'End',
-  '.', ',', '-',
-  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  'Backspace',
+  'Delete',
+  'Tab',
+  'Escape',
+  'Enter',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+  '.',
+  ',',
+  '-',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
 ])
 
 /** Helpers de validación inline por campo */
@@ -117,7 +139,8 @@ const VALIDADORES_INLINE: Record<CampoMedidas, ValidadorCampo> = {
   unidadPeso: validarCampoRequeridoTexto,
   unidadMedida: validarCampoRequeridoTexto,
   peso: valor =>
-    validarCampoNumericoPositivo(valor as number | null) || validarMaxDecimales(valor as number | null),
+    validarCampoNumericoPositivo(valor as number | null) ||
+    validarMaxDecimales(valor as number | null),
   alto: valor =>
     validarCampoNumericoPositivo(valor as number | null) ||
     validarAltoMax(valor as number | null) ||
@@ -189,7 +212,6 @@ const CampoDropdown: React.FC<CampoDropdownProps> = ({
     />
     {error && (
       <div className="campo-error-inline">
-        <i className="pi pi-exclamation-circle campo-error-icon" />
         <span>{t(error)}</span>
       </div>
     )}
@@ -251,25 +273,31 @@ const CampoNumerico: React.FC<CampoNumericoProps> = ({
         disabled={disabled}
       />
       {(error || warning) && (
-        <i className={`pi pi-exclamation-circle icono-error-input${warning ? ' icono-error-input-warning' : ''}`} />
+        <span
+          className={`icono-error-input${warning ? ' icono-error-input-warning' : ''}`}
+          aria-hidden="true"
+        >
+          !
+        </span>
       )}
     </div>
     {warning && (
       <div className="campo-warning-inline">
-        <i className="pi pi-exclamation-triangle campo-warning-icon" />
         <span>{t('validation.numericOnly')}</span>
       </div>
     )}
     {error && !warning && (
       <div className="campo-error-inline">
-        <i className="pi pi-exclamation-circle campo-error-icon" />
         <span>{t(error)}</span>
       </div>
     )}
   </div>
 )
 
-const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualProps> = ({ children, saved }) => {
+const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualProps> = ({
+  children,
+  saved,
+}) => {
   const { t } = useTranslation()
   const state = useAtomValue(datosLogisticosEmpaqueStateAtom)
   const setMedidas = useSetAtom(setMedidasEmpaqueIndividualAtom)
@@ -280,35 +308,40 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
   const [collapsed, setCollapsed] = useState(false)
   /** Mapa de campo → true cuando se debe mostrar alerta "solo numéricos" */
   const [alertaNoNumerico, setAlertaNoNumerico] = useState<AlertaMap>({})
-  const timersRef = useRef<Record<CampoNumericoMedidas, ReturnType<typeof setTimeout> | undefined>>({
-    peso: undefined,
-    alto: undefined,
-    frente: undefined,
-    fondo: undefined,
-    estibaMaxima: undefined,
-  })
+  const timersRef = useRef<Record<CampoNumericoMedidas, ReturnType<typeof setTimeout> | undefined>>(
+    {
+      peso: undefined,
+      alto: undefined,
+      frente: undefined,
+      fondo: undefined,
+      estibaMaxima: undefined,
+    }
+  )
 
   /** Handler onKeyDown para campos numéricos: detecta letras y muestra alerta temporal */
-  const handleKeyDownNumerico = useCallback((campo: CampoNumericoMedidas, e: React.KeyboardEvent) => {
-    // Permitir combinaciones con Ctrl/Cmd (copiar, pegar, seleccionar todo)
-    if (e.ctrlKey || e.metaKey) return
-    if (!TECLAS_PERMITIDAS.has(e.key) && e.key.length === 1) {
-      // Es un carácter no numérico (letra u otro símbolo no permitido)
-      setAlertaNoNumerico(prev => ({ ...prev, [campo]: true }))
-      // Limpiar timer previo si existe
-      if (timersRef.current[campo]) {
-        clearTimeout(timersRef.current[campo])
+  const handleKeyDownNumerico = useCallback(
+    (campo: CampoNumericoMedidas, e: React.KeyboardEvent) => {
+      // Permitir combinaciones con Ctrl/Cmd (copiar, pegar, seleccionar todo)
+      if (e.ctrlKey || e.metaKey) return
+      if (!TECLAS_PERMITIDAS.has(e.key) && e.key.length === 1) {
+        // Es un carácter no numérico (letra u otro símbolo no permitido)
+        setAlertaNoNumerico(prev => ({ ...prev, [campo]: true }))
+        // Limpiar timer previo si existe
+        if (timersRef.current[campo]) {
+          clearTimeout(timersRef.current[campo])
+        }
+        // Auto-ocultar la alerta después de 3 segundos
+        timersRef.current[campo] = setTimeout(() => {
+          setAlertaNoNumerico(prev => {
+            const next = { ...prev }
+            delete next[campo]
+            return next
+          })
+        }, 3000)
       }
-      // Auto-ocultar la alerta después de 3 segundos
-      timersRef.current[campo] = setTimeout(() => {
-        setAlertaNoNumerico(prev => {
-          const next = { ...prev }
-          delete next[campo]
-          return next
-        })
-      }, 3000)
-    }
-  }, [])
+    },
+    []
+  )
 
   // Limpiar timers al desmontar
   useEffect(() => {
@@ -330,24 +363,30 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
   }, [collapseSectionAfterSave, setCollapseSectionAfterSave])
 
   /** Al cambiar el radio "¿Tiene empaque individual?", limpiar errores */
-  const handleTieneEmpaqueChange = useCallback((value: boolean) => {
-    setMedidas({ tieneEmpaqueIndividual: value })
-    setErrors({})
-  }, [setMedidas, setErrors])
+  const handleTieneEmpaqueChange = useCallback(
+    (value: boolean) => {
+      setMedidas({ tieneEmpaqueIndividual: value })
+      setErrors({})
+    },
+    [setMedidas, setErrors]
+  )
 
   /** Validación inline: valida un campo individual y actualiza errores en tiempo real */
-  const validarCampoInline = useCallback((campo: CampoMedidas, valor: number | string | null | undefined) => {
-    const error = obtenerErrorCampoInline(campo, valor)
-    setErrors((prev: ErrorMap) => {
-      const next = { ...prev }
-      if (error) {
-        next[campo] = error
-      } else {
-        delete next[campo]
-      }
-      return next
-    })
-  }, [setErrors])
+  const validarCampoInline = useCallback(
+    (campo: CampoMedidas, valor: number | string | null | undefined) => {
+      const error = obtenerErrorCampoInline(campo, valor)
+      setErrors((prev: ErrorMap) => {
+        const next = { ...prev }
+        if (error) {
+          next[campo] = error
+        } else {
+          delete next[campo]
+        }
+        return next
+      })
+    },
+    [setErrors]
+  )
 
   const actualizarCampo = useCallback(
     (campo: CampoMedidas, valor: number | string | null) => {
@@ -386,194 +425,199 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
   // Mensajes de error generales (ejemplo, puedes adaptar la lógica según tu validación global)
   const mensajesErrorGenerales = [
     errors._global1 && t(errors._global1),
-    errors._global2 && t(errors._global2)
+    errors._global2 && t(errors._global2),
   ].filter(Boolean)
 
   return (
-      <div className="segmento-medidas-empaque-individual">
-        <div className="segmento-medidas-header">
-          <div className="segmento-medidas-titulo">
-            <h3 className="segmento-titulo-texto">{t('datosLogisticos.segmento2.title')}</h3>
-            {saved && (
-              <span className="sclt clt-check-mark text-3xl" aria-hidden="true" title={t('datosLogisticos.segmento1.completed')} style={{ color: '#2e8a41' }} />
-            )}
-          </div>
-          <button
-              type="button"
-              className="segmento-collapse"
-              onClick={() => setCollapsed(!collapsed)}
-              aria-expanded={!collapsed}
-              aria-label={collapsed ? t('datosLogisticos.aria.expandSection') : t('datosLogisticos.aria.collapseSection')}
-          >
-            <i className={collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'} />
-          </button>
+    <div className="segmento-medidas-empaque-individual">
+      <div className="segmento-medidas-header">
+        <div className="segmento-medidas-titulo">
+          <h3 className="segmento-titulo-texto">{t('datosLogisticos.segmento2.title')}</h3>
+          {saved && (
+            <span
+              className="sclt clt-check-mark text-3xl"
+              aria-hidden="true"
+              title={t('datosLogisticos.segmento1.completed')}
+              style={{ color: '#2e8a41' }}
+            />
+          )}
         </div>
-
-        {!collapsed && (
-            <>
-              <p className="segmento-medidas-intro">
-                {t('datosLogisticos.segmento2.intro')}
-              </p>
-
-              <div className="segmento-medidas-pregunta p-mb-3">
-                <label className="p-block segmento-label">
-                  {t('datosLogisticos.segmento2.hasIndividualPackaging')}
-                </label>
-                <div className="segmento-medidas-radios-fila">
-                  <div className="segmento-medidas-radio-opcion">
-                    <RadioButton
-                      inputId="tiene-empaque-si"
-                      name="tieneEmpaqueIndividual"
-                      value={true}
-                      checked={m.tieneEmpaqueIndividual}
-                      onChange={() => handleTieneEmpaqueChange(true)}
-                    />
-                    <label htmlFor="tiene-empaque-si">{t('datosLogisticos.segmento2.yes')}</label>
-                  </div>
-                  <div className="segmento-medidas-radio-opcion">
-                    <RadioButton
-                      inputId="tiene-empaque-no"
-                      name="tieneEmpaqueIndividual"
-                      value={false}
-                      checked={!m.tieneEmpaqueIndividual}
-                      onChange={() => handleTieneEmpaqueChange(false)}
-                    />
-                    <label htmlFor="tiene-empaque-no">{t('datosLogisticos.segmento2.no')}</label>
-                  </div>
-                </div>
-              </div>
-
-              <div className={`segmento-medidas-form p-fluid ${deshabilitado ? 'segmento-medidas-form-disabled' : ''}`}>
-                <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
-                  <CampoDropdown
-                    id="unidadPeso"
-                    value={m.unidadPeso}
-                    label={t('datosLogisticos.segmento2.unidadPeso')}
-                    placeholder={t('datosLogisticos.segmento2.placeholderUnidadPeso')}
-                    options={opcionesUnidadPeso as Array<{ value: string; label: string }>}
-                    error={errors.unidadPeso}
-                    disabled={deshabilitado}
-                    onChange={handleTextoChange('unidadPeso')}
-                    t={t}
-                  />
-                  <CampoNumerico
-                    id="peso"
-                    value={m.peso}
-                    label={t('datosLogisticos.segmento2.peso')}
-                    min={0.01}
-                    maxFractionDigits={2}
-                    placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
-                    error={errors.peso}
-                    warning={Boolean(alertaNoNumerico.peso)}
-                    disabled={deshabilitado}
-                    onChange={handleNumeroChange('peso')}
-                    onKeyDown={handleNumeroKeyDown('peso')}
-                    t={t}
-                  />
-                  <div className="segmento-medidas-campo segmento-medidas-campo-vacio" />
-                </div>
-
-                <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
-                  <CampoDropdown
-                    id="unidadMedida"
-                    value={m.unidadMedida}
-                    label={t('datosLogisticos.segmento2.unidadMedida')}
-                    placeholder={t('datosLogisticos.segmento2.placeholderUnidadMedida')}
-                    options={opcionesUnidadMedidaDimensiones as Array<{ value: string; label: string }>}
-                    error={errors.unidadMedida}
-                    disabled={deshabilitado}
-                    onChange={handleTextoChange('unidadMedida')}
-                    t={t}
-                  />
-                  <CampoNumerico
-                    id="alto"
-                    value={m.alto}
-                    label={t('datosLogisticos.segmento2.alto')}
-                    min={0.01}
-                    max={500}
-                    maxFractionDigits={2}
-                    placeholder={t('datosLogisticos.segmento2.placeholderAlto')}
-                    error={errors.alto}
-                    warning={Boolean(alertaNoNumerico.alto)}
-                    disabled={deshabilitado}
-                    onChange={handleNumeroChange('alto')}
-                    onKeyDown={handleNumeroKeyDown('alto')}
-                    t={t}
-                  />
-                  <CampoNumerico
-                    id="frente"
-                    value={m.frente}
-                    label={t('datosLogisticos.segmento2.frente')}
-                    min={0.01}
-                    max={500}
-                    maxFractionDigits={2}
-                    placeholder={t('datosLogisticos.segmento2.placeholderFrente')}
-                    error={errors.frente}
-                    warning={Boolean(alertaNoNumerico.frente)}
-                    disabled={deshabilitado}
-                    onChange={handleNumeroChange('frente')}
-                    onKeyDown={handleNumeroKeyDown('frente')}
-                    t={t}
-                  />
-                </div>
-
-                <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
-                  <CampoNumerico
-                    id="fondo"
-                    value={m.fondo}
-                    label={t('datosLogisticos.segmento2.fondo')}
-                    min={0.01}
-                    max={500}
-                    maxFractionDigits={2}
-                    placeholder={t('datosLogisticos.segmento2.placeholderFondo')}
-                    error={errors.fondo}
-                    warning={Boolean(alertaNoNumerico.fondo)}
-                    disabled={deshabilitado}
-                    onChange={handleNumeroChange('fondo')}
-                    onKeyDown={handleNumeroKeyDown('fondo')}
-                    t={t}
-                  />
-                  <CampoNumerico
-                    id="estibaMaxima"
-                    value={m.estibaMaxima}
-                    label={t('datosLogisticos.segmento2.estibaMaxima')}
-                    required={false}
-                    min={1}
-                    max={999}
-                    useGrouping={false}
-                    placeholder={t('datosLogisticos.segmento2.placeholderEstibaMaxima')}
-                    error={errors.estibaMaxima}
-                    warning={Boolean(alertaNoNumerico.estibaMaxima)}
-                    disabled={deshabilitado}
-                    onChange={handleNumeroChange('estibaMaxima')}
-                    onKeyDown={handleNumeroKeyDown('estibaMaxima')}
-                    t={t}
-                  />
-                  <div className="segmento-medidas-campo segmento-medidas-campo-vacio" />
-                </div>
-              </div>
-
-              {/* Mensajes de error generales al inicio del formulario */}
-              {mensajesErrorGenerales.length > 0 && (
-                <div className="alerta-formulario-error">
-                  {mensajesErrorGenerales.map((msg, idx) => (
-                    <div className="alerta-formulario-error-item" key={idx}>
-                      <i className="pi pi-exclamation-circle alerta-formulario-error-icon" />
-                      <span>{msg}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Footer: botón Guardar (HU 043) */}
-              <div className="segmento-medidas-footer">
-                {children}
-              </div>
-            </>
-        )}
+        <button
+          type="button"
+          className="segmento-collapse"
+          onClick={() => setCollapsed(!collapsed)}
+          aria-expanded={!collapsed}
+          aria-label={
+            collapsed
+              ? t('datosLogisticos.aria.expandSection')
+              : t('datosLogisticos.aria.collapseSection')
+          }
+        >
+          <i className={collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'} />
+        </button>
       </div>
+
+      {!collapsed && (
+        <>
+          <p className="segmento-medidas-intro">{t('datosLogisticos.segmento2.intro')}</p>
+
+          <div className="segmento-medidas-pregunta p-mb-3">
+            <label className="p-block segmento-label">
+              {t('datosLogisticos.segmento2.hasIndividualPackaging')}
+            </label>
+            <div className="segmento-medidas-radios-fila">
+              <div className="segmento-medidas-radio-opcion">
+                <RadioButton
+                  inputId="tiene-empaque-si"
+                  name="tieneEmpaqueIndividual"
+                  value={true}
+                  checked={m.tieneEmpaqueIndividual}
+                  onChange={() => handleTieneEmpaqueChange(true)}
+                />
+                <label htmlFor="tiene-empaque-si">{t('datosLogisticos.segmento2.yes')}</label>
+              </div>
+              <div className="segmento-medidas-radio-opcion">
+                <RadioButton
+                  inputId="tiene-empaque-no"
+                  name="tieneEmpaqueIndividual"
+                  value={false}
+                  checked={!m.tieneEmpaqueIndividual}
+                  onChange={() => handleTieneEmpaqueChange(false)}
+                />
+                <label htmlFor="tiene-empaque-no">{t('datosLogisticos.segmento2.no')}</label>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`segmento-medidas-form p-fluid ${deshabilitado ? 'segmento-medidas-form-disabled' : ''}`}
+          >
+            <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
+              <CampoDropdown
+                id="unidadPeso"
+                value={m.unidadPeso}
+                label={t('datosLogisticos.segmento2.unidadPeso')}
+                placeholder={t('datosLogisticos.segmento2.placeholderUnidadPeso')}
+                options={opcionesUnidadPeso as Array<{ value: string; label: string }>}
+                error={errors.unidadPeso}
+                disabled={deshabilitado}
+                onChange={handleTextoChange('unidadPeso')}
+                t={t}
+              />
+              <CampoNumerico
+                id="peso"
+                value={m.peso}
+                label={t('datosLogisticos.segmento2.peso')}
+                min={0.01}
+                maxFractionDigits={2}
+                placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
+                error={errors.peso}
+                warning={Boolean(alertaNoNumerico.peso)}
+                disabled={deshabilitado}
+                onChange={handleNumeroChange('peso')}
+                onKeyDown={handleNumeroKeyDown('peso')}
+                t={t}
+              />
+              <div className="segmento-medidas-campo segmento-medidas-campo-vacio" />
+            </div>
+
+            <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
+              <CampoDropdown
+                id="unidadMedida"
+                value={m.unidadMedida}
+                label={t('datosLogisticos.segmento2.unidadMedida')}
+                placeholder={t('datosLogisticos.segmento2.placeholderUnidadMedida')}
+                options={opcionesUnidadMedidaDimensiones as Array<{ value: string; label: string }>}
+                error={errors.unidadMedida}
+                disabled={deshabilitado}
+                onChange={handleTextoChange('unidadMedida')}
+                t={t}
+              />
+              <CampoNumerico
+                id="alto"
+                value={m.alto}
+                label={t('datosLogisticos.segmento2.alto')}
+                min={0.01}
+                max={500}
+                maxFractionDigits={2}
+                placeholder={t('datosLogisticos.segmento2.placeholderAlto')}
+                error={errors.alto}
+                warning={Boolean(alertaNoNumerico.alto)}
+                disabled={deshabilitado}
+                onChange={handleNumeroChange('alto')}
+                onKeyDown={handleNumeroKeyDown('alto')}
+                t={t}
+              />
+              <CampoNumerico
+                id="frente"
+                value={m.frente}
+                label={t('datosLogisticos.segmento2.frente')}
+                min={0.01}
+                max={500}
+                maxFractionDigits={2}
+                placeholder={t('datosLogisticos.segmento2.placeholderFrente')}
+                error={errors.frente}
+                warning={Boolean(alertaNoNumerico.frente)}
+                disabled={deshabilitado}
+                onChange={handleNumeroChange('frente')}
+                onKeyDown={handleNumeroKeyDown('frente')}
+                t={t}
+              />
+            </div>
+
+            <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
+              <CampoNumerico
+                id="fondo"
+                value={m.fondo}
+                label={t('datosLogisticos.segmento2.fondo')}
+                min={0.01}
+                max={500}
+                maxFractionDigits={2}
+                placeholder={t('datosLogisticos.segmento2.placeholderFondo')}
+                error={errors.fondo}
+                warning={Boolean(alertaNoNumerico.fondo)}
+                disabled={deshabilitado}
+                onChange={handleNumeroChange('fondo')}
+                onKeyDown={handleNumeroKeyDown('fondo')}
+                t={t}
+              />
+              <CampoNumerico
+                id="estibaMaxima"
+                value={m.estibaMaxima}
+                label={t('datosLogisticos.segmento2.estibaMaxima')}
+                required={false}
+                min={1}
+                max={999}
+                useGrouping={false}
+                placeholder={t('datosLogisticos.segmento2.placeholderEstibaMaxima')}
+                error={errors.estibaMaxima}
+                warning={Boolean(alertaNoNumerico.estibaMaxima)}
+                disabled={deshabilitado}
+                onChange={handleNumeroChange('estibaMaxima')}
+                onKeyDown={handleNumeroKeyDown('estibaMaxima')}
+                t={t}
+              />
+              <div className="segmento-medidas-campo segmento-medidas-campo-vacio" />
+            </div>
+          </div>
+
+          {/* Mensajes de error generales al inicio del formulario */}
+          {mensajesErrorGenerales.length > 0 && (
+            <div className="alerta-formulario-error">
+              {mensajesErrorGenerales.map((msg, idx) => (
+                <div className="alerta-formulario-error-item" key={idx}>
+                  <span>{msg}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Footer: botón Guardar (HU 043) */}
+          <div className="segmento-medidas-footer">{children}</div>
+        </>
+      )}
+    </div>
   )
 }
 
 export default TarjetaMedidasEmpaqueIndividual
-

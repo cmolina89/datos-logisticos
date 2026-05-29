@@ -18,7 +18,11 @@ import {
   setEmpaquesProductoAtom,
 } from '../store/datosLogisticosEmpaqueAtoms'
 import type { CualAplicaEmpaque } from '../types'
-import { useOpcionesCualAplicaEmpaque, useOpcionesUnidadMedidaDimensiones, useOpcionesUnidadPeso } from '../hooks/useOpcionesSelect'
+import {
+  useOpcionesCualAplicaEmpaque,
+  useOpcionesUnidadMedidaDimensiones,
+  useOpcionesUnidadPeso,
+} from '../hooks/useOpcionesSelect'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { InputNumber } from 'primereact/inputnumber'
 import { Dropdown } from 'primereact/dropdown'
@@ -26,21 +30,42 @@ import { RadioButton } from 'primereact/radiobutton'
 import { Dialog } from 'primereact/dialog'
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import cartonMasterIllustration from '@/assets/images/carton-master-illustration.png'
+import bultoIllustration from '@/assets/images/bulto-illustration.png'
 import './TarjetaEmpaquesProducto.scss'
 
 /** Teclas permitidas en un InputNumber (números, navegación, decimales, etc.) */
 const TECLAS_PERMITIDAS = new Set([
-  'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
-  'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
-  'Home', 'End',
-  '.', ',', '-',
-  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  'Backspace',
+  'Delete',
+  'Tab',
+  'Escape',
+  'Enter',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+  '.',
+  ',',
+  '-',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
 ])
 
 /** Helpers de validación inline por campo */
 function validarCampoNumericoPositivo(val: number | null | undefined): string | undefined {
   if (val === null || val === undefined) return undefined
-  if (typeof val !== 'number' || Number.isNaN(val)) return 'validation.positiveNumber'
+  if (Number.isNaN(val)) return 'validation.positiveNumber'
   if (val <= 0) return 'validation.positiveNumber'
   return undefined
 }
@@ -55,7 +80,7 @@ function validarMaxDecimales(val: number | null | undefined, max = 2): string | 
 
 function validarEnteroMayorCero(val: number | null | undefined): string | undefined {
   if (val === null || val === undefined) return undefined
-  if (typeof val !== 'number' || Number.isNaN(val) || val <= 0 || !Number.isInteger(val)) {
+  if (Number.isNaN(val) || val <= 0 || !Number.isInteger(val)) {
     return 'validation.integerGreaterThanZero'
   }
   return undefined
@@ -114,7 +139,8 @@ const VALIDADORES_INLINE: Record<CampoEmpaques, ValidadorCampo> = {
   cantidadUdsCartonMaster: valor => validarEnteroMayorCero(valor as number | null),
   multiploCartonMaster: valor => validarEnteroMayorCero(valor as number | null),
   peso: valor =>
-    validarCampoNumericoPositivo(valor as number | null) || validarMaxDecimales(valor as number | null),
+    validarCampoNumericoPositivo(valor as number | null) ||
+    validarMaxDecimales(valor as number | null),
   alto: valor =>
     validarCampoNumericoPositivo(valor as number | null) ||
     validarAltoMax(valor as number | null) ||
@@ -177,7 +203,6 @@ const CampoDropdown: React.FC<CampoDropdownProps> = ({
     />
     {error && (
       <div className="campo-error-inline">
-        <i className="pi pi-exclamation-circle campo-error-icon" />
         <span>{t(error)}</span>
       </div>
     )}
@@ -218,11 +243,18 @@ const CampoNumerico: React.FC<CampoNumericoProps> = ({
   t,
 }) => (
   <div className="segmento-carton-campo">
-    <label htmlFor={id} className={`p-block segmento-label${infoText ? ' segmento-label-with-info' : ''}`}>
+    <label
+      htmlFor={id}
+      className={`p-block segmento-label${infoText ? ' segmento-label-with-info' : ''}`}
+    >
       <span>{label}</span>
       <span className="campo-requerido">*</span>
       {infoText && (
-        <span className="segmento-info-icon" title={infoText} aria-label={t('datosLogisticos.segmento3.info')}>
+        <span
+          className="segmento-info-icon"
+          title={infoText}
+          aria-label={t('datosLogisticos.segmento3.info')}
+        >
           <i className="pi pi-info-circle" />
         </span>
       )}
@@ -242,22 +274,85 @@ const CampoNumerico: React.FC<CampoNumericoProps> = ({
         className={obtenerClaseCampo(warning, Boolean(error))}
       />
       {(error || warning) && (
-        <i className={`pi pi-exclamation-circle icono-error-input${warning ? ' icono-error-input-warning' : ''}`} />
+        <span
+          className={`icono-error-input${warning ? ' icono-error-input-warning' : ''}`}
+          aria-hidden="true"
+        >
+          !
+        </span>
       )}
     </div>
     {warning && (
       <div className="campo-warning-inline">
-        <i className="pi pi-exclamation-triangle campo-warning-icon" />
         <span>{t('validation.numericOnly')}</span>
       </div>
     )}
     {error && !warning && (
       <div className="campo-error-inline">
-        <i className="pi pi-exclamation-circle campo-error-icon" />
         <span>{t(error)}</span>
       </div>
     )}
   </div>
+)
+
+const ModalIllustrationCartonMaster: React.FC = () => (
+  <img
+    src={cartonMasterIllustration}
+    alt="Cartón master: caja con 12 juguetes"
+    className="segmento-carton-modal-illustration"
+  />
+)
+
+const ModalIllustrationBulto: React.FC = () => (
+  <img
+    src={bultoIllustration}
+    alt="Bulto: 3 cajas que ensamblan un mueble"
+    className="segmento-carton-modal-illustration"
+  />
+)
+
+interface ModalCardProps {
+  title: string
+  usesTitle: string
+  bullets: string[]
+  exampleTitle: string
+  example: string
+  actionLabel: string
+  onSelect: () => void
+  illustration: React.ReactNode
+}
+
+const ModalCard: React.FC<ModalCardProps> = ({
+  title,
+  usesTitle,
+  bullets,
+  exampleTitle,
+  example,
+  actionLabel,
+  onSelect,
+  illustration,
+}) => (
+  <article className="segmento-carton-modal-card">
+    <h3 className="segmento-carton-modal-card-title">{title}</h3>
+    <div className="segmento-carton-modal-card-body">
+      <div className="segmento-carton-modal-copy">
+        <p className="segmento-carton-modal-uses-title">{usesTitle}</p>
+        <ul className="segmento-carton-modal-bullets">
+          {bullets.map((bullet, index) => (
+            <li key={`${title}-${index}`}>{bullet}</li>
+          ))}
+        </ul>
+        <p className="segmento-carton-modal-example-title">{exampleTitle}</p>
+        <p className="segmento-carton-modal-example-text">{example}</p>
+      </div>
+      <div className="segmento-carton-modal-illustration-wrap">{illustration}</div>
+    </div>
+    <div className="segmento-carton-modal-card-footer">
+      <button type="button" className="segmento-carton-modal-action" onClick={onSelect}>
+        {actionLabel}
+      </button>
+    </div>
+  </article>
 )
 
 const camposVaciosEmpaques = {
@@ -283,7 +378,9 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
   const [showModalCualAplica, setShowModalCualAplica] = useState(false)
   /** Mapa de campo → true cuando se debe mostrar alerta "solo numéricos" */
   const [alertaNoNumerico, setAlertaNoNumerico] = useState<AlertaMap>({})
-  const timersRef = useRef<Record<CampoNumericoEmpaques, ReturnType<typeof setTimeout> | undefined>>({} as Record<CampoNumericoEmpaques, ReturnType<typeof setTimeout> | undefined>)
+  const timersRef = useRef<
+    Record<CampoNumericoEmpaques, ReturnType<typeof setTimeout> | undefined>
+  >({} as Record<CampoNumericoEmpaques, ReturnType<typeof setTimeout> | undefined>)
 
   const e = state.empaquesProducto
 
@@ -305,22 +402,25 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
   )
 
   /** Handler onKeyDown para campos numéricos: detecta letras y muestra alerta temporal */
-  const handleKeyDownNumerico = useCallback((campo: CampoNumericoEmpaques, ev: React.KeyboardEvent) => {
-    if (ev.ctrlKey || ev.metaKey) return
-    if (!TECLAS_PERMITIDAS.has(ev.key) && ev.key.length === 1) {
-      setAlertaNoNumerico(prev => ({ ...prev, [campo]: true }))
-      if (timersRef.current[campo]) {
-        clearTimeout(timersRef.current[campo])
+  const handleKeyDownNumerico = useCallback(
+    (campo: CampoNumericoEmpaques, ev: React.KeyboardEvent) => {
+      if (ev.ctrlKey || ev.metaKey) return
+      if (!TECLAS_PERMITIDAS.has(ev.key) && ev.key.length === 1) {
+        setAlertaNoNumerico(prev => ({ ...prev, [campo]: true }))
+        if (timersRef.current[campo]) {
+          clearTimeout(timersRef.current[campo])
+        }
+        timersRef.current[campo] = setTimeout(() => {
+          setAlertaNoNumerico(prev => {
+            const next = { ...prev }
+            delete next[campo]
+            return next
+          })
+        }, 3000)
       }
-      timersRef.current[campo] = setTimeout(() => {
-        setAlertaNoNumerico(prev => {
-          const next = { ...prev }
-          delete next[campo]
-          return next
-        })
-      }, 3000)
-    }
-  }, [])
+    },
+    []
+  )
 
   // Limpiar timers al desmontar
   useEffect(() => {
@@ -333,18 +433,21 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
   }, [])
 
   /** Validación inline: valida un campo individual y actualiza errores en tiempo real */
-  const validarCampoInline = useCallback((campo: CampoEmpaques, valor: number | string | null | undefined) => {
-    const error = obtenerErrorCampoInline(campo, valor)
-    setErrors((prev: ErrorMap) => {
-      const next = { ...prev }
-      if (error) {
-        next[campo] = error
-      } else {
-        delete next[campo]
-      }
-      return next
-    })
-  }, [setErrors])
+  const validarCampoInline = useCallback(
+    (campo: CampoEmpaques, valor: number | string | null | undefined) => {
+      const error = obtenerErrorCampoInline(campo, valor)
+      setErrors((prev: ErrorMap) => {
+        const next = { ...prev }
+        if (error) {
+          next[campo] = error
+        } else {
+          delete next[campo]
+        }
+        return next
+      })
+    },
+    [setErrors]
+  )
 
   const actualizarCampo = useCallback(
     (campo: CampoEmpaques, valor: number | string | null) => {
@@ -378,80 +481,170 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
   const opcionesUnidadPeso = useOpcionesUnidadPeso()
   const opcionesUnidadMedidaDimensiones = useOpcionesUnidadMedidaDimensiones()
   const opcionesCualAplicaRaw = useOpcionesCualAplicaEmpaque()
-  const opcionesCualAplica: { value: CualAplicaEmpaque; label: string }[] = opcionesCualAplicaRaw.map(o => ({
-    value: o.value as CualAplicaEmpaque,
-    label: o.label,
-  }))
+  const opcionesCualAplica: { value: CualAplicaEmpaque; label: string }[] =
+    opcionesCualAplicaRaw.map(o => ({
+      value: o.value as CualAplicaEmpaque,
+      label: o.label,
+    }))
 
   const mostrarFormulario = e.cualAplica === 'carton_master' || e.cualAplica === 'bulto'
 
+  const abrirModalCualAplica = useCallback((ev: React.MouseEvent<HTMLAnchorElement>) => {
+    ev.preventDefault()
+    setShowModalCualAplica(true)
+  }, [])
+
+  const abrirModalCualAplicaTeclado = useCallback((ev: React.KeyboardEvent<HTMLAnchorElement>) => {
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault()
+      setShowModalCualAplica(true)
+    }
+  }, [])
+
+  const handleSeleccionModal = useCallback(
+    (value: CualAplicaEmpaque) => {
+      handleCualAplicaChange(value)
+      setShowModalCualAplica(false)
+    },
+    [handleCualAplicaChange]
+  )
+
   return (
-      <div className="segmento-carton-master">
-        <Dialog
-          visible={showModalCualAplica}
-          onHide={() => setShowModalCualAplica(false)}
-          header={t('datosLogisticos.segmento3.modalCualAplicaTitle')}
-          className="segmento-carton-modal-cual-aplica"
-          dismissableMask
-          modal
-        >
-          <p className="p-mb-2">{t('datosLogisticos.segmento3.modalCualAplicaIntro')}</p>
-          <p><strong>{t('datosLogisticos.segmento3.cartonMaster')}:</strong> {t('datosLogisticos.segmento3.modalCualAplicaCartonMaster')}</p>
-          <p><strong>{t('datosLogisticos.segmento3.bulto')}:</strong> {t('datosLogisticos.segmento3.modalCualAplicaBulto')}</p>
-        </Dialog>
-        <div className="segmento-carton-header">
-          <div className="segmento-carton-titulo">
-            <h3 className="segmento-titulo-texto">{t('datosLogisticos.segmento3.title')}</h3>
-            {saved && (
-              <span className="sclt clt-check-mark text-3xl" aria-hidden="true" title={t('datosLogisticos.segmento1.completed')} style={{ color: '#2e8a41' }} />
-            )}
-          </div>
+    <div className="segmento-carton-master">
+      <Dialog
+        visible={showModalCualAplica}
+        onHide={() => setShowModalCualAplica(false)}
+        className="segmento-carton-modal-cual-aplica"
+        contentClassName="segmento-carton-modal-content"
+        dismissableMask
+        modal
+        closable={false}
+        showHeader={false}
+        draggable={false}
+        blockScroll
+        style={{ width: 'min(94vw, 42rem)' }}
+      >
+        <div className="segmento-carton-modal-shell">
           <button
-              type="button"
-              className="segmento-collapse"
-              onClick={() => setCollapsed(!collapsed)}
-              aria-expanded={!collapsed}
-              aria-label={collapsed ? t('datosLogisticos.aria.expandSection') : t('datosLogisticos.aria.collapseSection')}
+            type="button"
+            className="segmento-carton-modal-close"
+            aria-label={t('common.close')}
+            onClick={() => setShowModalCualAplica(false)}
           >
-            <i className={collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'} />
+            <i className="pi pi-times" aria-hidden="true" />
           </button>
+
+          <div className="segmento-carton-modal-header">
+            <div className="segmento-carton-modal-icon" aria-hidden="true">
+              <i className="pi pi-info" />
+            </div>
+            <h2 className="segmento-carton-modal-title">
+              {t('datosLogisticos.segmento3.modalCualAplicaTitle')}
+            </h2>
+            <p className="segmento-carton-modal-subtitle">
+              {t('datosLogisticos.segmento3.modalCualAplicaSubtitle')}
+            </p>
+          </div>
+
+          <div className="segmento-carton-modal-grid">
+            <ModalCard
+              title={t('datosLogisticos.segmento3.cartonMaster')}
+              usesTitle={t('datosLogisticos.segmento3.modalCualAplicaUsesTitle')}
+              bullets={[
+                t('datosLogisticos.segmento3.modalCualAplicaCartonMasterBullet1'),
+                t('datosLogisticos.segmento3.modalCualAplicaCartonMasterBullet2'),
+                t('datosLogisticos.segmento3.modalCualAplicaCartonMasterBullet3'),
+              ]}
+              exampleTitle={t('datosLogisticos.segmento3.modalCualAplicaExampleTitle')}
+              example={t('datosLogisticos.segmento3.modalCualAplicaCartonMasterExample')}
+              actionLabel={t('datosLogisticos.segmento3.modalCualAplicaCartonMasterAction')}
+              onSelect={() => handleSeleccionModal('carton_master')}
+              illustration={<ModalIllustrationCartonMaster />}
+            />
+
+            <ModalCard
+              title={t('datosLogisticos.segmento3.bulto')}
+              usesTitle={t('datosLogisticos.segmento3.modalCualAplicaUsesTitle')}
+              bullets={[
+                t('datosLogisticos.segmento3.modalCualAplicaBultoBullet1'),
+                t('datosLogisticos.segmento3.modalCualAplicaBultoBullet2'),
+                t('datosLogisticos.segmento3.modalCualAplicaBultoBullet3'),
+                t('datosLogisticos.segmento3.modalCualAplicaBultoBullet4'),
+              ]}
+              exampleTitle={t('datosLogisticos.segmento3.modalCualAplicaExampleTitle')}
+              example={t('datosLogisticos.segmento3.modalCualAplicaBultoExample')}
+              actionLabel={t('datosLogisticos.segmento3.modalCualAplicaBultoAction')}
+              onSelect={() => handleSeleccionModal('bulto')}
+              illustration={<ModalIllustrationBulto />}
+            />
+          </div>
         </div>
+      </Dialog>
+      <div className="segmento-carton-header">
+        <div className="segmento-carton-titulo">
+          <h3 className="segmento-titulo-texto">{t('datosLogisticos.segmento3.title')}</h3>
+          {saved && (
+            <span
+              className="sclt clt-check-mark text-3xl"
+              aria-hidden="true"
+              title={t('datosLogisticos.segmento1.completed')}
+              style={{ color: '#2e8a41' }}
+            />
+          )}
+        </div>
+        <button
+          type="button"
+          className="segmento-collapse"
+          onClick={() => setCollapsed(!collapsed)}
+          aria-expanded={!collapsed}
+          aria-label={
+            collapsed
+              ? t('datosLogisticos.aria.expandSection')
+              : t('datosLogisticos.aria.collapseSection')
+          }
+        >
+          <i className={collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'} />
+        </button>
+      </div>
 
-        {!collapsed && (
-            <>
-              <p className="segmento-carton-intro">
-                {t('datosLogisticos.segmento3.intro')}
-              </p>
+      {!collapsed && (
+        <>
+          <p className="segmento-carton-intro">{t('datosLogisticos.segmento3.intro')}</p>
 
-              <div className="segmento-carton-pregunta p-mb-3">
-                <a
-                    href="#cual-aplica"
-                    className="segmento-pregunta-cual-aplica"
-                    onClick={ev => { ev.preventDefault(); setShowModalCualAplica(true) }}
-                >
-                  {t('datosLogisticos.segmento3.cualAplica')} <span className="campo-requerido">*</span>
-                </a>
-                <br />
-                <div className="segmento-radios-cual-aplica">
-                  {opcionesCualAplica.map(opt => (
-                      <div key={opt.value} className="segmento-radio-opcion-carton">
-                        <RadioButton
-                            inputId={`cual-aplica-${opt.value}`}
-                            name="cualAplica"
-                            value={opt.value}
-                            checked={e.cualAplica === opt.value}
-                            onChange={() => handleCualAplicaChange(opt.value)}
-                        />
-                        <label htmlFor={`cual-aplica-${opt.value}`}>{opt.label}</label>
-                      </div>
-                  ))}
+          <div className="segmento-carton-pregunta p-mb-3">
+            <a
+              href="#cual-aplica"
+              className="segmento-pregunta-cual-aplica"
+              role="button"
+              onClick={abrirModalCualAplica}
+              onKeyDown={abrirModalCualAplicaTeclado}
+            >
+              {t('datosLogisticos.segmento3.cualAplica')} <span className="campo-requerido">*</span>
+            </a>
+            <br />
+            <div className="segmento-radios-cual-aplica">
+              {opcionesCualAplica.map(opt => (
+                <div key={opt.value} className="segmento-radio-opcion-carton">
+                  <RadioButton
+                    inputId={`cual-aplica-${opt.value}`}
+                    name="cualAplica"
+                    value={opt.value}
+                    checked={e.cualAplica === opt.value}
+                    onChange={() => handleCualAplicaChange(opt.value)}
+                  />
+                  <label htmlFor={`cual-aplica-${opt.value}`}>{opt.label}</label>
                 </div>
-              </div>
-              {e.cualAplica === 'ninguno' && (
-                <p className="segmento-carton-ninguno-msg">{t('datosLogisticos.segmento3.ningunoNoCampos')}</p>
-              )}
-              {mostrarFormulario && (
-              <>
+              ))}
+            </div>
+          </div>
+          <br />
+          {e.cualAplica === 'ninguno' && (
+            <p className="segmento-carton-ninguno-msg">
+              {t('datosLogisticos.segmento3.ningunoNoCampos')}
+            </p>
+          )}
+          {mostrarFormulario && (
+            <>
               <br />
               <div className="segmento-carton-form p-fluid">
                 <div className="segmento-carton-fila segmento-carton-fila-3 p-mb-2">
@@ -487,7 +680,10 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
                     onKeyDown={handleNumeroKeyDown('multiploCartonMaster')}
                     t={t}
                   />
-                  <div className="segmento-carton-campo segmento-carton-campo-vacio" aria-hidden="true" />
+                  <div
+                    className="segmento-carton-campo segmento-carton-campo-vacio"
+                    aria-hidden="true"
+                  />
                 </div>
 
                 <div className="segmento-carton-fila segmento-carton-fila-3 p-mb-2">
@@ -514,7 +710,10 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
                     onKeyDown={handleNumeroKeyDown('peso')}
                     t={t}
                   />
-                  <div className="segmento-carton-campo segmento-carton-campo-vacio" aria-hidden="true" />
+                  <div
+                    className="segmento-carton-campo segmento-carton-campo-vacio"
+                    aria-hidden="true"
+                  />
                 </div>
 
                 <div className="segmento-carton-fila segmento-carton-fila-3 p-mb-2">
@@ -523,7 +722,9 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
                     value={e.unidadMedida}
                     label={t('datosLogisticos.segmento2.unidadMedida')}
                     placeholder={t('datosLogisticos.segmento2.placeholderUnidadMedida')}
-                    options={opcionesUnidadMedidaDimensiones as Array<{ value: string; label: string }>}
+                    options={
+                      opcionesUnidadMedidaDimensiones as Array<{ value: string; label: string }>
+                    }
                     error={errors.unidadMedida}
                     onChange={handleTextoChange('unidadMedida')}
                     t={t}
@@ -573,21 +774,24 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
                     onKeyDown={handleNumeroKeyDown('fondo')}
                     t={t}
                   />
-                  <div className="segmento-carton-campo segmento-carton-campo-vacio" aria-hidden="true" />
-                  <div className="segmento-carton-campo segmento-carton-campo-vacio" aria-hidden="true" />
+                  <div
+                    className="segmento-carton-campo segmento-carton-campo-vacio"
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="segmento-carton-campo segmento-carton-campo-vacio"
+                    aria-hidden="true"
+                  />
                 </div>
               </div>
-              </>
-              )}
-              {/* Footer: botón Guardar (HU 046) - siempre visible */}
-              <div className="segmento-carton-footer">
-                {children}
-              </div>
             </>
-        )}
-      </div>
+          )}
+          {/* Footer: botón Guardar (HU 046) - siempre visible */}
+          <div className="segmento-carton-footer">{children}</div>
+        </>
+      )}
+    </div>
   )
 }
 
 export default TarjetaEmpaquesProducto
-

@@ -11,7 +11,7 @@
     // ═══════════════════════════════════════════════
 
     .campo-requerido {
-        color: var(--color-text-error, #c8180d);
+        color: currentColor;
         font-weight: 700;
     }
 
@@ -317,7 +317,7 @@
 
             &.required::after {
                 content: ' *';
-                color: var(--color-text-error, #c8180d);
+                color: currentColor;
                 font-weight: bold;
             }
         }
