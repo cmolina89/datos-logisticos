@@ -5,7 +5,7 @@ import { RESPONSE_SECURITY_HEADERS } from './src/config/securityHeaders'
 
 const normalizeAssetPrefix = (value?: string | null) => {
   if (!value || value === 'auto') {
-    return 'http://localhost:3002/'
+    return 'http://localhost:3006/'
   }
 
   return value.endsWith('/') ? value : `${value}/`
@@ -18,7 +18,7 @@ const assetPrefix = normalizeAssetPrefix(
 export default defineConfig({
   runtime: { router: true },
   dev: {
-    port: 3002,
+    port: 3006,
   },
   server: {
     ssr: false,

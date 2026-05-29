@@ -101,9 +101,10 @@ function LayoutContent() {
         id="main-content"
         style={{
           width: '100%',
-          minHeight: '100vh',
+          height: '100%',
           backgroundColor: 'var(--color-background-body, #f8f9fa)',
           position: 'relative',
+          overflow: 'hidden',
         }}
       >
         <Outlet />

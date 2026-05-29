@@ -190,7 +190,7 @@
 // Utilidades formularios
 .tarjeta-form {
   .campo-requerido {
-    color: var(--color-text-error, #c8180d);
+    color: currentColor;
   }
 
   label.p-block {

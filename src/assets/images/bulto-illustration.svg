@@ -1,0 +1,77 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <g id="boxes-left">
+    <g>
+      <path d="M 30 80 L 160 80 L 170 70 L 40 70 Z" fill="#E8C9A0" stroke="#A0784A" stroke-width="2"/>
+      <path d="M 40 70 L 170 70 L 170 140 L 40 140 Z" fill="#D4A574" stroke="#A0784A" stroke-width="2"/>
+      <path d="M 160 80 L 170 70 L 170 140 L 160 150 Z" fill="#B8834A" stroke="#A0784A" stroke-width="2"/>
+      <rect x="50" y="95" width="100" height="28" fill="#9D7E48" opacity="0.9"/>
+      <text x="100" y="108" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white" text-anchor="middle">CAJA 1 de 3</text>
+      <text x="100" y="122" font-family="Arial, sans-serif" font-size="10" fill="white" text-anchor="middle">Estructura</text>
+      <line x1="50" y1="115" x2="150" y2="115" stroke="#8A6B3A" stroke-width="1" opacity="0.5"/>
+    </g>
+    <g>
+      <path d="M 50 220 L 170 220 L 180 210 L 60 210 Z" fill="#E8C9A0" stroke="#A0784A" stroke-width="2"/>
+      <path d="M 60 210 L 180 210 L 180 280 L 60 280 Z" fill="#D4A574" stroke="#A0784A" stroke-width="2"/>
+      <path d="M 170 220 L 180 210 L 180 280 L 170 290 Z" fill="#B8834A" stroke="#A0784A" stroke-width="2"/>
+      <rect x="70" y="232" width="100" height="28" fill="#9D7E48" opacity="0.9"/>
+      <text x="120" y="245" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white" text-anchor="middle">CAJA 2 de 3</text>
+      <text x="120" y="259" font-family="Arial, sans-serif" font-size="10" fill="white" text-anchor="middle">Accesorios</text>
+      <circle cx="75" cy="255" r="2" fill="#8A6B3A" opacity="0.6"/>
+      <circle cx="85" cy="255" r="2" fill="#8A6B3A" opacity="0.6"/>
+      <circle cx="95" cy="255" r="2" fill="#8A6B3A" opacity="0.6"/>
+      <circle cx="105" cy="255" r="2" fill="#8A6B3A" opacity="0.6"/>
+      <circle cx="115" cy="255" r="2" fill="#8A6B3A" opacity="0.6"/>
+    </g>
+    <g>
+      <path d="M 70 360 L 190 360 L 200 350 L 80 350 Z" fill="#E8C9A0" stroke="#A0784A" stroke-width="2"/>
+      <path d="M 80 350 L 200 350 L 200 400 L 80 400 Z" fill="#D4A574" stroke="#A0784A" stroke-width="2"/>
+      <path d="M 190 360 L 200 350 L 200 400 L 190 410 Z" fill="#B8834A" stroke="#A0784A" stroke-width="2"/>
+      <rect x="90" y="362" width="100" height="28" fill="#9D7E48" opacity="0.9"/>
+      <text x="140" y="375" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white" text-anchor="middle">CAJA 3 de 3</text>
+      <text x="140" y="389" font-family="Arial, sans-serif" font-size="10" fill="white" text-anchor="middle">Cubierta</text>
+      <line x1="90" y1="375" x2="190" y2="375" stroke="#8A6B3A" stroke-width="1.5" opacity="0.5"/>
+    </g>
+  </g>
+  <path d="M 200 115 L 380 220" stroke="#5B9FD4" stroke-width="8" fill="none" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+  <path d="M 220 250 L 380 280" stroke="#5B9FD4" stroke-width="8" fill="none" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+  <path d="M 240 375 L 380 320" stroke="#5B9FD4" stroke-width="8" fill="none" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+  <defs>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <polygon points="0 0, 12 6, 0 12" fill="#5B9FD4"/>
+    </marker>
+  </defs>
+  <g id="desk">
+    <ellipse cx="560" cy="430" rx="150" ry="25" fill="rgba(0,0,0,0.08)"/>
+    <path d="M 380 240 L 560 240 L 570 235 L 390 235 Z" fill="#C9A876" stroke="#9A7D4E" stroke-width="1"/>
+    <path d="M 390 235 L 570 235 L 570 280 L 390 280 Z" fill="#D4B896" stroke="#9A7D4E" stroke-width="2"/>
+    <path d="M 560 240 L 570 235 L 570 280 L 560 285 Z" fill="#B89968" stroke="#9A7D4E" stroke-width="1"/>
+    <path d="M 380 280 L 460 280 L 465 275 L 385 275 Z" fill="#C4A37A" stroke="#9A7D4E" stroke-width="1"/>
+    <path d="M 385 275 L 465 275 L 465 385 L 385 385 Z" fill="#B8956F" stroke="#9A7D4E" stroke-width="2"/>
+    <path d="M 460 280 L 465 275 L 465 385 L 460 390 Z" fill="#A07F52" stroke="#9A7D4E" stroke-width="1"/>
+    <line x1="385" y1="310" x2="465" y2="310" stroke="#9A7D4E" stroke-width="1" opacity="0.6"/>
+    <line x1="385" y1="345" x2="465" y2="345" stroke="#9A7D4E" stroke-width="1" opacity="0.6"/>
+    <line x1="425" y1="275" x2="425" y2="385" stroke="#9A7D4E" stroke-width="0.8" opacity="0.5"/>
+    <rect x="395" y="285" width="18" height="18" fill="#F5F5F5" stroke="#CCCCCC" stroke-width="1"/>
+    <rect x="420" y="285" width="18" height="18" fill="#F5F5F5" stroke="#CCCCCC" stroke-width="1"/>
+    <rect x="395" y="320" width="18" height="18" fill="#E0E0E0" stroke="#CCCCCC" stroke-width="1"/>
+    <rect x="420" y="320" width="18" height="18" fill="#D9D9D9" stroke="#CCCCCC" stroke-width="1"/>
+    <rect x="505" y="280" width="25" height="110" fill="#9A7D4E" stroke="#7A5F3A" stroke-width="1"/>
+    <g>
+      <line x1="420" y1="240" x2="420" y2="180" stroke="#3A3A3A" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="435" cy="170" rx="20" ry="12" fill="#555555" stroke="#333333" stroke-width="1"/>
+      <ellipse cx="435" cy="168" rx="18" ry="10" fill="#666666" opacity="0.8"/>
+    </g>
+    <g>
+      <rect x="470" y="200" width="65" height="45" fill="#2A2A2A" rx="3" stroke="#1A1A1A" stroke-width="1"/>
+      <rect x="475" y="205" width="55" height="35" fill="#4DA6FF" stroke="#2080CC" stroke-width="1"/>
+      <rect x="470" y="245" width="65" height="4" fill="#1A1A1A"/>
+    </g>
+    <g>
+      <path d="M 530 235 L 525 270 L 555 270 L 550 235" fill="#F5E6D3" stroke="#D4C1A8" stroke-width="1"/>
+      <ellipse cx="540" cy="235" rx="12" ry="5" fill="#F9EFE0"/>
+      <circle cx="525" cy="205" r="18" fill="#2D5F0F" opacity="0.9"/>
+      <circle cx="545" cy="195" r="16" fill="#3A7516" opacity="0.85"/>
+      <circle cx="555" cy="215" r="14" fill="#2D5F0F" opacity="0.9"/>
+    </g>
+  </g>
+</svg>

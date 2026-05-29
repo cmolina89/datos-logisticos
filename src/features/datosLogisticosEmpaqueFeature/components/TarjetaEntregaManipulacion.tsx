@@ -27,17 +27,36 @@ import './TarjetaEntregaManipulacion.scss'
 
 /** Teclas permitidas en un InputNumber */
 const TECLAS_PERMITIDAS = new Set([
-  'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
-  'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
-  'Home', 'End',
-  '.', ',', '-',
-  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  'Backspace',
+  'Delete',
+  'Tab',
+  'Escape',
+  'Enter',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+  '.',
+  ',',
+  '-',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
 ])
 
 /** Helpers de validación inline */
 function validarCampoNumericoPositivo(val: number | null | undefined): string | undefined {
   if (val === null || val === undefined) return undefined
-  if (typeof val !== 'number' || Number.isNaN(val)) return 'validation.positiveNumber'
+  if (Number.isNaN(val)) return 'validation.positiveNumber'
   if (val <= 0) return 'validation.positiveNumber'
   return undefined
 }
@@ -55,7 +74,10 @@ interface TarjetaEntregaManipulacionProps {
   saved?: boolean
 }
 
-const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({ children, saved }) => {
+const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
+  children,
+  saved,
+}) => {
   const { t } = useTranslation()
   const state = useAtomValue(datosLogisticosEmpaqueStateAtom)
   const setEntrega = useSetAtom(setEntregaManipulacionAtom)
@@ -106,55 +128,66 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
   }, [])
 
   /** Validación inline por campo */
-  const validarCampoInline = useCallback((campo: string, valor: number | string | null | undefined) => {
-    let error: string | undefined
-    switch (campo) {
-      case 'unidadMedidaPallet':
-        if (!valor || (typeof valor === 'string' && !valor.trim())) {
-          error = 'validation.requiredField'
-        }
-        break
-      case 'layoutLargo':
-      case 'layoutAncho':
-        error = validarCampoNumericoPositivo(valor as number | null) || validarMaxDecimales(valor as number | null)
-        break
-      default:
-        break
-    }
-    setErrors((prev: Record<string, string | undefined>) => {
-      const next = { ...prev }
-      if (error) {
-        next[campo] = error
-      } else {
-        delete next[campo]
+  const validarCampoInline = useCallback(
+    (campo: string, valor: number | string | null | undefined) => {
+      let error: string | undefined
+      switch (campo) {
+        case 'unidadMedidaPallet':
+          if (!valor || (typeof valor === 'string' && !valor.trim())) {
+            error = 'validation.requiredField'
+          }
+          break
+        case 'layoutLargo':
+        case 'layoutAncho':
+          error =
+            validarCampoNumericoPositivo(valor as number | null) ||
+            validarMaxDecimales(valor as number | null)
+          break
+        default:
+          break
       }
-      return next
-    })
-  }, [setErrors])
+      setErrors((prev: Record<string, string | undefined>) => {
+        const next = { ...prev }
+        if (error) {
+          next[campo] = error
+        } else {
+          delete next[campo]
+        }
+        return next
+      })
+    },
+    [setErrors]
+  )
 
   /** Al cambiar paletizable, limpiar errores de pallet */
-  const handlePaletizableChange = useCallback((value: boolean) => {
-    setEntrega({ entregaPaletizable: value })
-    setAlertaNoNumerico({})
-    setErrors((prev: Record<string, string | undefined>) => {
-      const next = { ...prev }
-      delete next.entregaPaletizable
-      delete next.unidadMedidaPallet
-      delete next.layoutLargo
-      delete next.layoutAncho
-      return next
-    })
-  }, [setEntrega, setErrors])
+  const handlePaletizableChange = useCallback(
+    (value: boolean) => {
+      setEntrega({ entregaPaletizable: value })
+      setAlertaNoNumerico({})
+      setErrors((prev: Record<string, string | undefined>) => {
+        const next = { ...prev }
+        delete next.entregaPaletizable
+        delete next.unidadMedidaPallet
+        delete next.layoutLargo
+        delete next.layoutAncho
+        return next
+      })
+    },
+    [setEntrega, setErrors]
+  )
 
   /** Al cambiar acomodo, limpiar error de ese campo */
-  const handleAcomodoChange = useCallback((value: boolean) => {
-    setEntrega({ puedeAcomodarseDistintasFormas: value })
-    setErrors((prev: Record<string, string | undefined>) => {
-      const next = { ...prev }
-      delete next.puedeAcomodarseDistintasFormas
-      return next
-    })
-  }, [setEntrega, setErrors])
+  const handleAcomodoChange = useCallback(
+    (value: boolean) => {
+      setEntrega({ puedeAcomodarseDistintasFormas: value })
+      setErrors((prev: Record<string, string | undefined>) => {
+        const next = { ...prev }
+        delete next.puedeAcomodarseDistintasFormas
+        return next
+      })
+    },
+    [setEntrega, setErrors]
+  )
 
   return (
     <div className="segmento-entrega-manipulacion">
@@ -162,7 +195,12 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
         <div className="segmento-entrega-titulo">
           <h3 className="segmento-titulo-texto">{t('datosLogisticos.segmento4.title')}</h3>
           {saved && (
-            <span className="sclt clt-check-mark text-3xl" aria-hidden="true" title={t('datosLogisticos.segmento4.completed')} style={{ color: '#2e8a41' }} />
+            <span
+              className="sclt clt-check-mark text-3xl"
+              aria-hidden="true"
+              title={t('datosLogisticos.segmento4.completed')}
+              style={{ color: '#2e8a41' }}
+            />
           )}
         </div>
         <button
@@ -170,7 +208,11 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
           className="segmento-collapse"
           onClick={() => setCollapsed(!collapsed)}
           aria-expanded={!collapsed}
-          aria-label={collapsed ? t('datosLogisticos.aria.expandSection') : t('datosLogisticos.aria.collapseSection')}
+          aria-label={
+            collapsed
+              ? t('datosLogisticos.aria.expandSection')
+              : t('datosLogisticos.aria.collapseSection')
+          }
         >
           <i className={collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'} />
         </button>
@@ -178,15 +220,14 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
 
       {!collapsed && (
         <div className="segmento-entrega-body">
-          <p className="segmento-entrega-intro-texto">
-            {t('datosLogisticos.segmento4.intro')}
-          </p>
+          <p className="segmento-entrega-intro-texto">{t('datosLogisticos.segmento4.intro')}</p>
 
           {/* Pallet */}
           <h4 className="segmento-subtitulo">{t('datosLogisticos.segmento4.pallet')}</h4>
           <div className="segmento-pregunta p-mb-2">
             <label className="p-block segmento-label">
-              {t('datosLogisticos.segmento4.paletizable')} <span className="campo-requerido">*</span>
+              {t('datosLogisticos.segmento4.paletizable')}{' '}
+              <span className="campo-requerido">*</span>
             </label>
             <div className="segmento-radios-fila">
               <div className="segmento-radio-opcion">
@@ -212,7 +253,6 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
             </div>
             {errors.entregaPaletizable && (
               <div className="campo-error-inline">
-                <i className="pi pi-exclamation-circle campo-error-icon" />
                 <span>{t(errors.entregaPaletizable)}</span>
               </div>
             )}
@@ -224,7 +264,8 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
               <div className="segmento-entrega-pallet-fila p-fluid p-mb-3">
                 <div className="segmento-entrega-campo">
                   <label htmlFor="unidadMedidaPallet" className="p-block segmento-label">
-                    {t('datosLogisticos.segmento4.unidadMedida')} <span className="campo-requerido">*</span>
+                    {t('datosLogisticos.segmento4.unidadMedida')}{' '}
+                    <span className="campo-requerido">*</span>
                   </label>
                   <Dropdown
                     id="unidadMedidaPallet"
@@ -240,14 +281,14 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
                   />
                   {errors.unidadMedidaPallet && (
                     <div className="campo-error-inline">
-                      <i className="pi pi-exclamation-circle campo-error-icon" />
                       <span>{t(errors.unidadMedidaPallet)}</span>
                     </div>
                   )}
                 </div>
                 <div className="segmento-entrega-campo">
                   <label htmlFor="layoutLargo" className="p-block segmento-label">
-                    {t('datosLogisticos.segmento4.layoutLargo')} <span className="campo-requerido">*</span>
+                    {t('datosLogisticos.segmento4.layoutLargo')}{' '}
+                    <span className="campo-requerido">*</span>
                   </label>
                   <div className="input-con-icono-error">
                     <InputNumber
@@ -263,28 +304,38 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
                       minFractionDigits={0}
                       maxFractionDigits={2}
                       placeholder={t('datosLogisticos.segmento4.layoutLargo')}
-                      className={alertaNoNumerico.layoutLargo ? 'campo-warning-input w-full' : errors.layoutLargo ? 'p-invalid w-full' : 'w-full'}
+                      className={
+                        alertaNoNumerico.layoutLargo
+                          ? 'campo-warning-input w-full'
+                          : errors.layoutLargo
+                            ? 'p-invalid w-full'
+                            : 'w-full'
+                      }
                     />
                     {(errors.layoutLargo || alertaNoNumerico.layoutLargo) && (
-                      <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.layoutLargo ? ' icono-error-input-warning' : ''}`} />
+                      <span
+                        className={`icono-error-input${alertaNoNumerico.layoutLargo ? ' icono-error-input-warning' : ''}`}
+                        aria-hidden="true"
+                      >
+                        !
+                      </span>
                     )}
                   </div>
                   {alertaNoNumerico.layoutLargo && (
                     <div className="campo-warning-inline">
-                      <i className="pi pi-exclamation-triangle campo-warning-icon" />
                       <span>{t('validation.numericOnly')}</span>
                     </div>
                   )}
                   {errors.layoutLargo && !alertaNoNumerico.layoutLargo && (
                     <div className="campo-error-inline">
-                      <i className="pi pi-exclamation-circle campo-error-icon" />
                       <span>{t(errors.layoutLargo)}</span>
                     </div>
                   )}
                 </div>
                 <div className="segmento-entrega-campo">
                   <label htmlFor="layoutAncho" className="p-block segmento-label">
-                    {t('datosLogisticos.segmento4.layoutAncho')} <span className="campo-requerido">*</span>
+                    {t('datosLogisticos.segmento4.layoutAncho')}{' '}
+                    <span className="campo-requerido">*</span>
                   </label>
                   <div className="input-con-icono-error">
                     <InputNumber
@@ -300,21 +351,30 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
                       minFractionDigits={0}
                       maxFractionDigits={2}
                       placeholder={t('datosLogisticos.segmento4.layoutAncho')}
-                      className={alertaNoNumerico.layoutAncho ? 'campo-warning-input w-full' : errors.layoutAncho ? 'p-invalid w-full' : 'w-full'}
+                      className={
+                        alertaNoNumerico.layoutAncho
+                          ? 'campo-warning-input w-full'
+                          : errors.layoutAncho
+                            ? 'p-invalid w-full'
+                            : 'w-full'
+                      }
                     />
                     {(errors.layoutAncho || alertaNoNumerico.layoutAncho) && (
-                      <i className={`pi pi-exclamation-circle icono-error-input${alertaNoNumerico.layoutAncho ? ' icono-error-input-warning' : ''}`} />
+                      <span
+                        className={`icono-error-input${alertaNoNumerico.layoutAncho ? ' icono-error-input-warning' : ''}`}
+                        aria-hidden="true"
+                      >
+                        !
+                      </span>
                     )}
                   </div>
                   {alertaNoNumerico.layoutAncho && (
                     <div className="campo-warning-inline">
-                      <i className="pi pi-exclamation-triangle campo-warning-icon" />
                       <span>{t('validation.numericOnly')}</span>
                     </div>
                   )}
                   {errors.layoutAncho && !alertaNoNumerico.layoutAncho && (
                     <div className="campo-error-inline">
-                      <i className="pi pi-exclamation-circle campo-error-icon" />
                       <span>{t(errors.layoutAncho)}</span>
                     </div>
                   )}
@@ -328,7 +388,8 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
 
           <div className="segmento-pregunta p-mb-3">
             <label className="p-block segmento-label">
-              {t('datosLogisticos.segmento4.acomodoLabel')} <span className="campo-requerido">*</span>
+              {t('datosLogisticos.segmento4.acomodoLabel')}{' '}
+              <span className="campo-requerido">*</span>
             </label>
             <div className="segmento-radios-fila">
               <div className="segmento-radio-opcion">
@@ -354,7 +415,6 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
             </div>
             {errors.puedeAcomodarseDistintasFormas && (
               <div className="campo-error-inline">
-                <i className="pi pi-exclamation-circle campo-error-icon" />
                 <span>{t(errors.puedeAcomodarseDistintasFormas)}</span>
               </div>
             )}

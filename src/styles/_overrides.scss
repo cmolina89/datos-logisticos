@@ -254,7 +254,7 @@
 
     /* Estilos comunes para campos requeridos y validación */
     .campo-requerido {
-        color: var(--color-text-error, #c8180d);
+        color: currentColor;
     }
 
     .p-invalid {
