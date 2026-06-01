@@ -1,6 +1,5 @@
 import { ThemeProvider } from '@/app/providers/ThemeProvider'
 import SEOHead from '@/components/common/SEOHead/SEOHead'
-import LanguageSwitcher from '@/components/common/LanguageSwitcher/LanguageSwitcher'
 import { applyClientSecurityHeaders } from '@/utils/securityHeaders'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Outlet } from '@modern-js/runtime/router'
@@ -53,7 +52,7 @@ function LayoutContent() {
       style={{
         position: 'relative',
         height: '100vh',
-        width: '100vw',
+        width: '100%',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -61,18 +60,6 @@ function LayoutContent() {
       }}
     >
       <SEOHead />
-
-      {/* Selector de idioma fijo arriba a la derecha */}
-      <div
-        style={{
-          position: 'fixed',
-          top: '0.75rem',
-          right: '1rem',
-          zIndex: 1001,
-        }}
-      >
-        <LanguageSwitcher />
-      </div>
 
       {/* Skip to main content link for accessibility */}
       <a

@@ -71,12 +71,31 @@
             transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
 
+        .p-radiobutton-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
         .p-radiobutton-box .p-radiobutton-icon {
             background-color: $color-primary-light;
             height: 11px;
-            margin: 0 2.5px 0 auto;
+            margin: 0 !important;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1);
+            transform-origin: center;
             transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
             width: 11px;
+        }
+
+        &.p-highlight {
+            .p-radiobutton-box .p-radiobutton-icon {
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
 
         &.p-highlight {

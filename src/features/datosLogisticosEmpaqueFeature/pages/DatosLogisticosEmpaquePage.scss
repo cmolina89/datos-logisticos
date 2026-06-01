@@ -101,8 +101,7 @@
 // Área de contenido con scroll
 .content-scroll {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   min-height: 0;
 }
 

@@ -35,6 +35,12 @@
         font-family: var(--font-family) !important;
     }
 
+    // PrimeIcons usa glifos en ::before; esta excepción evita que el reset los rompa.
+    .pi,
+    .pi::before {
+        font-family: 'primeicons' !important;
+    }
+
     /* Accessibility */
     .sr-only {
         border: 0;
@@ -81,6 +87,17 @@
     overflow: hidden;
     padding: $spacing-lg;
     position: relative;
+}
+
+.sgc-mfe-attributes,
+.sgc-mfe-attributes * {
+    scrollbar-width: none;
+}
+
+.sgc-mfe-attributes::-webkit-scrollbar,
+.sgc-mfe-attributes *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 // Dark Theme Support

@@ -259,7 +259,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
                   <TarjetaDatosLogisticos saved={savedSections.has('datos')}>
                     <Button
                       label={t('common.save')}
-                      icon="pi pi-save"
+                      icon="sclt clt-save"
                       iconPos="right"
                       onClick={guardarDatosLogisticos}
                       loading={guardadoSection === 'datos' && guardadoStatus === 'loading'}
@@ -276,7 +276,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
                   <TarjetaMedidasEmpaqueIndividual saved={savedSections.has('medidas')}>
                     <Button
                       label={t('common.save')}
-                      icon="pi pi-save"
+                      icon="sclt clt-save"
                       iconPos="right"
                       onClick={guardarMedidasEmpaqueIndividual}
                       loading={guardadoSection === 'medidas' && guardadoStatus === 'loading'}
@@ -293,7 +293,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
                   <TarjetaEmpaquesProducto saved={savedSections.has('empaques')}>
                     <Button
                       label={t('common.save')}
-                      icon="pi pi-save"
+                      icon="sclt clt-save"
                       iconPos="right"
                       onClick={guardarEmpaquesProducto}
                       loading={guardadoSection === 'empaques' && guardadoStatus === 'loading'}
@@ -309,7 +309,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
                   <TarjetaEntregaManipulacion saved={savedSections.has('entrega')}>
                     <Button
                       label={t('common.save')}
-                      icon="pi pi-save"
+                      icon="sclt clt-save"
                       iconPos="right"
                       onClick={guardarEntregaManipulacion}
                       loading={guardadoSection === 'entrega' && guardadoStatus === 'loading'}

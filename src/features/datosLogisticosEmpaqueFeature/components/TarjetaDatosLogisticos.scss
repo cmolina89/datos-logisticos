@@ -382,7 +382,10 @@
     font-weight: 500;
 
     .p-button-icon {
-      color: var(--primary-color);
+      color: var(--primary-color) !important;
+      background: transparent !important;
+      font-size: 1.4rem;
+      line-height: 1;
     }
 
     &:hover:not(.p-disabled) {

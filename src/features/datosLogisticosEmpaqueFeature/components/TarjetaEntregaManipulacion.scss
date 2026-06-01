@@ -215,33 +215,7 @@
     }
   }
 
-  /* Radios: contorno y seleccionado en color morado (forzar sobre tema) */
-  .p-radiobutton {
-    .p-radiobutton-box {
-      width: 1.25rem !important;
-      height: 1.25rem !important;
-      border: 2px solid #7c3aed !important;
-      background: #fff !important;
-      box-shadow: none !important;
-
-      &:not(.p-disabled):hover {
-        border-color: #6d28d9 !important;
-        background: #fff !important;
-      }
-
-      &.p-highlight {
-        border-color: #7c3aed !important;
-        background: #fff !important;
-      }
-
-      .p-radiobutton-icon {
-        width: 0.5rem !important;
-        height: 0.5rem !important;
-        background-color: #7c3aed !important;
-        transform-origin: center;
-      }
-    }
-  }
+  /* Radios: usa estilo global del tema + centrado definido en overrides */
 
 
   .segmento-dropdown-orientacion {
@@ -353,7 +327,10 @@
       font-weight: 500;
 
       .p-button-icon {
-        color: var(--primary-color);
+        color: var(--primary-color) !important;
+        background: transparent !important;
+        font-size: 1.4rem;
+        line-height: 1;
       }
 
       &:hover:not(.p-disabled) {

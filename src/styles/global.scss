@@ -21,6 +21,10 @@
 // dashboard.scss ya importa navbar, sidebar, submenu, footer internamente
 @use 'templates/progress-bar';
 @use 'templates/dashboard';
+@use 'templates/navbar';
+@use 'templates/sidebar';
+@use 'templates/submenu';
+@use 'templates/footer';
 
 // Coltrane & Vendors
 @use 'vendors/coltrane/coltrane-tokens';
@@ -32,5 +36,6 @@
 @use 'vendors/coltrane/coltrane-input';
 
 // Legacy imports for CSS files
+@import url('primeicons/primeicons.css');
 @import url('coltrane-icon-font/coltrane-icons.css');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
