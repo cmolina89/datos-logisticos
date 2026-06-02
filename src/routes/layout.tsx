@@ -27,16 +27,6 @@ function LayoutContent() {
     applyClientSecurityHeaders()
   }, [])
 
-  // El contenido principal siempre ocupa todo el espacio disponible
-  // El sidebar se superpone sin mover el contenido
-  const getMainContentMarginLeft = (): string => {
-    return '0' // Nunca empuja el contenido
-  }
-
-  const getMainContentWidth = (): string => {
-    return '100%' // Siempre ocupa todo el ancho
-  }
-
   const handleSkipLinkFocus = (e: React.FocusEvent<HTMLAnchorElement>) => {
     e.target.style.top = '6px'
   }
@@ -46,67 +36,9 @@ function LayoutContent() {
   }
 
   return (
-    <div
-      id="remote-app"
-      className="sgc-mfe-attributes"
-      role="application"
-      style={{
-        position: 'relative',
-        height: '100vh',
-        width: '100vw',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'var(--color-background-body, #f8f9fa)',
-      }}
-    >
+    <div id="remote-app" className="sgc-mfe-attributes" role="application">
       <SEOHead />
-
-      {/* Selector de idioma fijo arriba a la derecha */}
-      <div
-        style={{
-          position: 'fixed',
-          top: '0.75rem',
-          right: '1rem',
-          zIndex: 1001,
-        }}
-      >
-        <LanguageSwitcher />
-      </div>
-
-      {/* Skip to main content link for accessibility */}
-      <a
-        href="#main-content"
-        className="skip-link"
-        style={{
-          position: 'absolute',
-          top: '-40px',
-          left: '6px',
-          background: '#007bff',
-          color: 'white',
-          padding: '8px',
-          textDecoration: 'none',
-          borderRadius: '4px',
-          zIndex: 1000,
-          transition: 'top 0.3s',
-        }}
-        onFocus={handleSkipLinkFocus}
-        onBlur={handleSkipLinkBlur}
-      >
-        {t('accessibility.skipToContent')}
-      </a>
-
-      {/* Contenido principal sin márgenes para navbar/sidebar */}
-      <main
-        id="main-content"
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'var(--color-background-body, #f8f9fa)',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
+      <main id="main-content" className="cv-main-content">
         <Outlet />
       </main>
     </div>
