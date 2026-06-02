@@ -51,9 +51,10 @@ function LayoutContent() {
       role="application"
       style={{
         position: 'relative',
-        height: '100vh',
+        minHeight: '100vh',
         width: '100%',
-        overflow: 'hidden',
+        overflowX: 'hidden',
+        overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: 'var(--color-background-body, #f8f9fa)',
@@ -88,10 +89,10 @@ function LayoutContent() {
         id="main-content"
         style={{
           width: '100%',
-          height: '100%',
+          minHeight: '100%',
           backgroundColor: 'var(--color-background-body, #f8f9fa)',
           position: 'relative',
-          overflow: 'hidden',
+          overflow: 'visible',
         }}
       >
         <Outlet />

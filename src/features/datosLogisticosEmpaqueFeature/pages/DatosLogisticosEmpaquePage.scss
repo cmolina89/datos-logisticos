@@ -92,16 +92,16 @@
 .datos-logisticos-empaque-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #FFFFFF;
-  overflow: hidden;
+  overflow: visible;
 }
 
 
 // Área de contenido con scroll
 .content-scroll {
   flex: 1;
-  overflow: hidden;
+  overflow: visible;
   min-height: 0;
 }
 
@@ -209,4 +209,3 @@
     padding: 0.75rem;
   }
 }
-

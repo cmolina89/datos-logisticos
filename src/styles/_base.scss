@@ -83,21 +83,20 @@
     flex-direction: column;
     gap: $spacing-lg;
     margin: 0;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding: $spacing-lg;
     position: relative;
 }
 
-.sgc-mfe-attributes,
-.sgc-mfe-attributes * {
-    scrollbar-width: none;
+.sgc-mfe-attributes {
+    scrollbar-width: auto;
 }
 
-.sgc-mfe-attributes::-webkit-scrollbar,
-.sgc-mfe-attributes *::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+.sgc-mfe-attributes::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
 }
 
 // Dark Theme Support
@@ -131,4 +130,3 @@ body.dark-theme {
         }
     }
 }
-
