@@ -494,33 +494,63 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
               deshabilitado ? 'segmento-medidas-form-disabled' : ''
             }`}
           >
-            <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
-              <CampoDropdown
-                id="unidadPeso"
-                value={m.unidadPeso}
-                label={t('datosLogisticos.segmento2.unidadPeso')}
-                placeholder={t('datosLogisticos.segmento2.placeholderUnidadPeso')}
-                options={opcionesUnidadPeso as Array<{ value: string; label: string }>}
-                error={errors.unidadPeso}
-                disabled={deshabilitado}
-                onChange={handleTextoChange('unidadPeso')}
-                t={t}
-              />
-              <CampoNumerico
-                id="peso"
-                value={m.peso}
-                label={t('datosLogisticos.segmento2.peso')}
-                min={0.01}
-                maxFractionDigits={2}
-                placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
-                error={errors.peso}
-                warning={Boolean(alertaNoNumerico.peso)}
-                disabled={deshabilitado}
-                onChange={handleNumeroChange('peso')}
-                onKeyDown={handleNumeroKeyDown('peso')}
-                t={t}
-              />
-              <div className="segmento-medidas-campo segmento-medidas-campo-vacio" />
+            <div className="row pb-2">
+              <div className="col-md-4">
+                {' '}
+                <CampoDropdown
+                  id="unidadPeso"
+                  value={m.unidadPeso}
+                  label={t('datosLogisticos.segmento2.unidadPeso')}
+                  placeholder={t('datosLogisticos.segmento2.placeholderUnidadPeso')}
+                  options={opcionesUnidadPeso as Array<{ value: string; label: string }>}
+                  error={errors.unidadPeso}
+                  disabled={deshabilitado}
+                  onChange={handleTextoChange('unidadPeso')}
+                  t={t}
+                />
+              </div>
+              <div className="col-md-4">
+                <CampoNumerico
+                  id="peso"
+                  value={m.peso}
+                  label={t('datosLogisticos.segmento2.peso')}
+                  min={0.01}
+                  maxFractionDigits={2}
+                  placeholder={t('datosLogisticos.segmento2.placeholderPeso')}
+                  error={errors.peso}
+                  warning={Boolean(alertaNoNumerico.peso)}
+                  disabled={deshabilitado}
+                  onChange={handleNumeroChange('peso')}
+                  onKeyDown={handleNumeroKeyDown('peso')}
+                  t={t}
+                />
+              </div>
+              <div className="col-md-4">
+                <div className="segmento-medidas-campo">
+                  <label htmlFor="empaques-numeroPiezas" className="p-block segmento-label">
+                    <span className="flex">
+                      {t('datosLogisticos.segmento3.numeroPiezas')}
+                      <span className="campo-requerido">*</span>
+                    </span>
+                  </label>
+                  <InputNumber
+                    inputId="empaques-numeroPiezas"
+                    value={1}
+                    showButtons
+                    buttonLayout="horizontal"
+                    step={1}
+                    min={1}
+                    max={99999}
+                    useGrouping={false}
+                    incrementButtonClassName="segmento-stepper-btn"
+                    decrementButtonClassName="segmento-stepper-btn"
+                    incrementButtonIcon="pi pi-plus"
+                    decrementButtonIcon="pi pi-minus"
+                    placeholder={t('datosLogisticos.segmento3.placeholderNumeroPiezas')}
+                    className="w-full segmento-stepper-piezas-empaques"
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">

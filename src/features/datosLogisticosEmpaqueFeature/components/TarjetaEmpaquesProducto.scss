@@ -380,14 +380,14 @@
             border-radius: 50%;
             background: #ff6b63;
             color: #ffffff;
-            font-size: 0.84rem;
-            line-height: 1.2rem;
-            font-weight: 800;
-            pointer-events: none;
-            z-index: 2;
             font-family: Arial, Helvetica, sans-serif;
-            text-align: center;
+            font-size: 0.84rem;
+            font-weight: 800;
+            line-height: 1.2rem;
             padding-bottom: 0;
+            pointer-events: none;
+            text-align: center;
+            z-index: 2;
         }
 
         .icono-error-input-warning {
@@ -397,24 +397,24 @@
     }
 
     .segmento-carton-footer {
-        display: flex;
         align-items: center;
-        justify-content: flex-end;
-        padding: 1rem;
-        margin-top: 0.5rem;
         background: #ffffff;
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+        padding: 1rem;
 
         /* Botón Guardar: fondo blanco, borde azul, pill */
         .p-button {
-            width: auto !important;
-            min-width: auto !important;
             background: #fff !important;
-            color: var(--primary-color) !important;
-            border: 1px solid var(--primary-color) !important;
             border-radius: 2rem;
-            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--primary-color) !important;
+            color: var(--primary-color) !important;
             font-weight: 500;
+            min-width: auto !important;
+            padding: 0.5rem 1.25rem;
             transition: all 0.2s ease;
+            width: auto !important;
 
             .p-button-icon {
                 color: var(--primary-color) !important;
@@ -436,17 +436,17 @@
 
 .segmento-carton-modal-cual-aplica.p-dialog {
     border-radius: 14px;
-    overflow: hidden;
     margin: 0;
-    max-height: 94vh;
+    max-height: 130vh;
+    overflow: hidden;
 
     .p-dialog-content {
-        padding: 0;
-        border-radius: 14px;
-        overflow: hidden;
         background: #f8f9fb;
-        max-height: 94vh;
+        border-radius: 14px;
+        max-height: 130vh;
         overflow-y: hidden;
+        overflow: hidden;
+        padding: 0;
     }
 }
 
@@ -457,33 +457,33 @@
 }
 
 .segmento-carton-modal-content {
-    padding: 0;
     background: #f8f9fb;
     overflow-y: hidden;
+    padding: 0;
 }
 
 .segmento-carton-modal-shell {
-    position: relative;
     background: #f8f9fb;
-    padding: 0.45rem 0.55rem 0.55rem;
     max-height: none;
     overflow: hidden;
+    padding: 0.45rem 0.55rem 0.55rem;
+    position: relative;
 }
 
 .segmento-carton-modal-close {
-    position: absolute;
-    top: 0.25rem;
-    right: 0.25rem;
-    border: none;
-    background: transparent;
-    color: #1e2b6d;
-    width: 1.8rem;
-    height: 1.8rem;
-    border-radius: 999px;
-    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    background: transparent;
+    border-radius: 999px;
+    border: none;
+    color: #1e2b6d;
     cursor: pointer;
+    display: inline-flex;
+    height: 1.8rem;
+    justify-content: center;
+    position: absolute;
+    right: 0.25rem;
+    top: 0.25rem;
+    width: 1.8rem;
 
     &:hover {
         background: rgba(30, 43, 109, 0.08);
@@ -496,39 +496,39 @@
 }
 
 .segmento-carton-modal-header {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
     gap: 0.1rem;
     padding: 0.2rem 1.8rem 0.45rem;
+    text-align: center;
 }
 
 .segmento-carton-modal-icon {
-    width: 1.65rem;
-    height: 1.65rem;
-    border-radius: 50%;
+    align-items: center;
     background: #1d3276;
+    border-radius: 50%;
     color: #fff;
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
     font-size: 0.95rem;
     font-weight: 700;
+    height: 1.65rem;
+    justify-content: center;
+    width: 1.65rem;
 }
 
 .segmento-carton-modal-title {
-    margin: 0;
     color: #1d3276;
-    font-size: 1.05rem;
+    font-size: var(--font-size-subheader, 1.125rem);
     font-weight: 700;
     line-height: 1.2;
+    margin: 0;
 }
 
 .segmento-carton-modal-subtitle {
     margin: 0;
     color: #5a647a;
-    font-size: 0.82rem;
+    font-size: var(--font-size-body-mobile, 0.97rem);
     font-weight: 500;
 }
 
@@ -545,22 +545,22 @@
 }
 
 .segmento-carton-modal-card {
-    border: 1px solid #8995c9;
+    background: #fbfcff;
     border-radius: 10px;
-    padding: 0.45rem 0.5rem 0.5rem;
+    border: 1px solid #8995c9;
+    box-shadow: none;
     display: flex;
     flex-direction: column;
     min-height: 100%;
-    background: #fbfcff;
-    box-shadow: none;
+    padding: 0.45rem 0.5rem 0.5rem;
 }
 
 .segmento-carton-modal-card-title {
-    margin: 0 0 0.18rem;
     color: #1d3276;
-    font-size: 0.98rem;
+    font-size: 18px;
     font-weight: 700;
     line-height: 1.1;
+    margin: 0 0 0.18rem;
 }
 
 .segmento-carton-modal-card-body {
@@ -577,16 +577,18 @@
 
 .segmento-carton-modal-uses-title,
 .segmento-carton-modal-example-title {
-    margin: 0 0 0.12rem;
     color: #334155;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0 0 0.12rem;
+    padding: 5px 0;
 }
 
 .segmento-carton-modal-bullets {
-    margin: 0 0 0.18rem;
-    padding-left: 0.95rem;
     display: grid;
     gap: 0.05rem;
+    margin: 0 0 0.18rem;
+    padding-left: 0.95rem;
 
     li::marker {
         color: #1d3276;
@@ -594,42 +596,42 @@
 }
 
 .segmento-carton-modal-example-text {
+    font: inherit;
     margin: 0;
 }
 
 .segmento-carton-modal-illustration-wrap {
-    min-height: 110px;
-    max-height: 118px;
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: center;
-    padding: 0;
+    min-height: 110px;
     overflow: hidden;
+    padding: 0;
 }
 
 .segmento-carton-modal-illustration {
-    width: 92%;
-    max-width: 92%;
     height: auto;
+    max-width: 92%;
     object-fit: contain;
+    width: 92%;
 }
 
 .segmento-carton-modal-card-footer {
-    margin-top: auto;
     display: flex;
     justify-content: center;
+    margin-top: auto;
     padding-top: 0.2rem;
 }
 
 .segmento-carton-modal-action {
-    border: 1px solid #5a74ff;
     background: #fff;
-    color: #3554ff;
     border-radius: 999px;
-    padding: 0.35rem 0.95rem;
+    border: 1px solid #5a74ff;
+    color: #3554ff;
+    cursor: pointer;
     font-size: 0.76rem;
     font-weight: 700;
-    cursor: pointer;
+    padding: 0.35rem 0.95rem;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 
     &:hover {

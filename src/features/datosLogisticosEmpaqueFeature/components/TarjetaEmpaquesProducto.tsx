@@ -522,7 +522,7 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
         showHeader={false}
         draggable={false}
         blockScroll
-        style={{ width: 'min(94vw, 42rem)' }}
+        style={{ width: 'min(94vw, 53rem)' }}
       >
         <div className="segmento-carton-modal-shell">
           <button

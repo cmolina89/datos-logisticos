@@ -181,6 +181,12 @@
             }
         }
 
+        .segmento-label {
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 0.35rem;
+        }
+
         @media (max-width: 600px) {
             .segmento-medidas-fila-2 {
                 grid-template-columns: 1fr;
@@ -251,27 +257,38 @@
             }
         }
 
-        /* Stepper Número de piezas */
-        .segmento-stepper-piezas.p-inputnumber-buttons-horizontal {
+        /* Stepper Número de piezas - botones en azul #1C42E8 */
+        .segmento-stepper-piezas-empaques.p-inputnumber-buttons-horizontal {
             display: flex;
-            border: 1px solid #5a5a5a;
+            border: 1px solid var(--surface-border, #081754);
             border-radius: 6px;
             overflow: hidden;
-            background: var(--surface-100);
+            background: #ffffff;
+            width: 100%;
 
-            .p-button {
-                background: var(--surface-200) !important;
-                color: var(--text-color);
-                border: 1px solid #5a5a5a;
-                border-radius: 0;
+            .segmento-stepper-btn.p-button {
+                background: #1c42e8 !important;
+                color: #ffffff !important;
+                border: none !important;
+                border-radius: 0 !important;
                 min-width: 2.5rem;
+                flex-shrink: 0;
+                transition: background 0.2s ease, transform 0.15s ease;
 
-                &:hover {
-                    background: var(--surface-300) !important;
+                &:hover:not(.p-disabled) {
+                    background: #1535c0 !important;
+                    transform: none;
+                    box-shadow: none;
                 }
 
                 &:first-of-type {
                     border-right: none;
+                }
+
+                .p-button-icon {
+                    font-size: 0.85rem;
+                    color: #ffffff !important;
+                    background: transparent !important;
                 }
             }
 
@@ -279,8 +296,18 @@
                 flex: 1;
                 min-width: 3rem;
                 text-align: center;
-                border-left: 1px solid #5a5a5a;
-                border-right: 1px solid #5a5a5a;
+                border-left: 1px solid var(--surface-border, #081754) !important;
+                border-right: 1px solid var(--surface-border, #081754) !important;
+                border-top: none !important;
+                border-bottom: none !important;
+                border-radius: 0 !important;
+                height: 40px;
+                font-family: var(--font-family);
+                font-size: 16px;
+                color: var(--text-color, #081754);
+                background: #ffffff;
+                -moz-transition: all 0.2s ease;
+                transition: all 0.2s ease;
             }
         }
 
