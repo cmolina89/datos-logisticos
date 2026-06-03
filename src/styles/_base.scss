@@ -1,11 +1,9 @@
-// src/styles/_base.scss
-// Estilos base scoped bajo .sgc-mfe-attributes
-// Homologado con sgc-mf-hardline-products-inventory-management
 @use 'variables' as *;
 @use 'mixins' as *;
 
+// Scoped Overrides for PrimeReact and Global Utility Classes
 .sgc-mfe-attributes {
-    // CSS Variables scoped al MFE
+    // CSS Variables scoped to the MFE
     --bs-danger-rgb: 255, 89, 77;
     --color-primary-press: #{$color-primary-press};
     --content-border-radius: #{$border-radius-md};
@@ -15,11 +13,10 @@
     --p-border-radius: #{$border-radius-md};
     --p-font-family: 'Poppins', Arial, sans-serif !important;
     --p-green-500: #{$color-success};
-    --surface-border: #{$color-surface-border};
     --text: #{$color-primary};
     --text-color: #4b5563;
 
-    // Base scoping y reset
+    // Base scoping and reset
     & {
         box-sizing: border-box;
         color: var(--text-color, $color-primary);
@@ -33,6 +30,12 @@
     *::after {
         box-sizing: inherit;
         font-family: var(--font-family) !important;
+    }
+
+    // PrimeIcons usa glifos en ::before; esta excepción evita que el reset los rompa.
+    .pi,
+    .pi::before {
+        font-family: 'primeicons' !important;
     }
 
     /* Accessibility */
@@ -64,54 +67,3 @@
         font-family: var(--font-family);
     }
 }
-
-// Contenedor principal del MFE
-.sgc-mfe-attributes {
-    -moz-box-direction: normal;
-    -moz-box-orient: vertical;
-    background-color: $color-white;
-    background-color: var(--color-background-body, #f8f9fa);
-    border-radius: $border-radius-lg;
-    color: $color-primary;
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-lg;
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
-    padding: $spacing-lg;
-    position: relative;
-}
-
-// Dark Theme Support
-body.dark-theme {
-    background-color: #212529;
-    color: #f8f9fa;
-
-    .sgc-mfe-attributes {
-        .p-message,
-        .p-accordion-header,
-        .p-accordion-header-link,
-        .p-accordion-content {
-            background-color: var(--surface-card) !important;
-            border-color: var(--surface-border) !important;
-            color: var(--text-color) !important;
-        }
-
-        .p-tabview {
-            background-color: var(--surface-card) !important;
-            .p-tabview-nav,
-            .p-tabview-panels {
-                background-color: var(--surface-card) !important;
-                color: var(--text-color) !important;
-            }
-        }
-
-        .p-card {
-            background-color: var(--surface-card) !important;
-            color: var(--text-color) !important;
-            border-color: var(--surface-border) !important;
-        }
-    }
-}
-

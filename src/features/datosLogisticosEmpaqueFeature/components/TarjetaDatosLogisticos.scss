@@ -2,394 +2,398 @@
 // HU 038, 039, 040
 // Wrapper para eliminar cualquier borde heredado
 .segmento-datos-logisticos-wrapper {
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-  background: transparent !important;
-  padding: 0 !important;
-  margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .segmento-datos-logisticos {
-  background: #fff !important;
-  border-radius: 24px !important;
-  // Sombra pronunciada y difusa
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 12px rgba(0, 0, 0, 0.10) !important;
-  border: none !important;
-  outline: none !important;
-  overflow: hidden;
-  font-family: 'Poppins', Arial, sans-serif;
-
-  // Eliminar la capa ::before que generaba borde visual extra
-  &::before {
-    display: none;
-  }
-  .segmento-datos-logisticos-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 1rem;
-    position: relative;
+    // Sombra pronunciada y difusa
+    background: #fff !important;
+    border-radius: 24px !important;
+    border: none !important;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 12px rgba(0, 0, 0, 0.1) !important;
     font-family: 'Poppins', Arial, sans-serif;
-    font-size: var(--font-size-subheader, 1.125rem);
+    outline: none !important;
+    overflow: hidden;
+    padding: 0 2%;
 
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 1%;
-      width: 98%;
-      height: 2px;
-      background-color: var(--surface-border);
+    // Eliminar la capa ::before que generaba borde visual extra
+    &::before {
+        display: none;
     }
-  }
-
-  .segmento-datos-logisticos-titulo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: var(--font-size-subheader, 1.125rem);
-  }
-
-  .segmento-titulo-texto {
-    margin: 0;
-    font-size: var(--font-size-subheader, 1.125rem);
-    font-weight: 700;
-    color: var(--text-color);
-    font-family: 'Poppins', Arial, sans-serif;
-  }
-
-  .segmento-checkmark-icon {
-    color: var(--color-text-success, #2e8a41);
-    font-size: 1.25rem;
-  }
-
-  .segmento-collapse {
-    background: none;
-    border: none;
-    padding: 0.25rem;
-    cursor: pointer;
-    color: var(--text-color-secondary);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-      color: var(--text-color);
-      background: var(--surface-hover);
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .segmento-datos-logisticos-intro {
-    margin: 0 1rem 1rem;
-    font-size: var(--font-size-body-mobile, 0.970rem);
-    color: #000;
-    line-height: 1.5;
-    font-family: 'Poppins', Arial, sans-serif;
-  }
-
-  .segmento-datos-logisticos-aviso-incompleto {
-    margin: 1rem;
-    padding: 1rem;
-    background: var(--surface-100);
-    border-radius: 8px;
-    border-left: 4px solid var(--primary-color);
-
-    .aviso-title {
-      margin: 0 0 0.5rem;
-      font-weight: 700;
-      font-size: var(--font-size-subheader, 1.125rem);
-      color: var(--text-color);
-    }
-
-    .aviso-message {
-      margin: 0;
-      font-size: var(--font-size-body-mobile, 0.970rem);
-      color: var(--text-color-secondary);
-      line-height: 1.5;
-    }
-  }
-
-  .segmento-subtitulo {
-    margin: 0 1rem 0.5rem;
-    font-size: var(--font-size-subheader, 1.125rem);
-    font-weight: 700;
-    color: var(--text-color);
-    font-family: 'Poppins', Arial, sans-serif;
-  }
-
-  .segmento-label {
-    font-weight: 500;
-    color: var(--text-color);
-    margin-bottom: 0.35rem;
-    font-family: 'Poppins', Arial, sans-serif;
-  }
-
-  .segmento-dropdown-esquema {
-    margin: 0 1rem;
-  }
-
-  .segmento-select-esquema {
-    width: 100%;
-    max-width: 400px;
-    border: 1px solid #5a5a5a;
-
-    .p-inputwrapper {
-      border: none !important;
-      box-shadow: none !important;
-    }
-
-    .p-dropdown {
-      border: 1px solid #5a5a5a;
-      border-radius: 4px;
-      background: #1c2127;
-      box-shadow: none !important;
-
-      .p-dropdown-trigger {
-        border: none !important;
-      }
-    }
-  }
-
-  .p-dropdown-label {
-    font-weight: bold;
-  }
-
-  .segmento-tabla-cedis-wrapper {
-    margin: 0 1rem 1rem;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: visible;
-    border: none;
-    position: relative;
-    -webkit-overflow-scrolling: touch;
-
-    &::-webkit-scrollbar {
-      height: 8px;
-    }
-    &::-webkit-scrollbar-track {
-      background: var(--surface-100);
-      border-radius: 4px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: var(--surface-400);
-      border-radius: 4px;
-    }
-  }
-
-  .segmento-tabla-cedis-loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    min-height: 4rem;
-  }
-
-  .segmento-tabla-cedis-datatable {
-    font-size: var(--font-size-small, 0.875rem);
-    width: 100%;
-
-    .p-datatable-wrapper {
-      overflow-x: auto;
-      overflow-y: visible;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .p-datatable-table {
-      min-width: 560px;
-    }
-
-    .p-datatable-thead > tr > th {
-      font-weight: 600;
-      color: #1e1b4b;
-      background: #fff;
-      text-align: center;
-      position: relative;
-      padding: 0.75rem;
-      border: none;
-      border-bottom: 2px solid #e5e7eb;
-
-      .p-column-header-content {
+    .segmento-datos-logisticos-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
         position: relative;
-        display: block;
-        width: 100%;
-      }
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: var(--font-size-subheader, 1.125rem);
 
-      .p-column-title {
-        display: block;
-        width: 100%;
-        padding-right: 1.5rem;
-        text-align: center;
-      }
-
-      .p-column-filter-menu-button {
-        position: absolute;
-        right: 0.5rem;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-    }
-
-    .p-datatable-tbody > tr > td {
-      text-align: center;
-      padding: 0.75rem;
-      border: none;
-      color: #1e1b4b;
-    }
-
-    .p-datatable-tbody > tr:last-child > td {
-      border-bottom: 2px solid #e5e7eb;
-    }
-
-    .p-datatable-tbody > tr:hover {
-      background: var(--surface-50);
-    }
-
-    .col-receptor {
-      text-align: center;
-      vertical-align: middle;
-    }
-
-    .th-receptor-label {
-      margin: 0;
-    }
-
-    .p-column-filter-menu-button {
-      margin-left: 0;
-    }
-
-    .p-column-filter-overlay {
-      min-width: 14rem;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .p-column-filter-overlay .p-filter-constraint {
-      padding-bottom: 0.75rem;
-    }
-
-    .p-column-filter-overlay .p-filter-add-rule {
-      margin-bottom: 0.75rem;
-    }
-
-    .p-column-filter-overlay .p-filter-footer {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: flex-end;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--surface-border);
-    }
-
-    .p-column-filter-overlay .p-inputtext,
-    .p-column-filter-overlay .p-dropdown {
-      border: 1px solid #5a5a5a;
-      border-radius: 4px;
-    }
-
-    .p-checkbox .p-checkbox-box {
-      border-radius: 1px;
-      border: 2px solid #6b6b6b;
-      background: #6b7280;
-
-      &.p-highlight {
-        border-color: #6b6b6b;
-        background: #6b6b6b;
-
-        .p-checkbox-icon {
-          color: #fff;
-          font-size: 0.875rem;
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1%;
+            width: 98%;
+            height: 2px;
+            background-color: var(--surface-border);
         }
-      }
-
-      &:not(.p-disabled):hover {
-        border-color: #5a5a5a;
-        background: #b0b9c6;
-      }
-      &.p-highlight:not(.p-disabled):hover {
-        background: #5a5a5a;
-      }
     }
-  }
 
-  @media (max-width: 640px) {
+    .segmento-datos-logisticos-titulo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: var(--font-size-subheader, 1.125rem);
+    }
+
+    .segmento-titulo-texto {
+        margin: 0;
+        font-size: var(--font-size-subheader, 1.125rem);
+        font-weight: 700;
+        color: var(--text-color);
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    .segmento-checkmark-icon {
+        color: var(--color-text-success, #2e8a41);
+        font-size: 1.25rem;
+    }
+
+    .segmento-collapse {
+        background: none;
+        border: none;
+        padding: 0.25rem;
+        cursor: pointer;
+        color: var(--text-color-secondary);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            color: var(--text-color);
+            background: var(--surface-hover);
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .segmento-datos-logisticos-intro {
+        padding-top: 15px;
+        margin: 0 1rem 1rem;
+        font-size: var(--font-size-body-mobile, 0.97rem);
+        color: #4b5563;
+        line-height: 1.5;
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    .segmento-datos-logisticos-aviso-incompleto {
+        margin: 1rem;
+        padding: 1rem;
+        background: var(--surface-100);
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-color);
+
+        .aviso-title {
+            margin: 0 0 0.5rem;
+            font-weight: 700;
+            font-size: var(--font-size-subheader, 1.125rem);
+            color: var(--text-color);
+        }
+
+        .aviso-message {
+            margin: 0;
+            font-size: var(--font-size-body-mobile, 0.97rem);
+            color: var(--text-color-secondary);
+            line-height: 1.5;
+        }
+    }
+
+    .segmento-subtitulo {
+        margin: 0 1rem 0.5rem;
+        font-size: var(--font-size-subheader, 1.125rem);
+        font-weight: 700;
+        color: var(--text-color);
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    .segmento-label {
+        font-weight: 500;
+        color: var(--text-color);
+        margin-bottom: 0.35rem;
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    .segmento-dropdown-esquema {
+        margin: 0 1rem;
+    }
+
+    .segmento-select-esquema {
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid #5a5a5a;
+
+        .p-inputwrapper {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .p-dropdown {
+            border: 1px solid #5a5a5a;
+            border-radius: 4px;
+            background: #1c2127;
+            box-shadow: none !important;
+
+            .p-dropdown-trigger {
+                border: none !important;
+            }
+        }
+    }
+
+    .p-dropdown-label {
+        font-weight: bold;
+    }
+
     .segmento-tabla-cedis-wrapper {
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-      margin-bottom: 1rem;
+        margin: 0 1rem 1rem;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: visible;
+        border: none;
+        position: relative;
+        -webkit-overflow-scrolling: touch;
+
+        &::-webkit-scrollbar {
+            height: 8px;
+        }
+        &::-webkit-scrollbar-track {
+            background: var(--surface-100);
+            border-radius: 4px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: var(--surface-400);
+            border-radius: 4px;
+        }
+    }
+
+    .segmento-tabla-cedis-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        min-height: 4rem;
     }
 
     .segmento-tabla-cedis-datatable {
-      .p-datatable-thead > tr > th,
-      .p-datatable-tbody > tr > td {
-        padding: 0.4rem 0.5rem;
-        font-size: 0.8125rem;
-      }
+        font-size: var(--font-size-small, 0.875rem);
+        width: 100%;
 
-      .p-datatable-table {
-        min-width: 520px;
-      }
+        .p-datatable-wrapper {
+            overflow-x: auto;
+            overflow-y: visible;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .p-datatable-table {
+            min-width: 560px;
+        }
+
+        .p-datatable-thead > tr > th {
+            font-weight: 600;
+            color: #1e1b4b;
+            background: #fff;
+            text-align: center;
+            position: relative;
+            padding: 0.75rem;
+            border: none;
+            border-bottom: 2px solid #e5e7eb;
+
+            .p-column-header-content {
+                position: relative;
+                display: block;
+                width: 100%;
+            }
+
+            .p-column-title {
+                display: block;
+                width: 100%;
+                padding-right: 1.5rem;
+                text-align: center;
+            }
+
+            .p-column-filter-menu-button {
+                position: absolute;
+                right: 0.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+        .p-datatable-tbody > tr > td {
+            text-align: center;
+            padding: 0.75rem;
+            border: none;
+            color: #1e1b4b;
+        }
+
+        .p-datatable-tbody > tr:last-child > td {
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .p-datatable-tbody > tr:hover {
+            background: var(--surface-50);
+        }
+
+        .col-receptor {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .th-receptor-label {
+            margin: 0;
+        }
+
+        .p-column-filter-menu-button {
+            margin-left: 0;
+        }
+
+        .p-column-filter-overlay {
+            min-width: 14rem;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .p-column-filter-overlay .p-filter-constraint {
+            padding-bottom: 0.75rem;
+        }
+
+        .p-column-filter-overlay .p-filter-add-rule {
+            margin-bottom: 0.75rem;
+        }
+
+        .p-column-filter-overlay .p-filter-footer {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--surface-border);
+        }
+
+        .p-column-filter-overlay .p-inputtext,
+        .p-column-filter-overlay .p-dropdown {
+            border: 1px solid #5a5a5a;
+            border-radius: 4px;
+        }
+
+        .p-checkbox .p-checkbox-box {
+            border-radius: 5px;
+            border: 2px solid #8c8c8c;
+            background: #6b7280;
+
+            &.p-highlight {
+                border-color: #8c8c8c;
+                background: #8c8c8c;
+
+                .p-checkbox-icon {
+                    color: #fff;
+                    font-size: 0.875rem;
+                }
+            }
+
+            &:not(.p-disabled):hover {
+                border-color: #5a5a5a;
+                background: #b0b9c6;
+            }
+            &.p-highlight:not(.p-disabled):hover {
+                background: #5a5a5a;
+            }
+        }
     }
-  }
 
-  @media (max-width: 480px) {
-    .segmento-tabla-cedis-wrapper {
-      margin-left: 0.25rem;
-      margin-right: 0.25rem;
+    @media (max-width: 640px) {
+        .segmento-tabla-cedis-wrapper {
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .segmento-tabla-cedis-datatable {
+            .p-datatable-thead > tr > th,
+            .p-datatable-tbody > tr > td {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.8125rem;
+            }
+
+            .p-datatable-table {
+                min-width: 520px;
+            }
+        }
     }
 
-    .segmento-tabla-cedis-datatable .p-datatable-table {
-      min-width: 480px;
-    }
-  }
+    @media (max-width: 480px) {
+        .segmento-tabla-cedis-wrapper {
+            margin-left: 0.25rem;
+            margin-right: 0.25rem;
+        }
 
-  .segmento-datos-logisticos-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: #FFFFFF;
-  }
-
-  .segmento-link-config {
-    color: var(--primary-color);
-    text-decoration: underline;
-    font-size: var(--font-size-small, 0.875rem);
-
-    &:hover {
-      color: var(--color-primary-hover, #081754);
+        .segmento-tabla-cedis-datatable .p-datatable-table {
+            min-width: 480px;
+        }
     }
 
-    &:focus {
-      outline: 2px solid var(--primary-color);
-      outline-offset: 2px;
-    }
-  }
-
-  .segmento-datos-logisticos-footer .p-button {
-    background: #fff !important;
-    color: var(--primary-color) !important;
-    border: 1px solid var(--primary-color) !important;
-    border-radius: 2rem;
-    padding: 0.5rem 1.25rem;
-    font-weight: 500;
-
-    .p-button-icon {
-      color: var(--primary-color);
+    .segmento-datos-logisticos-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        padding: 1rem;
+        background: #ffffff;
     }
 
-    &:hover:not(.p-disabled) {
-      background: var(--surface-50) !important;
-      color: var(--primary-color) !important;
-      border-color: var(--primary-color) !important;
+    .segmento-link-config {
+        color: var(--primary-color);
+        text-decoration: underline;
+        font-size: var(--font-size-small, 0.875rem);
+
+        &:hover {
+            color: var(--color-primary-hover, #081754);
+        }
+
+        &:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
     }
-  }
+
+    .segmento-datos-logisticos-footer .p-button {
+        background: #fff !important;
+        color: var(--primary-color) !important;
+        border: 1px solid var(--primary-color) !important;
+        border-radius: 2rem;
+        padding: 0.5rem 1.25rem;
+        font-weight: 500;
+
+        .p-button-icon {
+            color: var(--primary-color);
+            background: transparent !important;
+            font-size: 1.4rem;
+            line-height: 1;
+        }
+
+        &:hover:not(.p-disabled) {
+            background: var(--surface-50) !important;
+            color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+    }
 }
-

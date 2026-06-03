@@ -1,6 +1,5 @@
 import { ThemeProvider } from '@/app/providers/ThemeProvider'
 import SEOHead from '@/components/common/SEOHead/SEOHead'
-import LanguageSwitcher from '@/components/common/LanguageSwitcher/LanguageSwitcher'
 import { applyClientSecurityHeaders } from '@/utils/securityHeaders'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Outlet } from '@modern-js/runtime/router'
@@ -27,18 +26,11 @@ function LayoutContent() {
     applyClientSecurityHeaders()
   }, [])
 
-  const handleSkipLinkFocus = (e: React.FocusEvent<HTMLAnchorElement>) => {
-    e.target.style.top = '6px'
-  }
-
-  const handleSkipLinkBlur = (e: React.FocusEvent<HTMLAnchorElement>) => {
-    e.target.style.top = '-40px'
-  }
-
   return (
     <div id="remote-app" className="sgc-mfe-attributes" role="application">
       <SEOHead />
-      <main id="main-content" className="cv-main-content">
+      {/* Contenido principal sin márgenes para navbar/sidebar */}
+      <main id="main-content">
         <Outlet />
       </main>
     </div>

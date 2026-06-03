@@ -1,445 +1,446 @@
-  // Mensaje de advertencia inline debajo de un campo (warning)
-  .campo-warning-inline {
+// Mensaje de advertencia inline debajo de un campo (warning)
+.campo-warning-inline {
     display: flex;
     align-items: center;
     gap: 0;
     background: #fff;
-    color: #F7B500;
+    color: #f7b500;
     font-size: 0.97rem;
     margin-top: 0.15rem;
     padding: 0.55rem 1.1rem;
     border-radius: 8px;
-    border: 1.5px solid #F7B500;
+    border: 1.5px solid #f7b500;
     font-weight: 500;
     width: 100%;
     box-sizing: border-box;
-  }
+}
 // Segmento Medidas con empaque individual - Estilo según imagen de referencia
 // HU 041, 042, 043
 // Campos: fondo blanco, bordes redondeados, borde gris oscuro, placeholder gris
 
 .segmento-medidas-empaque-individual {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18),
-  0 2px 12px rgba(0, 0, 0, 0.10);
-  border: none;
-  overflow: hidden;
-  font-family: 'Poppins', Arial, sans-serif;
-
-  .segmento-medidas-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 1rem;
-    position: relative;
-    font-size: var(--font-size-subheader, 1.125rem);
-
-    .segmento-medidas-titulo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 1%;
-      width: 98%;
-      height: 2px;
-      background-color: var(--surface-border);
-    }
-  }
-
-  .segmento-titulo-texto {
-    margin: 0;
-    font-size: var(--font-size-subheader, 1.125rem);
-    font-weight: 700;
-    color: var(--text-color);
-    font-family: 'Poppins', Arial, sans-serif;
-  }
-
-  /* Botón colapsar: fondo blanco, bordes en semicírculos (pill) como en imagen */
-  .segmento-collapse {
-    background: #fff !important;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 12px rgba(0, 0, 0, 0.1);
     border: none;
-    padding: 0.35rem 0.5rem;
-    cursor: pointer;
-    color: var(--text-color-secondary);
-    border-radius: 2rem;
-    min-width: 2rem;
-    height: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
+    font-family: 'Poppins', Arial, sans-serif;
+    padding: 0 2%;
 
-    &:hover {
-      color: var(--text-color);
-      background: var(--surface-50) !important;
+    .segmento-medidas-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        position: relative;
+        font-size: var(--font-size-subheader, 1.125rem);
+
+        .segmento-medidas-titulo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1%;
+            width: 98%;
+            height: 2px;
+            background-color: var(--surface-border);
+        }
     }
 
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .segmento-medidas-intro {
-    margin: 0 1rem 1rem;
-    font-size: var(--font-size-body-mobile, 0.970rem);
-    color: #000;
-    line-height: 1.5;
-    font-family: "Poppins", Arial, sans-serif;
-  }
-
-  /* Pregunta ¿Mi producto tiene empaque individual? con radios Si/No en fila */
-  .segmento-medidas-pregunta {
-    margin: 0 1rem 1rem;
-  }
-
-  .segmento-medidas-radios-fila {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem 1.5rem;
-  }
-
-  .segmento-medidas-radio-opcion {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    label {
-      margin: 0;
-      cursor: pointer;
-    }
-  }
-
-  /* Radio buttons: contorno y seleccionado en color morado (igual que Empaques del producto) */
-  .p-radiobutton {
-    .p-radiobutton-box {
-      width: 1.25rem !important;
-      height: 1.25rem !important;
-      border: 2px solid #7c3aed !important;
-      background: #fff !important;
-      box-shadow: none !important;
-
-      &:not(.p-disabled):hover {
-        border-color: #6d28d9 !important;
-        background: #fff !important;
-      }
-
-      &.p-highlight {
-        border-color: #7c3aed !important;
-        background: #fff !important;
-      }
-
-      .p-radiobutton-icon {
-        width: 0.5rem !important;
-        height: 0.5rem !important;
-        background-color: #7c3aed !important;
-        transform-origin: center;
-      }
-    }
-  }
-
-  .segmento-medidas-form-disabled {
-    opacity: 0.7;
-    pointer-events: none;
-  }
-
-  .segmento-medidas-form {
-    padding: 0 1.25rem 1.25rem;
-
-    .segmento-label {
-      font-weight: 500;
-      color: var(--text-color);
-      margin-bottom: 0.35rem;
-    }
-
-    /* Fila Nombre: label e input en el mismo renglón */
-    .segmento-fila-nombre {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem 1rem;
-
-      .segmento-label-inline {
-        margin-bottom: 0;
-        flex-shrink: 0;
-      }
-
-      .segmento-input-nombre {
-        width: auto;
-        min-width: 12rem;
-        max-width: 18em;
-      }
-    }
-
-    /* Filas 2–4: layout con CSS Grid */
-    .segmento-medidas-fila {
-      display: grid;
-      gap: 1rem 1.5rem;
-      align-items: start;
-      margin-bottom: 0.35rem;
-    }
-
-    .segmento-medidas-fila-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .segmento-medidas-fila-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .segmento-medidas-campo {
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-
-      .w-full,
-      .p-dropdown,
-      .p-inputnumber {
-        width: 100%;
-      }
-
-      &.segmento-medidas-campo-vacio {
-        min-height: 0;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .segmento-medidas-fila-2 {
-        grid-template-columns: 1fr;
-      }
-      .segmento-medidas-fila-3 {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .campo-requerido {
-      color: currentColor;
-    }
-
-    .p-invalid {
-      border: 2px solid #F44336 !important;
-      box-shadow: none !important;
-    }
-
-    .campo-warning-input .p-inputnumber-input {
-      border: 2px solid #F7B500 !important;
-      box-shadow: none !important;
-    }
-
-    /* Campos: fondo blanco, bordes redondeados, contorno gris oscuro */
-    .p-inputtext,
-    .p-inputnumber-input {
-      background: #FFFFFF;
-      border: 1px solid #5a5a5a;
-      border-radius: 6px;
-      color: var(--text-color);
-      transition: border 0.2s;
-
-      &::placeholder {
-        color: var(--color-text-soft, #a4a4a4);
-      }
-      &.p-invalid {
-        border: 2px solid #F44336 !important;
-        padding-right: 2.2rem !important;
-      }
-    }
-
-    /* Dropdown: evitar doble borde por p-inputwrapper + p-dropdown */
-    .p-inputwrapper {
-      border: none !important;
-      box-shadow: none !important;
-      outline: none !important;
-      border-radius: 6px;
-    }
-
-    /* Select: borde gris oscuro igual que los demás campos */
-    .p-dropdown {
-      background: #FFFFFF;
-      border: 1px solid #5a5a5a !important;
-      border-radius: 6px;
-      box-shadow: none !important;
-      outline: none !important;
-
-      &:not(.p-disabled):hover {
-        border-color: #3a3a3a !important;
-      }
-
-      &:not(.p-disabled).p-focus {
-        border-color: #5a5a5a !important;
-        box-shadow: 0 0 0 0.2rem rgba(90, 90, 90, 0.2) !important;
-      }
-
-      .p-dropdown-label,
-      .p-dropdown-label-container,
-      .p-dropdown-trigger {
-        border: none !important;
-        box-shadow: none !important;
-      }
-
-      .p-dropdown-label {
+    .segmento-titulo-texto {
+        margin: 0;
+        font-size: var(--font-size-subheader, 1.125rem);
+        font-weight: 700;
         color: var(--text-color);
-      }
-
-      .p-dropdown-label.p-placeholder {
-        color: var(--color-text-soft, #a4a4a4);
-      }
+        font-family: 'Poppins', Arial, sans-serif;
     }
 
-    .p-inputnumber {
-      .p-inputnumber-input {
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-      }
-    }
-
-    /* Stepper Número de piezas */
-    .segmento-stepper-piezas.p-inputnumber-buttons-horizontal {
-      display: flex;
-      border: 1px solid #5a5a5a;
-      border-radius: 6px;
-      overflow: hidden;
-      background: var(--surface-100);
-
-      .p-button {
-        background: var(--surface-200) !important;
-        color: var(--text-color);
-        border: 1px solid #5a5a5a;
-        border-radius: 0;
-        min-width: 2.5rem;
+    /* Botón colapsar: fondo blanco, bordes en semicírculos (pill) como en imagen */
+    .segmento-collapse {
+        background: #fff !important;
+        border: none;
+        padding: 0.35rem 0.5rem;
+        cursor: pointer;
+        color: var(--text-color-secondary);
+        border-radius: 2rem;
+        min-width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         &:hover {
-          background: var(--surface-300) !important;
+            color: var(--text-color);
+            background: var(--surface-50) !important;
         }
 
-        &:first-of-type {
-          border-right: none;
+        &:focus {
+            outline: none;
         }
-      }
-
-      .p-inputnumber-input {
-        flex: 1;
-        min-width: 3rem;
-        text-align: center;
-        border-left: 1px solid #5a5a5a;
-        border-right: 1px solid #5a5a5a;
-      }
     }
 
-    /* InputNumber sin botones (Peso, Alto, Frente, Fondo, Estiba) */
-    .p-inputnumber:not(.p-inputnumber-buttons-horizontal) .p-inputnumber-input {
-      border-radius: 6px;
-      border: 1px solid #5a5a5a;
-    }
-  }
-
-  /* Footer: botón Guardar alineado a la derecha */
-  .segmento-medidas-footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 1rem;
-    margin-top: 0.5rem;
-    background: #FFFFFF;
-
-    .p-button {
-      width: auto !important;
-      min-width: auto !important;
-      background: #fff !important;
-      color: var(--primary-color) !important;
-      border: 1px solid var(--primary-color) !important;
-      border-radius: 2rem;
-      padding: 0.5rem 1.25rem;
-      font-weight: 500;
-
-      .p-button-icon {
-        color: var(--primary-color);
-      }
-
-      &:hover:not(.p-disabled) {
-        background: var(--surface-50) !important;
-        color: var(--primary-color) !important;
-        border-color: var(--primary-color) !important;
-      }
-    }
-  }
-
-  // Mensaje de error general arriba del formulario
-  .alerta-formulario-error {
-    background: #fff;
-    border: 1.5px solid #F44336;
-    border-radius: 8px;
-    padding: 0.75rem 1.25rem;
-    margin-bottom: 1.25rem;
-    color: #F44336;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-
-    .alerta-formulario-error-item {
-      display: flex;
-      align-items: center;
-      font-weight: 500;
-    }
-  }
-
-  // Mensaje de error inline debajo de un campo
-  .campo-error-inline {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    background: #fff;
-    color: #F44336;
-    font-size: 0.97rem;
-    margin-top: 0.15rem;
-    padding: 0.55rem 1.1rem;
-    border-radius: 8px;
-    border: 1.5px solid #F44336;
-    font-weight: 500;
-    width: 100%;
-    box-sizing: border-box;
-
-  }
-
-  // Input con ícono de error a la derecha
-  .input-con-icono-error {
-    position: relative;
-    display: flex;
-    align-items: center;
-
-    .icono-error-input {
-      position: absolute;
-      right: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%) translateX(2px);
-      width: 1.2rem;
-      height: 1.2rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: #ff6b63;
-      color: #ffffff;
-      font-size: 0.84rem;
-      line-height: 1.2rem;
-      font-weight: 800;
-      pointer-events: none;
-      z-index: 2;
-      font-family: Arial, Helvetica, sans-serif;
-      text-align: center;
-      padding-bottom: 0;
+    .segmento-medidas-intro {
+        padding-top: 15px;
+        margin: 0 1rem 1rem;
+        font-size: var(--font-size-body-mobile, 0.97rem);
+        color: #4b5563;
+        line-height: 1.5;
+        font-family: 'Poppins', Arial, sans-serif;
     }
 
-    .icono-error-input-warning {
-      background: #F7B500;
-      color: #ffffff;
+    /* Pregunta ¿Mi producto tiene empaque individual? con radios Si/No en fila */
+    .segmento-medidas-pregunta {
+        margin: 0 1rem 1rem;
     }
-  }
+
+    .segmento-medidas-radios-fila {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem 1.5rem;
+    }
+
+    .segmento-medidas-radio-opcion {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        label {
+            margin: 0;
+            cursor: pointer;
+        }
+    }
+
+    .segmento-medidas-form-disabled {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    .segmento-medidas-form {
+        padding: 0 1.25rem 1.25rem;
+
+        .segmento-label {
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 0.35rem;
+        }
+
+        /* Fila Nombre: label e input en el mismo renglón */
+        .segmento-fila-nombre {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+
+            .segmento-label-inline {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+
+            .segmento-input-nombre {
+                width: auto;
+                min-width: 12rem;
+                max-width: 18em;
+            }
+        }
+
+        /* Filas 2–4: layout con CSS Grid */
+        .segmento-medidas-fila {
+            display: grid;
+            gap: 1rem 1.5rem;
+            align-items: start;
+            margin-bottom: 0.35rem;
+        }
+
+        .segmento-medidas-fila-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .segmento-medidas-fila-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .segmento-medidas-campo {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+
+            .w-full,
+            .p-dropdown,
+            .p-inputnumber {
+                width: 100%;
+            }
+
+            &.segmento-medidas-campo-vacio {
+                min-height: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .segmento-medidas-fila-2 {
+                grid-template-columns: 1fr;
+            }
+            .segmento-medidas-fila-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .campo-requerido {
+            color: currentColor;
+        }
+
+        .p-invalid {
+            border: 2px solid #f44336 !important;
+            box-shadow: none !important;
+        }
+
+        .campo-warning-input .p-inputnumber-input {
+            border: 2px solid #f7b500 !important;
+            box-shadow: none !important;
+        }
+
+        /* Campos: fondo blanco, bordes redondeados, contorno gris oscuro */
+        .p-inputtext,
+        .p-inputnumber-input {
+            background: #ffffff;
+            border: 1px solid #5a5a5a;
+            border-radius: 6px;
+            color: var(--text-color);
+            transition: border 0.2s;
+            background: #ffffff;
+            background: var(--surface-ground, #ffffff);
+            border: 1px solid #081754;
+            border: 1px solid var(--surface-border, #081754);
+            color: #081754;
+            color: var(--text-color, #081754);
+            font-family: var(--font-family);
+            font-size: 16px;
+            height: 40px;
+            padding: 8px 16px;
+            -moz-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+            width: 100%;
+
+            &::placeholder {
+                color: var(--color-text-soft, #a4a4a4);
+            }
+            &.p-invalid {
+                border: 2px solid #f44336 !important;
+                padding-right: 2.2rem !important;
+            }
+        }
+
+        /* Dropdown: evitar doble borde por p-inputwrapper + p-dropdown */
+        .p-inputwrapper {
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            border-radius: 6px;
+        }
+
+        /* Select: borde gris oscuro igual que los demás campos */
+        .p-dropdown {
+            background: #ffffff;
+            border: 1px solid #5a5a5a !important;
+            border-radius: 6px;
+            box-shadow: none !important;
+            outline: none !important;
+
+            &:not(.p-disabled):hover {
+                border-color: #3a3a3a !important;
+            }
+
+            &:not(.p-disabled).p-focus {
+                border-color: #5a5a5a !important;
+                box-shadow: 0 0 0 0.2rem rgba(90, 90, 90, 0.2) !important;
+            }
+
+            .p-dropdown-label,
+            .p-dropdown-label-container,
+            .p-dropdown-trigger {
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            .p-dropdown-label {
+                color: var(--text-color);
+            }
+
+            .p-dropdown-label.p-placeholder {
+                color: var(--color-text-soft, #a4a4a4);
+            }
+        }
+
+        .p-inputnumber {
+            .p-inputnumber-input {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+        }
+
+        /* Stepper Número de piezas */
+        .segmento-stepper-piezas.p-inputnumber-buttons-horizontal {
+            display: flex;
+            border: 1px solid #5a5a5a;
+            border-radius: 6px;
+            overflow: hidden;
+            background: var(--surface-100);
+
+            .p-button {
+                background: var(--surface-200) !important;
+                color: var(--text-color);
+                border: 1px solid #5a5a5a;
+                border-radius: 0;
+                min-width: 2.5rem;
+
+                &:hover {
+                    background: var(--surface-300) !important;
+                }
+
+                &:first-of-type {
+                    border-right: none;
+                }
+            }
+
+            .p-inputnumber-input {
+                flex: 1;
+                min-width: 3rem;
+                text-align: center;
+                border-left: 1px solid #5a5a5a;
+                border-right: 1px solid #5a5a5a;
+            }
+        }
+
+        /* InputNumber sin botones (Peso, Alto, Frente, Fondo, Estiba) */
+        .p-inputnumber:not(.p-inputnumber-buttons-horizontal) .p-inputnumber-input {
+            border-radius: 6px;
+            border: 1px solid #5a5a5a;
+            background: #ffffff;
+            background: var(--surface-ground, #ffffff);
+            border: 1px solid #081754;
+            border: 1px solid var(--surface-border, #081754);
+            color: #081754;
+            color: var(--text-color, #081754);
+            font-family: var(--font-family);
+            font-size: 16px;
+            height: 40px;
+            padding: 8px 16px;
+            -moz-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+    }
+
+    /* Footer: botón Guardar alineado a la derecha */
+    .segmento-medidas-footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 1rem;
+        margin-top: 0.5rem;
+        background: #ffffff;
+
+        .p-button {
+            width: auto !important;
+            min-width: auto !important;
+            background: #fff !important;
+            color: var(--primary-color) !important;
+            border: 1px solid var(--primary-color) !important;
+            border-radius: 2rem;
+            padding: 0.5rem 1.25rem;
+            font-weight: 500;
+
+            .p-button-icon {
+                color: var(--primary-color) !important;
+                background: transparent !important;
+                font-size: 1.4rem;
+                line-height: 1;
+            }
+
+            &:hover:not(.p-disabled) {
+                background: var(--surface-50) !important;
+                color: var(--primary-color) !important;
+                border-color: var(--primary-color) !important;
+            }
+        }
+    }
+
+    // Mensaje de error general arriba del formulario
+    .alerta-formulario-error {
+        background: #fff;
+        border: 1.5px solid #f44336;
+        border-radius: 8px;
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 1.25rem;
+        color: #f44336;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+
+        .alerta-formulario-error-item {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+    }
+
+    // Mensaje de error inline debajo de un campo
+    .campo-error-inline {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        background: #fff;
+        color: #f44336;
+        font-size: 0.97rem;
+        margin-top: 0.15rem;
+        padding: 0.55rem 1.1rem;
+        border-radius: 8px;
+        border: 1.5px solid #f44336;
+        font-weight: 500;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    // Input con ícono de error a la derecha
+    .input-con-icono-error {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .icono-error-input {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%) translateX(2px);
+            width: 1.2rem;
+            height: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #ff6b63;
+            color: #ffffff;
+            font-size: 0.84rem;
+            line-height: 1.2rem;
+            font-weight: 800;
+            pointer-events: none;
+            z-index: 2;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            padding-bottom: 0;
+        }
+
+        .icono-error-input-warning {
+            background: #f7b500;
+            color: #ffffff;
+        }
+    }
 }

@@ -1,0 +1,105 @@
+// src/styles/components/_color-buttons.scss
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.sgc-mfe-attributes {
+    .cv-action-buttons-container {
+        align-items: center;
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: flex-end;
+        margin-bottom: $spacing-md;
+    }
+
+    .cv-button-delete {
+        align-items: center;
+        color: $color-primary-light !important;
+        display: flex;
+        justify-content: center;
+        padding-bottom: $spacing-sm;
+        padding-top: $spacing-sm;
+        width: 200px;
+    }
+
+    // 1. Estilos compartidos (Estructura y Animación)
+    .cv-button-save,
+    .cv-button-add {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 300px;
+        padding-top: $spacing-sm;
+        padding-bottom: $spacing-sm;
+        transition: all 0.2s ease;
+        width: auto;
+        cursor: pointer;
+
+        &:disabled {
+            background-color: $color-background-gray !important;
+            border: 1px solid $color-border-soft !important;
+            color: #9ca3af !important;
+            cursor: not-allowed;
+        }
+    }
+
+    // 2. Excepción específica para el botón Save (con bordes y fondo)
+    .cv-button-save {
+        border-radius: 30px !important;
+        &:not(:disabled) {
+            background-color: $color-white;
+            border: 1px solid $color-primary-light !important;
+            color: $color-primary-light !important;
+
+            &:hover {
+                background: rgba(28, 66, 232, 0.1);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(28, 66, 232, 0.2);
+            }
+        }
+    }
+
+    // 3. Excepción específica para el botón Add (estilo limpio/transparente)
+    .cv-button-add {
+        &:not(:disabled) {
+            background-color: transparent;
+            border: none !important;
+            color: $color-primary-light; // O el color que necesite el texto/icono
+            box-shadow: none;
+            outline: none;
+
+            &:hover {
+                // Opcional: un ligero feedback al pasar el mouse si es transparente
+                opacity: 0.8;
+                transform: translateY(-1px);
+            }
+        }
+    }
+
+    .cv-button-icon {
+        align-items: center;
+        display: flex;
+        font-size: $font-size-lg;
+        justify-content: center;
+        padding-left: $spacing-sm;
+        padding-right: $spacing-sm;
+    }
+
+    .cv-photo-manual-link {
+        align-items: center;
+        background-color: transparent !important;
+        border: none !important;
+        color: $color-primary-light !important;
+        display: flex;
+        font-size: 14px;
+        gap: 6px;
+        text-decoration: none !important;
+
+        &:hover {
+            text-decoration: none !important;
+        }
+    }
+
+    .cv-photo-manual-text {
+        white-space: nowrap;
+    }
+}
