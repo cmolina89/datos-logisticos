@@ -621,7 +621,6 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
             >
               {t('datosLogisticos.segmento3.cualAplica')} <span className="campo-requerido">*</span>
             </a>
-            <br />
             <div className="segmento-radios-cual-aplica">
               {opcionesCualAplica.map(opt => (
                 <div key={opt.value} className="segmento-radio-opcion-carton">
@@ -647,43 +646,77 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
             <>
               <br />
               <div className="segmento-carton-form p-fluid">
-                <div className="segmento-carton-fila segmento-carton-fila-3 p-mb-2">
-                  <CampoNumerico
-                    id="cantidadUdsCartonMaster"
-                    value={e.cantidadUdsCartonMaster}
-                    label={t('datosLogisticos.segmento3.cantidadUds')}
-                    infoText={t('datosLogisticos.segmento3.cantidadUdsInfo')}
-                    min={1}
-                    max={99999}
-                    useGrouping={false}
-                    maxFractionDigits={0}
-                    placeholder={t('datosLogisticos.segmento3.placeholderCantidadUds')}
-                    error={errors.cantidadUdsCartonMaster}
-                    warning={Boolean(alertaNoNumerico.cantidadUdsCartonMaster)}
-                    onChange={handleNumeroChange('cantidadUdsCartonMaster')}
-                    onKeyDown={handleNumeroKeyDown('cantidadUdsCartonMaster')}
-                    t={t}
-                  />
-                  <CampoNumerico
-                    id="multiploCartonMaster"
-                    value={e.multiploCartonMaster}
-                    label={t('datosLogisticos.segmento3.multiplo')}
-                    infoText={t('datosLogisticos.segmento3.multiploInfo')}
-                    min={1}
-                    max={99999}
-                    useGrouping={false}
-                    maxFractionDigits={0}
-                    placeholder={t('datosLogisticos.segmento3.placeholderMultiplo')}
-                    error={errors.multiploCartonMaster}
-                    warning={Boolean(alertaNoNumerico.multiploCartonMaster)}
-                    onChange={handleNumeroChange('multiploCartonMaster')}
-                    onKeyDown={handleNumeroKeyDown('multiploCartonMaster')}
-                    t={t}
-                  />
-                  <div
-                    className="segmento-carton-campo segmento-carton-campo-vacio"
-                    aria-hidden="true"
-                  />
+                <div className="row pb-2">
+                  <div className="col-md-4">
+                    <CampoNumerico
+                      id="cantidadUdsCartonMaster"
+                      value={e.cantidadUdsCartonMaster}
+                      label={t('datosLogisticos.segmento3.cantidadUds')}
+                      infoText={t('datosLogisticos.segmento3.cantidadUdsInfo')}
+                      min={1}
+                      max={99999}
+                      useGrouping={false}
+                      maxFractionDigits={0}
+                      placeholder={t('datosLogisticos.segmento3.placeholderCantidadUds')}
+                      error={errors.cantidadUdsCartonMaster}
+                      warning={Boolean(alertaNoNumerico.cantidadUdsCartonMaster)}
+                      onChange={handleNumeroChange('cantidadUdsCartonMaster')}
+                      onKeyDown={handleNumeroKeyDown('cantidadUdsCartonMaster')}
+                      t={t}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <CampoNumerico
+                      id="multiploCartonMaster"
+                      value={e.multiploCartonMaster}
+                      label={t('datosLogisticos.segmento3.multiplo')}
+                      infoText={t('datosLogisticos.segmento3.multiploInfo')}
+                      min={1}
+                      max={99999}
+                      useGrouping={false}
+                      maxFractionDigits={0}
+                      placeholder={t('datosLogisticos.segmento3.placeholderMultiplo')}
+                      error={errors.multiploCartonMaster}
+                      warning={Boolean(alertaNoNumerico.multiploCartonMaster)}
+                      onChange={handleNumeroChange('multiploCartonMaster')}
+                      onKeyDown={handleNumeroKeyDown('multiploCartonMaster')}
+                      t={t}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    {e.cualAplica === 'bulto' ? (
+                      <div className="segmento-carton-campo">
+                        <label htmlFor="empaques-numeroPiezas" className="p-block segmento-label">
+                          <span className="flex">
+                            {t('datosLogisticos.segmento3.numeroPiezas')}
+                            <span className="campo-requerido">*</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          </span>
+                        </label>
+                        <InputNumber
+                          inputId="empaques-numeroPiezas"
+                          value={1}
+                          showButtons
+                          buttonLayout="horizontal"
+                          step={1}
+                          min={1}
+                          max={99999}
+                          useGrouping={false}
+                          incrementButtonClassName="segmento-stepper-btn"
+                          decrementButtonClassName="segmento-stepper-btn"
+                          incrementButtonIcon="pi pi-plus"
+                          decrementButtonIcon="pi pi-minus"
+                          placeholder={t('datosLogisticos.segmento3.placeholderNumeroPiezas')}
+                          className="w-full segmento-stepper-piezas-empaques"
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className="segmento-carton-campo segmento-carton-campo-vacio"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </div>
                 </div>
 
                 <div className="segmento-carton-fila segmento-carton-fila-3 p-mb-2">
@@ -786,6 +819,7 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
               </div>
             </>
           )}
+
           {/* Footer: botón Guardar (HU 046) - siempre visible */}
           <div className="segmento-carton-footer">{children}</div>
         </>

@@ -132,36 +132,6 @@
         font-family: 'Poppins', Arial, sans-serif;
     }
 
-    .segmento-dropdown-esquema {
-        margin: 0 1rem;
-    }
-
-    .segmento-select-esquema {
-        width: 100%;
-        max-width: 400px;
-        border: 1px solid #5a5a5a;
-
-        .p-inputwrapper {
-            border: none !important;
-            box-shadow: none !important;
-        }
-
-        .p-dropdown {
-            border: 1px solid #5a5a5a;
-            border-radius: 4px;
-            background: #1c2127;
-            box-shadow: none !important;
-
-            .p-dropdown-trigger {
-                border: none !important;
-            }
-        }
-    }
-
-    .p-dropdown-label {
-        font-weight: bold;
-    }
-
     .segmento-tabla-cedis-wrapper {
         margin: 0 1rem 1rem;
         max-width: 100%;
@@ -382,6 +352,7 @@
         border-radius: 2rem;
         padding: 0.5rem 1.25rem;
         font-weight: 500;
+        transition: all 0.2s ease;
 
         .p-button-icon {
             color: var(--primary-color);
@@ -391,9 +362,11 @@
         }
 
         &:hover:not(.p-disabled) {
-            background: var(--surface-50) !important;
+            background: rgba(28, 66, 232, 0.1) !important;
             color: var(--primary-color) !important;
             border-color: var(--primary-color) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(28, 66, 232, 0.2);
         }
     }
 }

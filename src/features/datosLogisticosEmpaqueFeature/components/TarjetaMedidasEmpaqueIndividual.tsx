@@ -465,7 +465,7 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
             <label className="p-block segmento-label">
               {t('datosLogisticos.segmento2.hasIndividualPackaging')}
             </label>
-            <div className="segmento-medidas-radios-fila">
+            <div className="segmento-medidas-radios-fila my-3">
               <div className="segmento-medidas-radio-opcion">
                 <RadioButton
                   inputId="tiene-empaque-si"
@@ -490,7 +490,9 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
           </div>
 
           <div
-            className={`segmento-medidas-form p-fluid ${deshabilitado ? 'segmento-medidas-form-disabled' : ''}`}
+            className={`segmento-medidas-form p-fluid ${
+              deshabilitado ? 'segmento-medidas-form-disabled' : ''
+            }`}
           >
             <div className="segmento-medidas-fila segmento-medidas-fila-3 p-mb-2">
               <CampoDropdown
