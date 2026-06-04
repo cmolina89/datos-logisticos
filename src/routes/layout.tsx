@@ -26,11 +26,75 @@ function LayoutContent() {
     applyClientSecurityHeaders()
   }, [])
 
+  // El contenido principal siempre ocupa todo el espacio disponible
+  // El sidebar se superpone sin mover el contenido
+  const getMainContentMarginLeft = (): string => {
+    return '0' // Nunca empuja el contenido
+  }
+
+  const getMainContentWidth = (): string => {
+    return '100%' // Siempre ocupa todo el ancho
+  }
+
+  const handleSkipLinkFocus = (e: React.FocusEvent<HTMLAnchorElement>) => {
+    e.target.style.top = '6px'
+  }
+
+  const handleSkipLinkBlur = (e: React.FocusEvent<HTMLAnchorElement>) => {
+    e.target.style.top = '-40px'
+  }
+
   return (
-    <div id="remote-app" className="sgc-mfe-attributes" role="application">
+    <div
+      id="remote-app"
+      className="sgc-mfe-attributes"
+      role="application"
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        width: '100%',
+        overflowX: 'hidden',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: 'var(--color-background-body, #f8f9fa)',
+      }}
+    >
       <SEOHead />
+
+      {/* Skip to main content link for accessibility */}
+      <a
+        href="#main-content"
+        className="skip-link"
+        style={{
+          position: 'absolute',
+          top: '-40px',
+          left: '6px',
+          background: '#007bff',
+          color: 'white',
+          padding: '8px',
+          textDecoration: 'none',
+          borderRadius: '4px',
+          zIndex: 1000,
+          transition: 'top 0.3s',
+        }}
+        onFocus={handleSkipLinkFocus}
+        onBlur={handleSkipLinkBlur}
+      >
+        {t('accessibility.skipToContent')}
+      </a>
+
       {/* Contenido principal sin márgenes para navbar/sidebar */}
-      <main id="main-content">
+      <main
+        id="main-content"
+        style={{
+          width: '100%',
+          minHeight: '100%',
+          backgroundColor: 'var(--color-background-body, #f8f9fa)',
+          position: 'relative',
+          overflow: 'visible',
+        }}
+      >
         <Outlet />
       </main>
     </div>

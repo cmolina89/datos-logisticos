@@ -1,33 +1,28 @@
 // src/styles/components/_layout.scss
+// Layout principal del MFE
+// Homologado con sgc-mf-hardline-products-inventory-management
 @use '../variables' as *;
-@use '../mixins' as *;
 
 .sgc-mfe-attributes {
-    -moz-box-direction: normal;
-    -moz-box-orient: vertical;
-    background-color: #ffffff;
-    background-color: var(--color-background-body, #f8f9fa);
-    color: #081754;
-    display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: $spacing-lg;
     margin: 0.5rem 3.1rem;
     min-height: 100vh;
     overflow-y: auto;
-    overflow: hidden;
-    padding: 0 1.5rem 0 1.5rem;
+    overflow-x: hidden;
+    padding: 0 $spacing-lg 0 $spacing-lg;
     position: relative;
 
     .cv-main-content {
         -moz-box-direction: normal;
         -moz-box-orient: vertical;
-        background-color: #ffffff;
+        background-color: $color-white;
         background-color: var(--color-background-body, #f8f9fa);
-        color: #081754;
+        color: $color-primary;
         display: -moz-box;
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
+        gap: $spacing-lg;
         margin: 0;
         min-height: 100vh;
         padding: 0;
@@ -53,7 +48,7 @@
 }
 
 @media (max-width: 800px) {
-    .sgc-mfe-color-variant {
+    .sgc-mfe-attributes {
         padding: 1rem 0;
         gap: 1rem;
         margin: 0rem;

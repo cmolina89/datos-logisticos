@@ -1,20 +1,8 @@
+// src/styles/_overrides.scss
+// Overrides de PrimeReact scoped bajo .sgc-mfe-attributes
+// Homologado con sgc-mf-hardline-products-inventory-management
 @use 'variables' as *;
 @use 'mixins' as *;
-
-.sgc-mfe-color-variant {
-    --bs-danger-rgb: 255, 89, 77;
-    --color-primary-press: #05297a;
-    --content-border-radius: 12px;
-    --custom-border-radius: 15px;
-    --font-family: 'Poppins', Arial, sans-serif !important;
-    --p-border-color-primary: #1c42e8;
-    --p-border-radius: 12px;
-    --p-font-family: 'Poppins', Arial, sans-serif !important;
-    --p-green-500: #0abf4f;
-    --surface-border: #dfe7ef;
-    --text: #081754;
-    --text-color: #4b5563;
-}
 
 .sgc-mfe-attributes {
     /* Global Font Family Override */
@@ -23,7 +11,7 @@
     *::before,
     *::after {
         box-sizing: inherit;
-        font-family: var(--font-family, 'Poppins', Arial, sans-serif) !important;
+        font-family: var(--font-family, $font-family-main) !important;
     }
 
     /* Base Button Styles */
@@ -40,13 +28,13 @@
     /* General Button and Input Styles */
     .p-inputtext,
     .p-button {
-        background: #ffffff;
-        background: var(--surface-ground, #ffffff);
-        border: 1px solid #081754;
-        border: 1px solid var(--surface-border, #081754);
-        color: #081754;
-        color: var(--text-color, #081754);
-        font-family: var(--font-family, 'Poppins', Arial, sans-serif);
+        background: $color-white;
+        background: var(--surface-ground, $color-white);
+        border: 1px solid $color-primary;
+        border: 1px solid var(--surface-border, $color-primary);
+        color: $color-primary;
+        color: var(--text-color, $color-primary);
+        font-family: var(--font-family, $font-family-main);
         font-size: 16px;
         height: 40px;
         padding: 8px 16px;
@@ -55,16 +43,9 @@
     }
 
     /* Specific Button Overrides */
-    .p-button:not(.cv-image-item-delete-btn, .cv-image-item-move-btn, .cv-add-color-button, .cv-image-item-add-button),
-    &.page-header-optimized
-        .p-button:not(
-            .cv-image-item-delete-btn,
-            .cv-image-item-move-btn,
-            .cv-add-color-button,
-            .cv-image-item-add-button
-        ) {
-        border: 1px solid #1c42e8;
-        color: #1c42e8;
+    .p-button:not(.cv-image-item-delete-btn, .cv-image-item-move-btn, .cv-add-color-button, .cv-image-item-add-button) {
+        border: 1px solid $color-primary-light;
+        color: $color-primary-light;
         padding: 12px 24px;
         transition: 0.2s;
         width: auto;
@@ -75,7 +56,7 @@
         &:focus-visible {
             border-radius: 30px;
             outline: none;
-            border: 1px solid #1c42e8;
+            border: 1px solid $color-primary-light;
         }
     }
 
@@ -91,22 +72,22 @@
         }
 
         .p-radiobutton-box {
-            align-items: center;
             display: inline-flex;
+            align-items: center;
             justify-content: center;
             position: relative;
         }
 
         .p-radiobutton-box .p-radiobutton-icon {
             background-color: $color-primary-light;
-            display: block;
             height: 11px;
-            left: 50%;
             margin: 0 !important;
+            display: block;
             position: absolute;
             top: 50%;
-            transform-origin: center;
+            left: 50%;
             transform: translate(-50%, -50%) scale(0.1);
+            transform-origin: center;
             transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
             width: 11px;
         }
@@ -162,15 +143,15 @@
     }
 
     .p-accordion .p-accordion-header:not(.p-disabled) {
-        background: #ffffff;
+        background: $color-white;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        border-color: #c5c5c5;
+        border-color: $color-border-soft;
         border-left: none;
-        border-radius: 20px;
+        border-radius: $border-radius-lg;
         border-right: none;
         border-top: none;
-        color: #081754;
+        color: $color-primary;
 
         &.p-highlight .p-accordion-header-link svg.p-icon {
             height: 1.5rem;
@@ -216,13 +197,8 @@
     }
 
     .p-dropdown {
-        border-radius: 12px;
+        border-radius: $border-radius-md;
         overflow: hidden;
-    }
-
-    .warranty-agreement-section.p-panel .form-group .p-dropdown:not(.p-disabled):hover {
-        border-color: var(--primary-color, $color-primary-light);
-        box-shadow: 0 0 0 2px rgba($color-primary-light, 0.1);
     }
 
     /* TabView Active Border */
@@ -232,7 +208,7 @@
                 padding: 2px;
                 .p-tabview-nav-link {
                     border-bottom-width: 4px !important;
-                    border-color: #1c42e8 !important;
+                    border-color: $color-primary-light !important;
                     color: $color-black !important;
                     font-size: 1.1rem;
                     font-weight: 600;
@@ -245,57 +221,15 @@
         }
     }
 
-    /* Accordion Icon */
-    .p-accordion-header-text .clt-check-mark {
-        color: #22c55e; // Green
-        font-weight: bold;
-        margin-left: 0.5rem;
-        font-size: 1.25rem;
-        display: inline-flex;
-        align-items: center;
-        vertical-align: middle;
+    .p-tabview-ink-bar {
+        display: none;
     }
 
+    /* DataTable */
     .p-datatable .p-datatable-tfoot > tr > td,
     tfoot.p-datatable-tfoot {
-        background: #ffff;
+        background: $color-white;
         border-top: 1px solid #c3c3c3 !important;
-    }
-    /* Stock Management Tables */
-    .cv-stock-table {
-        border: none !important;
-
-        .p-datatable-thead > tr:first-child > th {
-            background: #ffffff !important;
-            border: none !important;
-            border-bottom: 1px solid #c3c3c3 !important;
-            color: var(--text-color, #081754) !important;
-            font-family: var(--font-family) !important;
-            font-size: 16px !important;
-            height: 40px !important;
-            padding: 8px 16px !important;
-            transition: all 0.2s ease;
-            text-align: center !important;
-
-            & > div {
-                text-align: center !important;
-                width: 100% !important;
-                display: inline-block !important;
-            }
-        }
-
-        tr td {
-            border: none !important;
-            color: #1f2937;
-            font-size: 0.9rem;
-            padding: 1rem;
-        }
-    }
-
-    .cv-tab-panel {
-        .p-tabview-panels {
-            padding: 1.5rem 0;
-        }
     }
 
     /* Save Button and Container Styles */
@@ -319,9 +253,9 @@
         border-radius: 30px !important;
 
         &:not(:disabled) {
-            background-color: #ffffff !important;
-            border: 1px solid #1c42e8 !important;
-            color: #1c42e8 !important;
+            background-color: $color-white !important;
+            border: 1px solid $color-primary-light !important;
+            color: $color-primary-light !important;
         }
 
         &:not(:disabled):hover {
@@ -331,115 +265,34 @@
         }
 
         &:disabled {
-            background-color: #f3f4f6 !important;
-            border: 1px solid #c5c5c5 !important;
+            background-color: $color-background-gray !important;
+            border: 1px solid $color-border-soft !important;
             color: #9ca3af !important;
         }
     }
 
-    .cv-button-delete {
-        align-items: center;
-        background-color: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        color: #1c42e8 !important;
-        display: flex;
-        justify-content: center;
-        padding-bottom: 0.5rem;
-        padding-top: 0.5rem;
-        width: 200px;
-        transition: background-color 0.2s ease;
-
-        &:hover {
-            background-color: rgba(28, 66, 232, 0.05) !important;
-        }
+    /* Estilos comunes para campos requeridos y validación */
+    .campo-requerido {
+        color: currentColor;
     }
 
-    .cv-button-icon {
-        align-items: center;
-        display: flex;
-        font-size: 1.5rem;
-        justify-content: center;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+    .p-invalid {
+        border-color: var(--color-border-error, #ff594d);
     }
 
-    /* Color Variant / Add Color Styles */
-    .cv-add-color-container {
-        align-items: center;
-        border: 1px dashed;
-        border-radius: 12px;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        flex-shrink: 0;
-        justify-content: center;
-        margin: 0 1rem;
-        padding: 1rem;
-        transition: all 0.2s;
-
-        &.disabled {
-            background-color: #e5e7eb;
-            cursor: default;
-            opacity: 0.6;
-        }
-
-        &:not(.disabled) {
-            background-color: white;
-            &:hover {
-                background-color: #f3f4f6;
-            }
-        }
+    .segmento-label {
+        font-weight: 500;
+        color: var(--text-color);
+        margin-bottom: 0.35rem;
+        font-family: $font-family-main;
     }
 
-    .cv-add-color-button {
-        align-items: center;
-        border-radius: 50% !important;
-        border: none !important;
-        box-shadow: none !important;
-        display: flex;
-        height: 50px !important;
-        justify-content: center;
-        margin-bottom: 1rem;
-        outline: none !important;
-        width: 50px !important;
-
-        .p-button-rounded.p-button-outlined.p-button.p-component {
-            border-radius: 50%;
-            outline: none;
-            padding: 0;
-        }
-    }
-
-    .cv-add-color-icon {
-        display: flex;
-        font-size: 50px;
-        height: 50px;
-        justify-content: center;
-        pointer-events: none;
-        width: 50px;
-    }
-
-    .cv-subtab-panel {
-        .p-tabview-nav {
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-
-            li .p-tabview-nav-link {
-                background: transparent;
-                border: none;
-                font-size: 0.95rem;
-                padding: 0.75rem 1rem;
-            }
-
-            li.p-highlight .p-tabview-nav-link {
-                border-bottom: 3px solid #1c42e8 !important;
-                color: #1c42e8 !important;
-            }
-        }
+    .segmento-titulo-texto {
+        margin: 0;
+        font-size: var(--font-size-subheader, 1.125rem);
+        font-weight: 700;
+        color: var(--text-color);
+        font-family: $font-family-main;
     }
 }
 
-.p-dropdown-item-label {
-    font-family: var(--font-family);
-}
