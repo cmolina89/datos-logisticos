@@ -77,7 +77,11 @@ const cumpleMatchMode = (valorFila: string, valorFiltro: string, matchMode?: str
   return valorFila.includes(valorFiltro)
 }
 
-const cumpleFiltroCampo = (row: FilaCedis, campo: CampoFiltro, filtroCampo?: FiltroCampo): boolean => {
+const cumpleFiltroCampo = (
+  row: FilaCedis,
+  campo: CampoFiltro,
+  filtroCampo?: FiltroCampo
+): boolean => {
   if (!filtroCampo) return true
 
   // Soporta filtros simples (value/matchMode) y filtros con constraints.
@@ -94,13 +98,12 @@ const cumpleFiltroCampo = (row: FilaCedis, campo: CampoFiltro, filtroCampo?: Fil
 }
 
 /** Aplica filtros al estilo PrimeReact DataTable para calcular filas visibles (para select all) */
-function aplicarFiltrosDataTable(
-    filas: FilaCedis[],
-    filters: FiltrosDataTable
-): FilaCedis[] {
+function aplicarFiltrosDataTable(filas: FilaCedis[], filters: FiltrosDataTable): FilaCedis[] {
   if (!filters) return filas
 
-  return filas.filter(row => CAMPOS_FILTRABLES.every(campo => cumpleFiltroCampo(row, campo, filters[campo])))
+  return filas.filter(row =>
+    CAMPOS_FILTRABLES.every(campo => cumpleFiltroCampo(row, campo, filters[campo]))
+  )
 }
 
 const TarjetaDatosLogisticos: React.FC<TarjetaDatosLogisticosProps> = ({ children, saved }) => {
@@ -144,7 +147,10 @@ const TarjetaDatosLogisticos: React.FC<TarjetaDatosLogisticosProps> = ({ childre
     initFilters()
   }, [initFilters])
 
-  const filasFiltradas = useMemo(() => aplicarFiltrosDataTable(filas, filters ?? null), [filas, filters])
+  const filasFiltradas = useMemo(
+    () => aplicarFiltrosDataTable(filas, filters ?? null),
+    [filas, filters]
+  )
 
   const todosSeleccionados = filasFiltradas.length > 0 && filasFiltradas.every(f => f.receptor)
 
@@ -157,197 +163,235 @@ const TarjetaDatosLogisticos: React.FC<TarjetaDatosLogisticosProps> = ({ childre
   }, [filas, filasFiltradas, todosSeleccionados, setDatos])
 
   const handleToggleReceptor = useCallback(
-      (id: string) => {
-        setDatos({
-          filasCedis: filas.map(f => (f.id === id ? { ...f, receptor: !f.receptor } : f)),
-        })
-      },
-      [filas, setDatos]
+    (id: string) => {
+      setDatos({
+        filasCedis: filas.map(f => (f.id === id ? { ...f, receptor: !f.receptor } : f)),
+      })
+    },
+    [filas, setDatos]
   )
 
   const filterClearTemplate = (options: { filterClearCallback: () => void }) => (
-      <Button type="button" label={t('datosLogisticos.segmento1.filterClear')} outlined onClick={options.filterClearCallback} />
+    <Button
+      type="button"
+      label={t('datosLogisticos.segmento1.filterClear')}
+      outlined
+      onClick={options.filterClearCallback}
+    />
   )
 
   const filterApplyTemplate = (options: { filterApplyCallback: () => void }) => (
-      <Button type="button" label={t('datosLogisticos.segmento1.filterApply')} onClick={options.filterApplyCallback} />
+    <Button
+      type="button"
+      label={t('datosLogisticos.segmento1.filterApply')}
+      onClick={options.filterApplyCallback}
+    />
   )
 
   const receptorHeaderTemplate = () => (
-      <div className="flex align-items-center justify-content-center gap-2">
-        <Checkbox
-            inputId="receptor-all"
-            checked={todosSeleccionados}
-            onChange={handleToggleTodosReceptores}
-            aria-label={t('datosLogisticos.segmento1.selectAllReceptors')}
-        />
-        <span className="th-receptor-label">{t('datosLogisticos.segmento1.receptorLabel')}</span>
-      </div>
+    <div className="flex align-items-center justify-content-center gap-2">
+      <Checkbox
+        inputId="receptor-all"
+        checked={todosSeleccionados}
+        onChange={handleToggleTodosReceptores}
+        aria-label={t('datosLogisticos.segmento1.selectAllReceptors')}
+      />
+      <span className="th-receptor-label">{t('datosLogisticos.segmento1.receptorLabel')}</span>
+    </div>
   )
 
   const receptorBodyTemplate = (row: FilaCedis) => (
-      <Checkbox
-          inputId={`receptor-${row.id}`}
-          checked={row.receptor}
-          onChange={() => handleToggleReceptor(row.id)}
-          aria-label={`${t('datosLogisticos.segmento1.receptorLabel')} ${row.cedis}`}
-      />
+    <Checkbox
+      inputId={`receptor-${row.id}`}
+      checked={row.receptor}
+      onChange={() => handleToggleReceptor(row.id)}
+      aria-label={`${t('datosLogisticos.segmento1.receptorLabel')} ${row.cedis}`}
+    />
   )
 
   return (
-      <div className="segmento-datos-logisticos-wrapper">
-        <div className="segmento-datos-logisticos">
-          {/* Header: título + checkmark (éxito) + collapse - HU 038 Vista */}
-          <div className="segmento-datos-logisticos-header">
-            <div className="segmento-datos-logisticos-titulo">
-              <h3 className="segmento-titulo-texto">{t('datosLogisticos.segmento1.title')}</h3>
-              {saved && (
-              <span className="sclt clt-check-mark text-3xl" aria-hidden="true" title={t('datosLogisticos.segmento1.completed')} style={{ color: '#2e8a41' }}>
-            </span>
-              )}
-            </div>
-            <button
-                type="button"
-                className="segmento-collapse"
-                onClick={() => setCollapsed(!collapsed)}
-                aria-expanded={!collapsed}
-                aria-label={collapsed ? t('datosLogisticos.aria.expandSection') : t('datosLogisticos.aria.collapseSection')}
-            >
-              <i className={collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'} />
-            </button>
+    <div className="segmento-datos-logisticos-wrapper">
+      <div className="segmento-datos-logisticos">
+        {/* Header: título + checkmark (éxito) + collapse - HU 038 Vista */}
+        <div className="segmento-datos-logisticos-header">
+          <div className="segmento-datos-logisticos-titulo">
+            <h3 className="segmento-titulo-texto">{t('datosLogisticos.segmento1.title')}</h3>
+            {saved && (
+              <span
+                className="sclt clt-check-mark text-3xl"
+                aria-hidden="true"
+                title={t('datosLogisticos.segmento1.completed')}
+                style={{ color: '#2e8a41' }}
+              ></span>
+            )}
           </div>
-
-          {!collapsed && (
-              <>
-                {!proveedorAltaCompleta ? (
-                    /* HU 038 CA3 Escenario 2: sin configuración de logística prellenada */
-                    <div className="segmento-datos-logisticos-aviso-incompleto">
-                      <p className="aviso-title">{t('datosLogisticos.segmento1.proveedorAltaIncompletaTitle')}</p>
-                      <p className="aviso-message">{t('datosLogisticos.segmento1.proveedorAltaIncompletaMessage')}</p>
-                    </div>
-                ) : (
-                    <>
-                      {/* Texto informativo - HU 038: información solo de visualización */}
-                      <p className="segmento-datos-logisticos-intro">
-                        {t('datosLogisticos.segmento1.intro')}
-                      </p>
-                      <br />
-                      {/* Configuración logística - HU 039 Func. */}
-                      <h4 className="segmento-subtitulo">{t('datosLogisticos.segmento1.configTitle')}</h4>
-                      <br />
-                      <div className="segmento-dropdown-esquema p-mb-3">
-                        <label htmlFor="tipoEsquemaDistribucion" className="p-block segmento-label">
-                          {t('datosLogisticos.segmento1.tipoEsquemaLabel')}
-                        </label>
-                        <br/>
-                        <Dropdown
-                            id="tipoEsquemaDistribucion"
-                            value={d.tipoEsquemaDistribucion}
-                            options={opcionesEsquemaDistribucion}
-                            onChange={e => setDatos({ tipoEsquemaDistribucion: e.value ?? '' })}
-                            placeholder={t('datosLogisticos.segmento1.selectPlaceholder')}
-                            className={errors.tipoEsquemaDistribucion ? 'p-invalid segmento-select-esquema' : 'segmento-select-esquema'}
-                        />
-                        {errors.tipoEsquemaDistribucion && (
-                            <Message
-                                severity="error"
-                                text={t(errors.tipoEsquemaDistribucion)}
-                                className="p-mt-1 p-mb-0"
-                            />
-                        )}
-                      </div>
-                      <br/>
-                      {/* Tabla CEDIS - HU 038 Vista con filtros tipo panel (Match All, operadores, Clear, Apply) */}
-                      <div className="segmento-tabla-cedis-wrapper">
-                        {filasCedisError && (
-                            <Message severity="error" text={filasCedisError} className="p-mb-2" />
-                        )}
-                        {filasCedisLoading && (
-                            <div className="segmento-tabla-cedis-loading">
-                              <ProgressSpinner style={{ width: '2rem', height: '2rem' }} />
-                            </div>
-                        )}
-                        <DataTable
-                            value={filas}
-                            dataKey="id"
-                            filters={filters ?? undefined}
-                            onFilter={e => setFilters(e.filters)}
-                            filterDisplay="menu"
-                            emptyMessage="No hay datos."
-                            className="segmento-tabla-cedis-datatable"
-                        >
-                          <Column
-                              header={receptorHeaderTemplate}
-                              body={receptorBodyTemplate}
-                              className="col-receptor"
-                              style={{ minWidth: '7rem' }}
-                          />
-                          <Column
-                              field="cedis"
-                              header={t('datosLogisticos.segmento1.cedis')}
-                              filter
-                              filterPlaceholder={t('datosLogisticos.segmento1.filterPlaceholder')}
-                              showFilterMatchModes={false}
-                              filterMenuStyle={{ minWidth: '14rem' }}
-                              filterClear={filterClearTemplate}
-                              filterApply={filterApplyTemplate}
-                              style={{ minWidth: '12rem' }}
-                          />
-                          <Column
-                              field="frecuencia"
-                              header={t('datosLogisticos.segmento1.frecuencia')}
-                              filter
-                              filterPlaceholder={t('datosLogisticos.segmento1.filterPlaceholder')}
-                              showFilterMatchModes={false}
-                              filterMenuStyle={{ minWidth: '14rem' }}
-                              filterClear={filterClearTemplate}
-                              filterApply={filterApplyTemplate}
-                              style={{ minWidth: '12rem' }}
-                          />
-                          <Column
-                              field="leadTime"
-                              header={t('datosLogisticos.segmento1.leadTime')}
-                              filter
-                              filterPlaceholder={t('datosLogisticos.segmento1.filterPlaceholder')}
-                              showFilterMatchModes={false}
-                              filterMenuStyle={{ minWidth: '14rem' }}
-                              filterClear={filterClearTemplate}
-                              filterApply={filterApplyTemplate}
-                              style={{ minWidth: '12rem' }}
-                          />
-                          <Column
-                              field="cedisDestino"
-                              header={t('datosLogisticos.segmento1.cedisDestino')}
-                              filter
-                              filterPlaceholder={t('datosLogisticos.segmento1.filterPlaceholder')}
-                              showFilterMatchModes={false}
-                              filterMenuStyle={{ minWidth: '14rem' }}
-                              filterClear={filterClearTemplate}
-                              filterApply={filterApplyTemplate}
-                              style={{ minWidth: '14rem' }}
-                          />
-                        </DataTable>
-                      </div>
-
-                      {/* Footer: link izquierda, botón Guardar derecha - HU 039 Func. / HU 040 Guardado */}
-                      <div className="segmento-datos-logisticos-footer">
-                        <a
-                            href="#configuracion-logistica"
-                            className="segmento-link-config"
-                            onClick={e => {
-                              e.preventDefault()
-                            }}
-                        >
-                          {t('datosLogisticos.segmento1.goToConfig')}
-                        </a>
-                        {children}
-                      </div>
-                    </>
-                )}
-              </>
-          )}
+          <button
+            type="button"
+            className="segmento-collapse"
+            onClick={() => setCollapsed(!collapsed)}
+            aria-expanded={!collapsed}
+            aria-label={
+              collapsed
+                ? t('datosLogisticos.aria.expandSection')
+                : t('datosLogisticos.aria.collapseSection')
+            }
+          >
+            <i className={collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'} />
+          </button>
         </div>
+
+        {!collapsed && (
+          <>
+            {!proveedorAltaCompleta ? (
+              /* HU 038 CA3 Escenario 2: sin configuración de logística prellenada */
+              <div className="segmento-datos-logisticos-aviso-incompleto">
+                <p className="aviso-title">
+                  {t('datosLogisticos.segmento1.proveedorAltaIncompletaTitle')}
+                </p>
+                <p className="aviso-message">
+                  {t('datosLogisticos.segmento1.proveedorAltaIncompletaMessage')}
+                </p>
+              </div>
+            ) : (
+              <>
+                {/* Texto informativo - HU 038: información solo de visualización */}
+                <div className="row">
+                  <div className="col-12">
+                    <p className="segmento-datos-logisticos-intro">
+                      {t('datosLogisticos.segmento1.intro')}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Configuración logística - HU 039 Func. */}
+                <div className="row">
+                  <div className="col-12">
+                    <h4 className="segmento-subtitulo">
+                      {t('datosLogisticos.segmento1.configTitle')}
+                    </h4>
+                  </div>
+                </div>
+
+                <div className="row px-3">
+                  <div className="col-md-6">
+                    <label
+                      htmlFor="tipoEsquemaDistribucion"
+                      className="p-block segmento-label pb-2"
+                    >
+                      {t('datosLogisticos.segmento1.tipoEsquemaLabel')}
+                    </label>
+                    <Dropdown
+                      id="tipoEsquemaDistribucion"
+                      value={d.tipoEsquemaDistribucion}
+                      options={opcionesEsquemaDistribucion}
+                      onChange={e => setDatos({ tipoEsquemaDistribucion: e.value ?? '' })}
+                      placeholder={t('datosLogisticos.segmento1.selectPlaceholder')}
+                      className={
+                        errors.tipoEsquemaDistribucion
+                          ? 'p-invalid segmento-select-esquema'
+                          : 'segmento-select-esquema'
+                      }
+                    />
+                    {errors.tipoEsquemaDistribucion && (
+                      <Message
+                        severity="error"
+                        text={t(errors.tipoEsquemaDistribucion)}
+                        className="p-mt-1 p-mb-0"
+                      />
+                    )}
+                  </div>
+                </div>
+                {/* Tabla CEDIS - HU 038 Vista con filtros tipo panel (Match All, operadores, Clear, Apply) */}
+                <div className="segmento-tabla-cedis-wrapper">
+                  {filasCedisError && (
+                    <Message severity="error" text={filasCedisError} className="p-mb-2" />
+                  )}
+                  {filasCedisLoading && (
+                    <div className="segmento-tabla-cedis-loading">
+                      <ProgressSpinner style={{ width: '2rem', height: '2rem' }} />
+                    </div>
+                  )}
+                  <DataTable
+                    value={filas}
+                    dataKey="id"
+                    filters={filters ?? undefined}
+                    onFilter={e => setFilters(e.filters)}
+                    filterDisplay="menu"
+                    emptyMessage="No hay datos."
+                    className="segmento-tabla-cedis-datatable"
+                  >
+                    <Column
+                      header={receptorHeaderTemplate}
+                      body={receptorBodyTemplate}
+                      className="col-receptor"
+                      style={{ minWidth: '7rem' }}
+                    />
+                    <Column
+                      field="cedis"
+                      header={t('datosLogisticos.segmento1.cedis')}
+                      filter
+                      filterPlaceholder={t('datosLogisticos.segmento1.filterPlaceholder')}
+                      showFilterMatchModes={false}
+                      filterMenuStyle={{ minWidth: '14rem' }}
+                      filterClear={filterClearTemplate}
+                      filterApply={filterApplyTemplate}
+                      style={{ minWidth: '12rem' }}
+                    />
+                    <Column
+                      field="frecuencia"
+                      header={t('datosLogisticos.segmento1.frecuencia')}
+                      filter
+                      filterPlaceholder={t('datosLogisticos.segmento1.filterPlaceholder')}
+                      showFilterMatchModes={false}
+                      filterMenuStyle={{ minWidth: '14rem' }}
+                      filterClear={filterClearTemplate}
+                      filterApply={filterApplyTemplate}
+                      style={{ minWidth: '12rem' }}
+                    />
+                    <Column
+                      field="leadTime"
+                      header={t('datosLogisticos.segmento1.leadTime')}
+                      filter
+                      filterPlaceholder={t('datosLogisticos.segmento1.filterPlaceholder')}
+                      showFilterMatchModes={false}
+                      filterMenuStyle={{ minWidth: '14rem' }}
+                      filterClear={filterClearTemplate}
+                      filterApply={filterApplyTemplate}
+                      style={{ minWidth: '12rem' }}
+                    />
+                    <Column
+                      field="cedisDestino"
+                      header={t('datosLogisticos.segmento1.cedisDestino')}
+                      filter
+                      filterPlaceholder={t('datosLogisticos.segmento1.filterPlaceholder')}
+                      showFilterMatchModes={false}
+                      filterMenuStyle={{ minWidth: '14rem' }}
+                      filterClear={filterClearTemplate}
+                      filterApply={filterApplyTemplate}
+                      style={{ minWidth: '14rem' }}
+                    />
+                  </DataTable>
+                </div>
+
+                {/* Footer: link izquierda, botón Guardar derecha - HU 039 Func. / HU 040 Guardado */}
+                <div className="segmento-datos-logisticos-footer">
+                  <a
+                    href="#configuracion-logistica"
+                    className="segmento-link-config"
+                    onClick={e => {
+                      e.preventDefault()
+                    }}
+                  >
+                    {t('datosLogisticos.segmento1.goToConfig')}
+                  </a>
+                  {children}
+                </div>
+              </>
+            )}
+          </>
+        )}
       </div>
+    </div>
   )
 }
 

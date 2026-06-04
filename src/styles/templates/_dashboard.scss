@@ -1,9 +1,5 @@
 
-@use 'variables' as v;
-@use 'navbar';
-@use 'sidebar';
-@use 'submenu';
-@use 'footer';
+@use '../variables' as v;
 
 app-full-layout {
 

@@ -229,7 +229,7 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
               {t('datosLogisticos.segmento4.paletizable')}{' '}
               <span className="campo-requerido">*</span>
             </label>
-            <div className="segmento-radios-fila">
+            <div className="segmento-radios-fila my-3">
               <div className="segmento-radio-opcion">
                 <RadioButton
                   inputId="paletizable-si"
@@ -314,7 +314,9 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
                     />
                     {(errors.layoutLargo || alertaNoNumerico.layoutLargo) && (
                       <span
-                        className={`icono-error-input${alertaNoNumerico.layoutLargo ? ' icono-error-input-warning' : ''}`}
+                        className={`icono-error-input${
+                          alertaNoNumerico.layoutLargo ? ' icono-error-input-warning' : ''
+                        }`}
                         aria-hidden="true"
                       >
                         !
@@ -361,7 +363,9 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
                     />
                     {(errors.layoutAncho || alertaNoNumerico.layoutAncho) && (
                       <span
-                        className={`icono-error-input${alertaNoNumerico.layoutAncho ? ' icono-error-input-warning' : ''}`}
+                        className={`icono-error-input${
+                          alertaNoNumerico.layoutAncho ? ' icono-error-input-warning' : ''
+                        }`}
                         aria-hidden="true"
                       >
                         !
@@ -391,7 +395,7 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
               {t('datosLogisticos.segmento4.acomodoLabel')}{' '}
               <span className="campo-requerido">*</span>
             </label>
-            <div className="segmento-radios-fila">
+            <div className="segmento-radios-fila my-3">
               <div className="segmento-radio-opcion">
                 <RadioButton
                   inputId="acomodo-si"

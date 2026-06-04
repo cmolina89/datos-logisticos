@@ -18,7 +18,7 @@ export default createModuleFederationConfig({
     // Acceso al host para usar componentes compartidos usando variable de entorno
     // host: `host@${HOST_URL}`,
   },
-
+  dts: false,
   // 3. Dependencias compartidas.
   shared: {
     react: {

@@ -255,7 +255,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
             <div className="secciones-grid">
               {/* 1. Datos logísticos - segmento según imagen; botón Guardar en footer del segmento */}
               <div className="seccion-card">
-                <Card className="card-seccion card-seccion-datos-logisticos">
+                <Card className="card-seccion card-seccion-datos-logisticos cv-main-accordion">
                   <TarjetaDatosLogisticos saved={savedSections.has('datos')}>
                     <Button
                       label={t('common.save')}
@@ -272,7 +272,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
 
               {/* 2. Medidas con empaque individual (HU 041, 042, 043); botón Guardar en footer */}
               <div className="seccion-card">
-                <Card className="card-seccion card-seccion-medidas-empaque">
+                <Card className="card-seccion card-seccion-medidas-empaque cv-main-accordion">
                   <TarjetaMedidasEmpaqueIndividual saved={savedSections.has('medidas')}>
                     <Button
                       label={t('common.save')}
@@ -289,7 +289,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
 
               {/* 3. Empaques del producto - Cartón máster (HU 044, 045, 046); botón Guardar en footer */}
               <div className="seccion-card">
-                <Card className="card-seccion card-seccion-empaques-producto">
+                <Card className="card-seccion card-seccion-empaques-producto cv-main-accordion">
                   <TarjetaEmpaquesProducto saved={savedSections.has('empaques')}>
                     <Button
                       label={t('common.save')}
@@ -305,7 +305,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
               </div>
               {/* 4. Entrega y manipulación (HU 047, 048, 049); botón Guardar en footer */}
               <div className="seccion-card">
-                <Card className="card-seccion card-seccion-entrega-manipulacion">
+                <Card className="card-seccion card-seccion-entrega-manipulacion cv-main-accordion">
                   <TarjetaEntregaManipulacion saved={savedSections.has('entrega')}>
                     <Button
                       label={t('common.save')}
