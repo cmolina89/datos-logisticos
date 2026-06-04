@@ -45,24 +45,24 @@ Este es un **Microfrontend Remoto** que forma parte de la arquitectura de Module
 
 ### Tecnologías Principales
 
-| Tecnología | Versión | Propósito |
-|------------|---------|----------|
-| **Modern.js** | 2.69.5 | Framework base con SSR y Module Federation |
-| **React** | 19.2.3 | Librería UI |
-| **TypeScript** | 5.9.3 | Lenguaje tipado |
-| **Jotai** | 2.16.0 | Gestión de estado global |
-| **PrimeReact** | 10.9.7 | Componentes UI |
-| **Axios** | 1.13.2 | Cliente HTTP |
-| **Jest** | 30.2.0 | Testing unitario |
-| **Playwright** | 1.57.0 | Testing E2E |
-| **Biome** | 2.3.10 | Linting y formateo |
+| Tecnología     | Versión | Propósito                                  |
+| -------------- | ------- | ------------------------------------------ |
+| **Modern.js**  | 2.69.5  | Framework base con SSR y Module Federation |
+| **React**      | 19.2.3  | Librería UI                                |
+| **TypeScript** | 5.9.3   | Lenguaje tipado                            |
+| **Jotai**      | 2.16.0  | Gestión de estado global                   |
+| **PrimeReact** | 10.9.7  | Componentes UI                             |
+| **Axios**      | 1.13.2  | Cliente HTTP                               |
+| **Jest**       | 30.2.0  | Testing unitario                           |
+| **Playwright** | 1.57.0  | Testing E2E                                |
+| **Biome**      | 2.3.10  | Linting y formateo                         |
 
 ### Información de Deploymento
 
-| Ambiente | Puerto Local | Ruta Remota |
-|----------|--------------|------------|
-| **Desarrollo** | `3006` | `http://localhost:3006/remoteEntry.js` |
-| **Producción** | Variable | Configurado en CI/CD |
+| Ambiente       | Puerto Local | Ruta Remota                            |
+| -------------- | ------------ | -------------------------------------- |
+| **Desarrollo** | `3006`       | `http://localhost:3006/remoteEntry.js` |
+| **Producción** | Variable     | Configurado en CI/CD                   |
 
 ## 2. Primeros Pasos: Instalación y Entorno
 
@@ -97,35 +97,35 @@ Asegúrate de tener instalado el siguiente software en tu máquina:
     ```bash
     npm run dev
     ```
-    El MFE estará disponible en `http://localhost:3006` con *Hot-Reloading*. El archivo `remoteEntry.js` se servará en `http://localhost:3006/remoteEntry.js` para su integración con la host app.
+    El MFE estará disponible en `http://localhost:3006` con _Hot-Reloading_. El archivo `remoteEntry.js` se servará en `http://localhost:3006/remoteEntry.js` para su integración con la host app.
 
 ### Scripts Clave del Proyecto
 
 El archivo `package.json` contiene una serie de scripts preconfigurados para facilitar las tareas comunes de desarrollo:
 
-| Script                 | Descripción                                                                                                 |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------- |
-| ``pnpm dev``           | Inicia el MFE en modo desarrollo (puerto 3006) con remoteEntry.js exportado.                                |
-| ``pnpm build``         | Compila y optimiza el MFE para producción. Genera la carpeta `dist/` con Module Federation.                 |
-| ``pnpm start``         | Ejecuta el MFE en modo producción (requiere un `build` previo).                                             |
-| ``pnpm serve``         | Sirve el build generado localmente para testing previo a deploymento.                                       |
-| ``pnpm lint``          | Analiza el código en busca de errores de estilo y calidad usando Biome.                                     |
-| ``pnpm format``        | Formatea automáticamente todo el código para que cumpla con las reglas de estilo de Biome.                  |
-| ``pnpm test``          | Ejecuta todas las pruebas unitarias y de integración con Jest.                                              |
-| ``pnpm test:unit``     | Ejecuta las pruebas unitarias con cobertura de código.                                                      |
-| ``pnpm test:watch``    | Ejecuta las pruebas en "modo observador", volviéndolas a correr automáticamente al detectar cambios.        |
-| ``pnpm coverage``      | Ejecuta las pruebas y genera un reporte de cobertura de código.                                             |
-| ``pnpm e2e``           | Ejecuta las pruebas End-to-End con Playwright en modo headless (sin interfaz gráfica).                      |
-| ``pnpm e2e:ui``        | Abre la potente interfaz de usuario de Playwright para ejecutar y depurar pruebas E2E de forma visual.      |
-| ``pnpm upgrade``       | Actualiza las dependencias de Modern.js a la última versión.                                                |
-| ``pnpm reset``         | Elimina node_modules para poder hacer una reinstalación limpia de las dependencias.                         |
-| ``pnpm clean``         | Limpia dist, .modern.js y node_modules para un reseteo completo.                                           |
+| Script            | Descripción                                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------------------ |
+| `pnpm dev`        | Inicia el MFE en modo desarrollo (puerto 3006) con remoteEntry.js exportado.                           |
+| `pnpm build`      | Compila y optimiza el MFE para producción. Genera la carpeta `dist/` con Module Federation.            |
+| `pnpm start`      | Ejecuta el MFE en modo producción (requiere un `build` previo).                                        |
+| `pnpm serve`      | Sirve el build generado localmente para testing previo a deploymento.                                  |
+| `pnpm lint`       | Analiza el código en busca de errores de estilo y calidad usando Biome.                                |
+| `pnpm format`     | Formatea automáticamente todo el código para que cumpla con las reglas de estilo de Biome.             |
+| `pnpm test`       | Ejecuta todas las pruebas unitarias y de integración con Jest.                                         |
+| `pnpm test:unit`  | Ejecuta las pruebas unitarias con cobertura de código.                                                 |
+| `pnpm test:watch` | Ejecuta las pruebas en "modo observador", volviéndolas a correr automáticamente al detectar cambios.   |
+| `pnpm coverage`   | Ejecuta las pruebas y genera un reporte de cobertura de código.                                        |
+| `pnpm e2e`        | Ejecuta las pruebas End-to-End con Playwright en modo headless (sin interfaz gráfica).                 |
+| `pnpm e2e:ui`     | Abre la potente interfaz de usuario de Playwright para ejecutar y depurar pruebas E2E de forma visual. |
+| `pnpm upgrade`    | Actualiza las dependencias de Modern.js a la última versión.                                           |
+| `pnpm reset`      | Elimina node_modules para poder hacer una reinstalación limpia de las dependencias.                    |
+| `pnpm clean`      | Limpia dist, .modern.js y node_modules para un reseteo completo.                                       |
 
 ## 3. Arquitectura y Estructura del Proyecto
 
 ### Estructura de Directorios
 
-Al iniciar un proyecto con esta plantilla, encontrarás la siguiente estructura de directorios. Todo el código de tu aplicación reside dentro de la carpeta ``src/``.
+Al iniciar un proyecto con esta plantilla, encontrarás la siguiente estructura de directorios. Todo el código de tu aplicación reside dentro de la carpeta `src/`.
 
 ```bash
 /
@@ -156,6 +156,7 @@ Al iniciar un proyecto con esta plantilla, encontrarás la siguiente estructura 
 La estrategia principal es la **arquitectura por features**. Los archivos se agrupan por **funcionalidad de negocio**, no por tipo de archivo.
 
 **Ventajas:**
+
 -   **Cohesión:** Todo lo relacionado con una funcionalidad está junto.
 -   **Bajo Acoplamiento:** Cada feature es independiente.
 -   **Escalabilidad:** Añadir nuevas funcionalidades es simple y limpio.
@@ -171,13 +172,15 @@ Sistema de autenticación simulado con integración real de cookies y Jotai.
 **Ubicación:** `src/features/authFeature/`
 
 **Características:**
-- Flujo de login/logout con cookies
-- Estado global persistente
-- HOC `withAuthentication` para proteger rutas
-- Validación de tokens en peticiones HTTP
+
+-   Flujo de login/logout con cookies
+-   Estado global persistente
+-   HOC `withAuthentication` para proteger rutas
+-   Validación de tokens en peticiones HTTP
 
 **Rutas asociadas:**
-- `/login` - Página de autenticación
+
+-   `/login` - Página de autenticación
 
 ---
 
@@ -188,14 +191,16 @@ Sistema de autenticación simulado con integración real de cookies y Jotai.
 **Ubicación:** `src/features/datosLogisticosEmpaqueFeature/`
 
 **Características:**
-- Gestión de parámetros de empaque
-- Validación de datos logísticos
-- Integración con APIs de backend
-- Almacenamiento en estado global
-- Soporte SSR para SEO
+
+-   Gestión de parámetros de empaque
+-   Validación de datos logísticos
+-   Integración con APIs de backend
+-   Almacenamiento en estado global
+-   Soporte SSR para SEO
 
 **Rutas asociadas:**
-- `/datos-logisticos-empaque/*` - Rutas específicas de empaque
+
+-   `/datos-logisticos-empaque/*` - Rutas específicas de empaque
 
 ---
 
@@ -206,20 +211,23 @@ Implementación completa de consumo de API externa con SSR, lazy loading y manej
 **Ubicación:** `src/features/postsFeature/`
 
 **Características:**
-- Consumo de la API JSONPlaceholder (externa)
-- Loader SSR para precarga de datos
-- Estado de carga, error y éxito
-- Code splitting automático
-- Demostración de buenas prácticas
+
+-   Consumo de la API JSONPlaceholder (externa)
+-   Loader SSR para precarga de datos
+-   Estado de carga, error y éxito
+-   Code splitting automático
+-   Demostración de buenas prácticas
 
 **Rutas asociadas:**
-- `/posts` - Lista de posts (requiere autenticación)
+
+-   `/posts` - Lista de posts (requiere autenticación)
 
 **Tecnologías demostrables:**
-- Uso de `useLoaderData()` para SSR
-- Axios con interceptores
-- Jotai para estado
-- Error handling
+
+-   Uso de `useLoaderData()` para SSR
+-   Axios con interceptores
+-   Jotai para estado
+-   Error handling
 
 ---
 
@@ -230,13 +238,15 @@ Página interactiva para verificar la configuración SSR y debuggear problemas d
 **Ubicación:** `src/features/serverDocsFeature/`
 
 **Características:**
-- Información del servidor (Node.js version, hora, entorno)
-- Validación del setup SSR
-- Explicación visual del flujo de renderizado
-- Útil para debugging en desarrollo
+
+-   Información del servidor (Node.js version, hora, entorno)
+-   Validación del setup SSR
+-   Explicación visual del flujo de renderizado
+-   Útil para debugging en desarrollo
 
 **Rutas asociadas:**
-- `/server-side-info` - Página de diagnóstico
+
+-   `/server-side-info` - Página de diagnóstico
 
 ---
 
@@ -249,15 +259,15 @@ Este MFE está configurado como un **remote** en la arquitectura Module Federati
 ```typescript
 // modern.config.ts
 export default defineConfig({
-  dev: {
-    port: 3006,  // Puerto de desarrollo
-  },
-  plugins: [appTools(), moduleFederationPlugin()],
-  output: {
-    assetPrefix,  // URL pública del MFE
-    copy: [{ from: './public', to: './' }],
-  },
-})
+    dev: {
+        port: 3006 // Puerto de desarrollo
+    },
+    plugins: [appTools(), moduleFederationPlugin()],
+    output: {
+        assetPrefix, // URL pública del MFE
+        copy: [{ from: './public', to: './' }]
+    }
+});
 ```
 
 ### Integración con Host App
@@ -271,6 +281,7 @@ remotes: {
 ```
 
 **En desarrollo local:**
+
 ```typescript
 remotes: {
   'com-sgc-mfe-logisticspackagingconfig': 'http://localhost:3006/remoteEntry.js'
@@ -282,10 +293,10 @@ remotes: {
 Desde la host app, puedes importar componentes del MFE:
 
 ```tsx
-import { LogisticsPackagingPage } from 'com-sgc-mfe-logisticspackagingconfig/components'
+import { LogisticsPackagingPage } from 'com-sgc-mfe-logisticspackagingconfig/components';
 
 export function App() {
-  return <LogisticsPackagingPage />
+    return <LogisticsPackagingPage />;
 }
 ```
 
@@ -293,9 +304,9 @@ export function App() {
 
 Al ejecutar `npm run build`, se generan:
 
-- `dist/remoteEntry.js` - Punto de entrada Module Federation (OBLIGATORIO para host app)
-- `dist/` - Resto de bundled chunks y assets
-- `dist/manifest.json` - Metadatos del MFE
+-   `dist/remoteEntry.js` - Punto de entrada Module Federation (OBLIGATORIO para host app)
+-   `dist/` - Resto de bundled chunks y assets
+-   `dist/manifest.json` - Metadatos del MFE
 
 ---
 
@@ -307,22 +318,22 @@ Este estándar utiliza un **enfoque híbrido** donde la carga inicial de una pá
 
 **Para activar SSR en una ruta, sigue estos dos pasos:**
 
-1.  **Crea el archivo de datos:** Junto a tu archivo de página (ej. ``src/routes/mi-ruta/page.tsx``), crea un archivo llamado ``src/routes/mi-ruta/page.data.tsx``.
-2.  **Exporta un `loader`:** Dentro de ``page.data.tsx``, exporta una función asíncrona llamada `loader`.
+1.  **Crea el archivo de datos:** Junto a tu archivo de página (ej. `src/routes/mi-ruta/page.tsx`), crea un archivo llamado `src/routes/mi-ruta/page.data.tsx`.
+2.  **Exporta un `loader`:** Dentro de `page.data.tsx`, exporta una función asíncrona llamada `loader`.
 
 ```tsx
 // src/routes/mi-ruta/page.data.tsx
 export const loader = async () => {
-  // Este código se ejecuta SOLO en el servidor Node.js
-  const response = await fetch('https://api.coppel.com/mi-endpoint');
-  const data = await response.json();
-  return data; // Los datos devueltos estarán disponibles en el componente
+    // Este código se ejecuta SOLO en el servidor Node.js
+    const response = await fetch('https://api.coppel.com/mi-endpoint');
+    const data = await response.json();
+    return data; // Los datos devueltos estarán disponibles en el componente
 };
 ```
 
-El componente en ``page.tsx`` puede acceder a estos datos usando el hook ``useLoaderData()``. Si una ruta **no** tiene un archivo `page.data.tsx`, se renderizará completamente en el cliente (CSR).
+El componente en `page.tsx` puede acceder a estos datos usando el hook `useLoaderData()`. Si una ruta **no** tiene un archivo `page.data.tsx`, se renderizará completamente en el cliente (CSR).
 
-**Importante:** El código en el servidor **no tiene acceso** a APIs del navegador como `window` o `localStorage`. Usa la utilidad ``isServer`` de ``src/utils/environment.ts`` para ejecutar código condicionalmente y evitar errores.
+**Importante:** El código en el servidor **no tiene acceso** a APIs del navegador como `window` o `localStorage`. Usa la utilidad `isServer` de `src/utils/environment.ts` para ejecutar código condicionalmente y evitar errores.
 
 ### Manejo de Estado con Jotai
 
@@ -341,17 +352,17 @@ export const contadorAtom = atom(0);
 const [contador, setContador] = useAtom(contadorAtom);
 ```
 
--   **Persistencia:** Para guardar estado en `localStorage` (como la preferencia de tema), la plantilla usa ``atomWithStorage`` de ``jotai/utils``. Esta utilidad ya está configurada de forma segura para no fallar durante el SSR.
+-   **Persistencia:** Para guardar estado en `localStorage` (como la preferencia de tema), la plantilla usa `atomWithStorage` de `jotai/utils`. Esta utilidad ya está configurada de forma segura para no fallar durante el SSR.
 
 ### Estilos y Sistema de Temas
 
 -   **Tokens de Diseño:** Las variables de marca (colores, fuentes, espaciados) se definen como variables CSS en los archivos SCSS. Estas son la única fuente de verdad para el diseño visual.
 -   **Sistema de Temas:** El MFE incluye un switch de tema (claro/oscuro) que actualiza dinámicamente tanto las variables CSS como el tema de PrimeReact.
--   **Layouts Responsivos:** Usa las clases de utilidad de **PrimeFlex** (ej. ``p-d-flex``, ``p-jc-between``, ``p-col-12``, ``p-md-6``) para construir layouts que se adapten a diferentes pantallas.
+-   **Layouts Responsivos:** Usa las clases de utilidad de **PrimeFlex** (ej. `p-d-flex`, `p-jc-between`, `p-col-12`, `p-md-6`) para construir layouts que se adapten a diferentes pantallas.
 
 ### Peticiones a APIs con Axios
 
--   **Instancia Centralizada:** Utiliza siempre la instancia de Axios configurada en ``src/lib/httpClient.ts``. No crees nuevas instancias.
+-   **Instancia Centralizada:** Utiliza siempre la instancia de Axios configurada en `src/lib/httpClient.ts`. No crees nuevas instancias.
 -   **Interceptores:** Esta instancia ya incluye interceptores para:
     -   **Request Interceptor:** Añade automáticamente el token de autenticación (si existe en las cookies) a las cabeceras de cada solicitud.
     -   **Response Interceptor:** Maneja errores HTTP comunes de forma centralizada.
@@ -363,21 +374,21 @@ Una aplicación de calidad se apoya en una sólida estrategia de pruebas. La pla
 ### Pruebas Unitarias y de Integración (Jest + RTL)
 
 -   **Objetivo:** Probar componentes y funciones de forma aislada. Nos centramos en probar el comportamiento que el usuario ve, no los detalles de implementación.
--   **Convención:** Los archivos de prueba deben terminar en ``.test.tsx``. Se recomienda colocarlos junto al componente o función que están probando.
--   **Configuración:** Definida en ``jest.config.ts``. Utiliza `ts-jest` para transformar TypeScript y está configurada para generar reportes de cobertura.
+-   **Convención:** Los archivos de prueba deben terminar en `.test.tsx`. Se recomienda colocarlos junto al componente o función que están probando.
+-   **Configuración:** Definida en `jest.config.ts`. Utiliza `ts-jest` para transformar TypeScript y está configurada para generar reportes de cobertura.
 -   **Ejecución:**
-    -   ``npm test``: Corre todas las pruebas.
-    -   ``npm run test:watch``: Modo observador para desarrollo.
-    -   ``npm run coverage``: Genera un reporte en la carpeta ``/coverage``.
+    -   `npm test`: Corre todas las pruebas.
+    -   `npm run test:watch`: Modo observador para desarrollo.
+    -   `npm run coverage`: Genera un reporte en la carpeta `/coverage`.
 
 ### Pruebas End-to-End (Playwright)
 
 -   **Objetivo:** Probar flujos de usuario completos, de principio a fin, simulando la interacción real en un navegador.
--   **Convención:** Los archivos de prueba deben terminar en ``.spec.ts`` y vivir en la carpeta ``/tests/e2e/`` en la raíz del proyecto.
--   **Configuración:** Definida en ``playwright.config.ts``.
+-   **Convención:** Los archivos de prueba deben terminar en `.spec.ts` y vivir en la carpeta `/tests/e2e/` en la raíz del proyecto.
+-   **Configuración:** Definida en `playwright.config.ts`.
 -   **Ejecución:**
-    -   ``npm run e2e``: Corre las pruebas en modo "headless" (sin interfaz gráfica), ideal para pipelines de CI/CD.
-    -   ``npm run e2e:ui``: Abre la potente interfaz de usuario de Playwright para ejecutar y depurar pruebas de forma visual, una herramienta excelente para el desarrollo.
+    -   `npm run e2e`: Corre las pruebas en modo "headless" (sin interfaz gráfica), ideal para pipelines de CI/CD.
+    -   `npm run e2e:ui`: Abre la potente interfaz de usuario de Playwright para ejecutar y depurar pruebas de forma visual, una herramienta excelente para el desarrollo.
 
 ## 8. Variables de Entorno
 
@@ -417,21 +428,21 @@ MODERN_APP_DEBUG=false
 
 ### Distinción: Cliente vs Servidor
 
-- **Variables del Cliente:** Deben tener el prefijo `MODERN_APP_` para estar disponibles en el navegador.
-- **Variables del Servidor:** Cualquier otra variable solo está disponible en Node.js (dentro de `page.data.tsx`).
+-   **Variables del Cliente:** Deben tener el prefijo `MODERN_APP_` para estar disponibles en el navegador.
+-   **Variables del Servidor:** Cualquier otra variable solo está disponible en Node.js (dentro de `page.data.tsx`).
 
 ### Ejemplo de Uso en Código
 
 ```tsx
 // En el cliente
-const apiUrl = process.env.MODERN_APP_API_LOGISTICS_ENDPOINT
+const apiUrl = process.env.MODERN_APP_API_LOGISTICS_ENDPOINT;
 
 // En el servidor (page.data.tsx)
 export const loader = async () => {
-  const token = process.env.API_SECRET_TOKEN  // Variable solo servidor
-  const endpoint = process.env.MODERN_APP_API_LOGISTICS_ENDPOINT
-  // ...
-}
+    const token = process.env.API_SECRET_TOKEN; // Variable solo servidor
+    const endpoint = process.env.MODERN_APP_API_LOGISTICS_ENDPOINT;
+    // ...
+};
 ```
 
 ---
@@ -444,19 +455,19 @@ export const loader = async () => {
 
 SEO es el proceso de mejorar la visibilidad de un sitio web en los resultados de búsqueda. En este MFE:
 
-- **Renderizado en Servidor (SSR):** Los datos se precargan en el servidor, generando HTML completo que los motores de búsqueda pueden indexar inmediatamente.
-- **Metadatos:** Utiliza el componente `SEOHead` para definir títulos, descripciones y palabras clave por ruta.
-- **URLs Limpias:** Las rutas están organizadas de forma semántica para mejorar SEO.
+-   **Renderizado en Servidor (SSR):** Los datos se precargan en el servidor, generando HTML completo que los motores de búsqueda pueden indexar inmediatamente.
+-   **Metadatos:** Utiliza el componente `SEOHead` para definir títulos, descripciones y palabras clave por ruta.
+-   **URLs Limpias:** Las rutas están organizadas de forma semántica para mejorar SEO.
 
 ### Accesibilidad
 
 La accesibilidad web asegura que el MFE sea utilizable por personas con discapacidades:
 
-- **Etiquetas Semánticas:** Usa `<article>`, `<section>`, `<nav>`, etc.
-- **Atributos `alt`:** Todas las imágenes tienen descripciones en `alt`.
-- **Navegación por Teclado:** Todos los componentes interactivos son accesibles sin ratón.
-- **Contraste de Color:** Cumple con estándares WCAG 2.1 AA.
-- **ARIA Labels:** Usa atributos `aria-*` cuando es necesario.
+-   **Etiquetas Semánticas:** Usa `<article>`, `<section>`, `<nav>`, etc.
+-   **Atributos `alt`:** Todas las imágenes tienen descripciones en `alt`.
+-   **Navegación por Teclado:** Todos los componentes interactivos son accesibles sin ratón.
+-   **Contraste de Color:** Cumple con estándares WCAG 2.1 AA.
+-   **ARIA Labels:** Usa atributos `aria-*` cuando es necesario.
 
 ## 10. Contribución y Licencia
 
@@ -487,9 +498,9 @@ Este proyecto es parte del ecosistema de Coppel y sigue un flujo de contribució
     ```bash
     git push origin feature/mi-nueva-funcionalidad
     ```
-    - Actualiza el `CHANGELOG.md` siguiendo el formato establecido
-    - Describe los cambios en la PR
-    - Espera revisión del equipo
+    -   Actualiza el `CHANGELOG.md` siguiendo el formato establecido
+    -   Describe los cambios en la PR
+    -   Espera revisión del equipo
 
 ### Convenciones de Commits
 
@@ -515,30 +526,33 @@ Este proyecto y su plantilla se distribuyen bajo la **Licencia ISC**. Puedes enc
 
 Para profundizar en las tecnologías utilizadas en este MFE, consulta la documentación oficial:
 
-*   **Frameworks y Librerías Principales:**
-    *   [**Modern.js** - Documentación Oficial](https://modernjs.dev/)
-    *   [**React** - Nueva Documentación](https://react.dev/)
-    *   [**TypeScript** - Manual Oficial](https://www.typescriptlang.org/docs/)
-    *   [**Jotai** - Documentación y API](https://jotai.org/docs/introduction)
-    *   [**PrimeReact** - Documentación de Componentes](https://primereact.org/)
-    *   [**PrimeFlex** - Documentación de Clases de Utilidad](https://www.primefaces.org/primeflex/)
+-   **Frameworks y Librerías Principales:**
 
-*   **Herramientas y Pruebas:**
-    *   [**Axios** - Documentación en GitHub](https://axios-http.com/)
-    *   [**Jest** - Guía de Inicio](https://jestjs.io/docs/getting-started)
-    *   [**React Testing Library** - Documentación Principal](https://testing-library.com/docs/react-testing-library/intro)
-    *   [**Playwright** - Documentación Oficial](https://playwright.dev/docs/intro)
-    *   [**Biome** - Documentación del Linter y Formateador](https://biomejs.dev/docs/)
-    *   [**react-cookie** - Documentación en GitHub](https://github.com/react-hook/react-cookie)
+    -   [**Modern.js** - Documentación Oficial](https://modernjs.dev/)
+    -   [**React** - Nueva Documentación](https://react.dev/)
+    -   [**TypeScript** - Manual Oficial](https://www.typescriptlang.org/docs/)
+    -   [**Jotai** - Documentación y API](https://jotai.org/docs/introduction)
+    -   [**PrimeReact** - Documentación de Componentes](https://primereact.org/)
+    -   [**PrimeFlex** - Documentación de Clases de Utilidad](https://www.primefaces.org/primeflex/)
 
-*   **Conceptos Clave y Estándares:**
-    *   [**Module Federation** - Webpack Documentation](https://webpack.js.org/concepts/module-federation/)
-    *   [**Keep a Changelog** - Formato para CHANGELOG.md](https://keepachangelog.com/en/1.0.0/)
-    *   [**Semantic Versioning (SemVer)** - Especificación](https://semver.org/spec/v2.0.0.html)
-    *   [**Conventional Commits** - Especificación](https://www.conventionalcommits.org/)
+-   **Herramientas y Pruebas:**
+
+    -   [**Axios** - Documentación en GitHub](https://axios-http.com/)
+    -   [**Jest** - Guía de Inicio](https://jestjs.io/docs/getting-started)
+    -   [**React Testing Library** - Documentación Principal](https://testing-library.com/docs/react-testing-library/intro)
+    -   [**Playwright** - Documentación Oficial](https://playwright.dev/docs/intro)
+    -   [**Biome** - Documentación del Linter y Formateador](https://biomejs.dev/docs/)
+    -   [**react-cookie** - Documentación en GitHub](https://github.com/react-hook/react-cookie)
+
+-   **Conceptos Clave y Estándares:**
+    -   [**Module Federation** - Webpack Documentation](https://webpack.js.org/concepts/module-federation/)
+    -   [**Keep a Changelog** - Formato para CHANGELOG.md](https://keepachangelog.com/en/1.0.0/)
+    -   [**Semantic Versioning (SemVer)** - Especificación](https://semver.org/spec/v2.0.0.html)
+    -   [**Conventional Commits** - Especificación](https://www.conventionalcommits.org/)
 
 ---
 
 **Autor:** Equipo de Arquitectura Digital - Coppel  
-**Última Actualización:** 2026-05-15  
-**Estado:** Mantenido Activamente
+**Última Actualización:** 2026-06-03  
+**Responsable:** Cristian Camacho Rodríguez
+**Email:** `cristian.camacho@coppel.com`
