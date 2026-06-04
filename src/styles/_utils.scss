@@ -1,5 +1,3 @@
-// src/styles/_utils.scss
-// Utility classes — Homologado con sgc-mf-hardline-products-inventory-management
 @use 'mixins' as *;
 
 .sgc-mfe-attributes {
@@ -16,37 +14,4 @@
     .p-tabview-ink-bar {
         display: none;
     }
-
-    /* Icons */
-    .icon-small { font-size: 0.875rem; }
-    .icon-medium { font-size: 1rem; }
-    .icon-large { font-size: 1.25rem; }
-
-    .icon-interactive {
-        transition: all 0.2s ease;
-
-        &:hover {
-            transform: scale(1.1);
-        }
-
-        &:focus {
-            outline: 2px solid var(--primary-color, #007bff);
-            outline-offset: 2px;
-            border-radius: 2px;
-        }
-    }
-
-    /* High Contrast */
-    .high-contrast {
-        color: #000000;
-        background-color: #ffffff;
-    }
 }
-
-body.dark-theme .sgc-mfe-attributes {
-    .high-contrast {
-        color: #ffffff;
-        background-color: #000000;
-    }
-}
-

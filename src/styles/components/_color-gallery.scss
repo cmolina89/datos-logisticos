@@ -1,0 +1,194 @@
+// src/styles/components/_color-gallery.scss
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.sgc-mfe-attributes {
+    .cv-gallery-description {
+        line-height: normal;
+        margin-top: $spacing-xs;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+    .cv-gallery-instruction {
+        font-size: $font-size-sm;
+        font-weight: 500;
+        line-height: normal;
+        margin-bottom: $spacing-sm;
+        overflow-wrap: anywhere;
+        padding-left: $spacing-xs;
+        padding-right: $spacing-xs;
+    }
+
+    .cv-gallery-title {
+        font-weight: 700;
+        margin-bottom: $spacing-sm;
+        padding: 0;
+    }
+
+    .cv-gallery-carousel {
+        display: flex;
+        gap: $spacing-sm;
+        overflow-x: auto;
+        padding-bottom: $spacing-sm;
+        padding-left: $spacing-sm;
+        padding-right: $spacing-sm;
+        padding-top: $spacing-sm;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+
+    .cv-gallery-upload-panel,
+    .cv-image-item-add-button {
+        align-items: center;
+        background-color: #f9fafb; // bg-gray-50
+        border: 2px dashed #dee2e6; // surface-border
+        border-radius: $border-radius-md;
+        cursor: pointer;
+        display: flex;
+        flex-shrink: 0;
+        height: 180px;
+        justify-content: center;
+        margin-bottom: $spacing-sm;
+        margin-left: $spacing-sm;
+        margin-right: $spacing-sm;
+        margin-top: $spacing-sm;
+        scroll-snap-align: start;
+        transition: background-color 0.2s;
+        width: 180px;
+        z-index: 10;
+
+        &:hover {
+            background-color: #f3f4f6; // bg-gray-100
+        }
+    }
+
+    .cv-gallery-upload-button {
+        align-items: center;
+        border: none !important;
+        display: flex;
+        height: 60px;
+        justify-content: center;
+        width: 60px;
+    }
+
+    .cv-image-item-container {
+        background-position: center;
+        background-size: cover;
+        border-radius: $border-radius-md;
+        flex-shrink: 0;
+        height: 180px;
+        margin-bottom: $spacing-sm;
+        margin-left: $spacing-md;
+        margin-right: $spacing-md;
+        margin-top: $spacing-sm;
+        position: relative;
+        scroll-snap-align: start;
+        width: 180px;
+
+        &.is-main {
+            border: 5px solid $color-primary-light;
+        }
+
+        &.is-not-main {
+            border: 1px solid #dee2e6;
+        }
+    }
+
+    .cv-image-item-main-photo {
+        background-color: $color-primary;
+        border-bottom-right-radius: $border-radius-sm;
+        color: $color-white;
+        font-size: 0.75rem;
+        font-weight: 700;
+        left: 0;
+        padding: $spacing-xs $spacing-sm;
+        position: absolute;
+        top: 0;
+        z-index: 2;
+    }
+
+    .p-button.cv-image-item-add-button.p-button.p-component {
+        background-color: #ffffff;
+        border: none;
+        height: 30px;
+        padding-top: 20px;
+        width: 160px;
+    }
+
+    .cv-image-item-delete-btn {
+        align-items: center;
+        background-color: $color-white !important;
+        border: 1px solid #dee2e6 !important;
+        display: flex;
+        height: 30px !important;
+        justify-content: center;
+        position: absolute;
+        right: -12px;
+        top: -12px;
+        width: 30px !important;
+        z-index: 10;
+    }
+
+    .cv-image-item-delete-icon {
+        background-color: $color-white;
+        font-size: 35px;
+        height: 34px;
+        pointer-events: none;
+        width: 33px;
+        line-height: 1px;
+    }
+
+    .cv-image-item-move-btn {
+        align-items: center;
+        background-color: #f3f3f3 !important;
+        border: 2px solid $color-primary-press !important;
+        display: flex;
+        flex-shrink: 0;
+        height: 35px !important;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 35px !important;
+        z-index: 10;
+
+        &:active,
+        &:hover,
+        &:focus {
+            border-radius: 30px;
+            transform: translateY(-50%);
+        }
+
+        &.left {
+            left: -15px;
+        }
+
+        &.right {
+            right: -15px;
+        }
+    }
+
+    .cv-image-item-move-icon {
+        font-size: 20px;
+        line-height: 1px;
+    }
+
+    .cv-image-item-counter {
+        background-color: $color-primary;
+        border-radius: $border-radius-sm;
+        bottom: 0;
+        color: $color-white;
+        font-size: 0.75rem;
+        font-weight: 500;
+        left: 50%;
+        margin-bottom: $spacing-xs;
+        opacity: 0.8;
+        padding: 0 $spacing-sm;
+        position: absolute;
+        transform: translateX(-50%);
+        z-index: 2;
+    }
+}

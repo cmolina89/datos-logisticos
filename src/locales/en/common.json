@@ -185,6 +185,8 @@
       "cantidadUdsInfo": "Number of units contained in the master carton",
       "multiplo": "Master carton multiple",
       "multiploInfo": "Sales multiple or master carton grouping",
+      "numeroPiezas": "Number of pieces",
+      "placeholderNumeroPiezas": "Number of pieces",
       "placeholderCantidadUds": "Quantity of master carton units",
       "placeholderMultiplo": "Master carton multiple",
       "placeholderPeso": "Weight",

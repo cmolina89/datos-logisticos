@@ -1,5 +1,4 @@
 // src/styles/global.scss
-// Arquitectura modular SCSS — Homologado con sgc-mf-hardline-products-inventory-management
 @use 'sass:color';
 @use 'variables' as *;
 @use 'mixins' as *;
@@ -13,12 +12,14 @@
 
 // MFE Component Styles
 @use 'components/layout';
+@use 'components/color-accordion';
+@use 'components/color-add-button';
+@use 'components/color-buttons';
 @use 'components/color-fields';
 @use 'components/color-dialogs';
-@use './components/p-error';
+@use 'components/color-gallery';
 
 // Layouts Templates
-// dashboard.scss ya importa navbar, sidebar, submenu, footer internamente
 @use 'templates/progress-bar';
 @use 'templates/dashboard';
 @use 'templates/navbar';
@@ -39,3 +40,156 @@
 @import url('primeicons/primeicons.css');
 @import url('coltrane-icon-font/coltrane-icons.css');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+.sgc-mfe-attributes {
+    // CSS Variables scoped to the MFE
+    --bs-danger-rgb: 255, 89, 77;
+    --color-primary-press: #{$color-primary-press};
+    --content-border-radius: #{$border-radius-md};
+    --custom-border-radius: 15px;
+    --font-family: 'Poppins', Arial, sans-serif !important;
+    --p-border-color-primary: #{$color-primary-light};
+    --p-border-radius: #{$border-radius-md};
+    --p-font-family: 'Poppins', Arial, sans-serif !important;
+    --p-green-500: #{$color-success};
+    --surface-border: #{$color-surface-border};
+    --text: #{$color-primary};
+    --text-color: #4b5563;
+
+    // Base scoping and reset
+    & {
+        box-sizing: border-box;
+        color: var(--text-color, $color-primary);
+        font-family: var(--font-family);
+        line-height: 1.6;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: inherit;
+        font-family: var(--font-family) !important;
+    }
+
+    /* Accessibility */
+    .sr-only {
+        border: 0;
+        clip: rect(0, 0, 0, 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    /* Form Elements */
+    input[type='checkbox'] {
+        cursor: pointer;
+        margin-left: 0;
+        position: absolute;
+    }
+
+    .p-inputtext,
+    .p-button {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .p-button:not(.cv-image-item-delete-btn, .cv-image-item-move-btn, .cv-add-color-button, .cv-image-item-add-button) {
+        border: 1px solid $color-primary-light;
+        color: $color-primary-light;
+        padding: 12px 24px;
+        transition: 0.2s;
+        width: auto;
+        &:hover,
+        &:active,
+        &:focus,
+        &:focus-visible {
+            border-radius: 30px;
+            outline: none; // Limpieza para el estado focus
+        }
+    }
+
+    .p-button-outlined {
+        color: $color-primary-press;
+    }
+
+    .p-radiobutton {
+        .p-radiobutton-input,
+        .p-radiobutton-box {
+            border: 3px solid $color-primary-light;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .p-radiobutton-box .p-radiobutton-icon {
+            background-color: $color-primary-light;
+            height: 11px;
+            margin: 0 2.5px 0 auto;
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+            width: 11px;
+        }
+
+        &.p-highlight {
+            .p-radiobutton-box {
+                background-color: $color-white;
+                border: 3px solid $color-primary-light;
+                color: $color-primary-light;
+
+                &:hover {
+                    border-color: $color-primary-light-hover;
+                    color: $color-primary-light-hover;
+
+                    .p-radiobutton-icon {
+                        background-color: $color-primary-light-hover;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Dark Theme Support
+body.dark-theme {
+    background-color: #212529;
+    color: #f8f9fa;
+
+    .sgc-mfe-attributes {
+        .p-message,
+        .p-accordion-header,
+        .p-accordion-header-link,
+        .p-accordion-content {
+            background-color: var(--surface-card) !important;
+            border-color: var(--surface-border) !important;
+            color: var(--text-color) !important;
+        }
+
+        .p-tabview {
+            background-color: var(--surface-card) !important;
+            .p-tabview-nav,
+            .p-tabview-panels {
+                background-color: var(--surface-card) !important;
+                color: var(--text-color) !important;
+            }
+        }
+    }
+}
+
+.sgc-mfe-attributes {
+    -moz-box-direction: normal;
+    -moz-box-orient: vertical;
+    background-color: #ffffff;
+    background-color: var(--color-background-body, #f8f9fa);
+    border-radius: 20px;
+    color: #081754;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 0 5rem;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow: hidden;
+    padding: 1.5rem;
+    position: relative;
+}

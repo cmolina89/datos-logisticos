@@ -1,0 +1,51 @@
+// src/styles/components/_color-add-button.scss
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.sgc-mfe-attributes {
+    .cv-add-color-container {
+        align-items: center;
+        border: 1px dashed;
+        border-radius: $border-radius-md;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        justify-content: center;
+        margin: 0 1rem;
+        padding: $spacing-md;
+        transition: all 0.2s;
+
+        &.disabled {
+            background-color: #e5e7eb;
+            cursor: default;
+            opacity: 0.6;
+        }
+
+        &:not(.disabled) {
+            background-color: #ffff;
+            &:hover {
+                background-color: #f3f4f6;
+            }
+        }
+    }
+
+    .cv-add-color-button {
+        align-items: center;
+        border: none !important;
+        display: flex;
+        height: 50px !important;
+        justify-content: center;
+        margin-bottom: $spacing-md;
+        width: 50px !important;
+    }
+
+    .cv-add-color-icon {
+        display: flex;
+        font-size: 50px;
+        height: 50px;
+        justify-content: center;
+        pointer-events: none;
+        width: 50px;
+    }
+}

@@ -185,6 +185,8 @@
       "cantidadUdsInfo": "Cantidad de unidades que contiene el cartón máster",
       "multiplo": "Múltiplo cartón máster",
       "multiploInfo": "Múltiplo de venta o agrupación del cartón máster",
+      "numeroPiezas": "Número de piezas",
+      "placeholderNumeroPiezas": "Número de piezas",
       "placeholderCantidadUds": "Cantidad de uds cartón máster",
       "placeholderMultiplo": "Múltiplo cartón máster",
       "placeholderPeso": "Peso",

@@ -96,5 +96,11 @@
     "fondoMax": "La profondeur ne peut pas dépasser 500",
     "estibaMax": "L'empilement maximum ne peut pas dépasser 999",
     "numericOnly": "Ce champ n'accepte que des valeurs numériques"
+  },
+  "datosLogisticos": {
+    "segmento3": {
+      "numeroPiezas": "Nombre de pièces",
+      "placeholderNumeroPiezas": "Nombre de pièces"
+    }
   }
 }

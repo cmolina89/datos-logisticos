@@ -1,0 +1,320 @@
+// src/styles/components/_color-accordion.scss
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.sgc-mfe-attributes {
+    .cv-accordion-container {
+        border-radius: $border-radius-md;
+        margin-bottom: $spacing-sm;
+        padding: $spacing-sm $spacing-md;
+    }
+
+    .p-accordion-tab {
+        margin-bottom: 0;
+    }
+
+    .cv-main-accordion {
+        background-color: white;
+        border-radius: 22px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0px 12px 24px rgba(25, 75, 123, 0.48);
+        color: #374151;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        margin-left: auto;
+        margin-right: auto;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .cv-accordion {
+        @include shadow-2;
+        background-color: $color-background-gray;
+        border: 1px solid #e5e7eb;
+        border-radius: $border-radius-lg;
+        color: $color-text-main;
+        font-size: $font-size-lg;
+        margin-bottom: $spacing-lg;
+        margin-left: auto;
+        margin-right: auto;
+
+        &.active-or-invalid {
+            border: 2px solid #ffffff;
+        }
+
+        &.not-active-valid {
+            border: 0px solid #e5e7eb;
+        }
+    }
+
+    .p-accordion-tab.p-accordion-tab-active {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .sgc-mfe-attributes .p-accordion .p-accordion-content {
+        border: none;
+    }
+
+    .sgc-mfe-attributes .p-accordion .p-accordion-content .contenido {
+        border-bottom-left-radius: 12px;
+        border-bottom-left-radius: var(--content-border-radius);
+        border-bottom-right-radius: 12px;
+        border-bottom-right-radius: var(--content-border-radius);
+        color: #081754;
+        color: var(--text-color);
+        font-size: 18px;
+    }
+
+    /* Titles inside accordion: keep bold/tokens */
+    .sgc-mfe-attributes .cv-accordion-title span.flex.align-items-center.font-bold {
+        color: var(--text-color) !important;
+        font-family: var(--font-family) !important;
+        font-size: 20px !important;
+        font-weight: 600 !important;
+        line-height: 36px !important;
+    }
+
+    .cv-accordion-header {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding-right: $spacing-md;
+        text-decoration: none !important;
+        width: 100%;
+
+        &:active,
+        &:focus,
+        &:focus-visible,
+        &:hover,
+        &:focus-within,
+        &:target {
+            outline: none !important;
+            text-decoration: none !important;
+        }
+    }
+
+    .cv-accordion-title {
+        align-items: center;
+        color: var(--text-color, #081754);
+        display: flex;
+        font-family: var(--font-family);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 36px;
+        text-decoration: none !important;
+
+        &:active,
+        &:focus,
+        &:focus-visible,
+        &:hover,
+        &:focus-within,
+        &:target {
+            text-decoration: none !important;
+        }
+    }
+
+    .cv-accordion-title span.flex.align-items-center.font-bold {
+        color: var(--text-color, #081754);
+        font-family: var(--font-family);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 36px;
+    }
+
+    .cv-accordion-icon {
+        align-items: center;
+        display: flex;
+        font-size: $font-size-lg;
+        font-weight: 700;
+        justify-content: center;
+        margin-left: $spacing-sm;
+    }
+
+    .cv-field-label {
+        color: var(--text-color, #081754);
+        display: block;
+        font-family: var(--font-family);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 150%;
+        margin-bottom: 8px;
+    }
+
+    .cv-photo-manual-link {
+        align-items: center;
+        align-self: flex-start;
+        color: var(--primary-color, #2954e3);
+        cursor: pointer;
+        display: inline-flex;
+        font-family: var(--font-family);
+        font-size: 14px;
+        font-weight: 500;
+        gap: 4px;
+        line-height: 1.5;
+        padding: 0;
+        text-decoration: underline;
+        transition: color 0.2s;
+    }
+
+    & .p-inputtext,
+    & .p-button {
+        background: var(--surface-ground, #ffffff);
+        border: 1px solid var(--surface-border, #081754);
+        color: var(--text-color, #081754);
+        font-family: var(--font-family);
+        font-size: 16px;
+        height: 40px;
+        padding: 8px 16px;
+        -moz-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+        width: 100%;
+
+        .cv-image-item-move-btn.p-button-rounded.p-button-text.p-button {
+            border-radius: 30px;
+        }
+    }
+
+    /* Editable inputs: hover/focus (editable and not disabled) */
+    .p-inputtext:not(.p-disabled):not([readonly]):hover,
+    .p-inputtext:not(.p-disabled):not([readonly]).p-focus,
+    .p-inputtext:not(.p-disabled):not([readonly]):focus {
+        border-color: #1c42e8;
+        box-shadow: 0 0 0 2px rgba(28, 66, 232, 0.1);
+    }
+
+    /* Specific hover for dropdown input label inside this MFE */
+    & .p-dropdown-label .p-inputtext:not(.p-disabled):hover,
+    & .p-dropdown .p-dropdown-label .p-inputtext:not(.p-disabled):hover {
+        border-color: var(--primary-color, #1c42e8);
+        box-shadow: 0 0 0 2px rgba(28, 66, 232, 0.1);
+    }
+
+    /* Specific styling for span.p-dropdown-label.p-inputtext inside this MFE */
+    & span.p-dropdown-label.p-inputtext {
+        align-items: center;
+        background: var(--surface-ground, #ffffff);
+        border: 0;
+        border-radius: 12px;
+        height: 38px;
+        width: 100%;
+    }
+
+    /* Dropdown trigger (icon button) */
+    & .p-dropdown .p-dropdown-trigger {
+        background: var(--surface-ground, #f9fafb);
+        border-bottom-right-radius: 6px;
+        border-top-right-radius: 6px;
+        color: #6b7280;
+        width: 3rem;
+    }
+
+    /* Override highlight style for dropdown items inside MFE */
+    & .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+        -moz-transition: all 0.2s ease;
+        border-radius: 8px;
+        color: #081754;
+        font-family: var(--font-family);
+        font-size: 14px;
+        margin-bottom: 4px;
+        padding: 10px 16px;
+        transition: all 0.2s ease;
+    }
+
+    // Prevención de subrayado en hover para todos los enlaces dentro del MFE
+    a:hover {
+        text-decoration: none !important;
+    }
+
+    /* Move buttons: ensure 30px radius; use element selector and !important to override theme */
+    button.cv-image-item-move-btn,
+    button.cv-image-item-move-btn.right,
+    .p-button.cv-image-item-move-btn,
+    .p-button.cv-image-item-move-btn.right,
+    .p-inputtext.cv-image-item-move-btn {
+        border-radius: 30px !important;
+    }
+
+    .p-accordion .p-accordion-header:not(.p-disabled).p-highlight a.p-accordion-header-link,
+    .p-accordion .p-accordion-header:not(.p-disabled) a.p-accordion-header-link {
+        background: #ffffff;
+        border: none;
+        color: #081754;
+        padding: 0.75rem 1.75rem;
+        position: relative;
+
+        // Eliminamos outline de base para evitar destellos al hacer click
+        outline: none;
+
+        // 2. Estados de Foco (Unificados y sin outline)
+        &:focus,
+        &:focus-visible,
+        &:focus-within,
+        &[cl-link]:focus,
+        &[cl-link]:focus-visible,
+        &[cl-link]:focus-within {
+            box-shadow: none; // Asegura que no haya sombras de enfoque
+            color: var(--color-primary);
+            outline: none; // Fuerza la desaparición del borde
+            text-decoration: none;
+        }
+
+        &:after {
+            content: '';
+            background-color: #eeeeee;
+            display: inline-block;
+            height: 1px;
+            left: 26px;
+            padding: 1px;
+            position: absolute;
+            top: 100%;
+            width: 97%;
+        }
+    }
+}
+
+/* Dropdown panel visual surface for Color Variant MFE */
+.sgc-mfe-attributes-dropdown-panel {
+    background: #ffffff;
+    background: var(--surface-card, #ffffff);
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.sgc-mfe-attributes-dropdown-panel .p-dropdown-items {
+    padding: 8px;
+}
+
+.sgc-mfe-attributes-dropdown-panel .p-dropdown-item {
+    border-radius: 8px;
+    margin-bottom: 4px;
+    padding: 10px 16px;
+    font-family: var(--font-family);
+    font-size: 14px;
+    color: #081754;
+    transition: all 0.2s ease;
+}
+
+.sgc-mfe-attributes-dropdown-panel .p-dropdown-item:last-child {
+    margin-bottom: 0;
+}
+
+.sgc-mfe-attributes-dropdown-panel .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+    background: #f5f7fa;
+    color: #081754;
+}
+
+.sgc-mfe-attributes-dropdown-panel .p-dropdown-item.p-highlight {
+    background: #e8eaf6;
+    color: #1c42e8;
+    font-weight: 600;
+}
+
+/* Focus outline for dropdown elements scoped to this MFE */
+.sgc-mfe-attributes .p-dropdown *:focus,
+.sgc-mfe-attributes-dropdown-panel *:focus {
+    border-radius: 2px;
+    outline: 2px solid var(--primary-color, #007bff);
+    outline-offset: 2px;
+}
