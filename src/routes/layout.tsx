@@ -1,8 +1,7 @@
 import { ThemeProvider } from '@/app/providers/ThemeProvider';
 import SEOHead from '@/components/common/SEOHead/SEOHead';
-import LanguageSwitcher from '@/components/common/LanguageSwitcher/LanguageSwitcher';
+// S1128 fix: se eliminó el import no usado de LanguageSwitcher
 import { applyClientSecurityHeaders } from '@/utils/securityHeaders';
-import { useTranslation } from '@/hooks/useTranslation';
 import { Outlet } from '@modern-js/runtime/router';
 import { Provider as JotaiProvider } from 'jotai';
 import { PrimeReactProvider } from 'primereact/api';
@@ -21,7 +20,7 @@ import '@/styles/global.scss';
 
 // Componente interno
 function LayoutContent() {
-    const { t } = useTranslation();
+    // S1854 fix: se eliminó `const { t } = useTranslation()` — la variable t no se usa en este componente
 
     useEffect(() => {
         applyClientSecurityHeaders();

@@ -109,6 +109,8 @@ interface TarjetaEmpaquesProductoProps {
     saved?: boolean;
 }
 
+type ValorCampoEmpaques = number | string | null | undefined;
+
 type CampoEmpaques =
     | 'cantidadUdsCartonMaster'
     | 'multiploCartonMaster'
@@ -124,7 +126,7 @@ type CampoNumericoEmpaques = Exclude<CampoEmpaques, 'unidadPeso' | 'unidadMedida
 type ErrorMap = Record<string, string | undefined>;
 type AlertaMap = Record<string, boolean>;
 
-type ValidadorCampo = (valor: number | string | null | undefined) => string | undefined;
+type ValidadorCampo = (valor: ValorCampoEmpaques) => string | undefined;
 
 const validarCampoRequeridoTexto: ValidadorCampo = (valor) => {
     if (!valor || (typeof valor === 'string' && !valor.trim())) {
@@ -325,8 +327,8 @@ const ModalCard: React.FC<ModalCardProps> = ({
             <div className="segmento-carton-modal-copy">
                 <p className="segmento-carton-modal-uses-title">{usesTitle}</p>
                 <ul className="segmento-carton-modal-bullets">
-                    {bullets.map((bullet, index) => (
-                        <li key={`${title}-${index}`}>{bullet}</li>
+                    {bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
                     ))}
                 </ul>
                 <p className="segmento-carton-modal-example-title">{exampleTitle}</p>

@@ -5,7 +5,9 @@
 .segmento-entrega-manipulacion {
     background: #fff;
     border-radius: 16px;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 12px rgba(0, 0, 0, 0.1);
+    box-shadow:
+        0 8px 40px rgba(0, 0, 0, 0.18),
+        0 2px 12px rgba(0, 0, 0, 0.1);
     border: none;
     overflow: hidden;
     font-family: 'Poppins', Arial, sans-serif;
@@ -72,7 +74,6 @@
     }
 
     .segmento-entrega-body {
-        padding: 0 1rem 1rem;
         padding: 0 2%;
 
         .segmento-subtitulo {
@@ -165,18 +166,13 @@
 
         .p-inputnumber .p-inputnumber-input {
             border-radius: 6px;
-            border: 1px solid #5a5a5a;
-            background: #ffffff;
             background: var(--surface-ground, #ffffff);
-            border: 1px solid #081754;
             border: 1px solid var(--surface-border, #081754);
-            color: #081754;
             color: var(--text-color, #081754);
             font-family: var(--font-family);
             font-size: 16px;
             height: 40px;
             padding: 8px 16px;
-            -moz-transition: all 0.2s ease;
             transition: all 0.2s ease;
             width: 100%;
         }

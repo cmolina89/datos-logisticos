@@ -53,6 +53,13 @@ const TECLAS_PERMITIDAS = new Set([
     '9'
 ]);
 
+/** S3358 fix: Reemplaza ternarios anidados en className */
+const obtenerClaseCampoEntrega = (warning: boolean, error: boolean): string => {
+    if (warning) return 'campo-warning-input w-full';
+    if (error) return 'p-invalid w-full';
+    return 'w-full';
+};
+
 /** Helpers de validación inline */
 function validarCampoNumericoPositivo(val: number | null | undefined): string | undefined {
     if (val === null || val === undefined) return undefined;
@@ -298,13 +305,11 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
                                             minFractionDigits={0}
                                             maxFractionDigits={2}
                                             placeholder={t('datosLogisticos.segmento4.layoutLargo')}
-                                            className={
-                                                alertaNoNumerico.layoutLargo
-                                                    ? 'campo-warning-input w-full'
-                                                    : errors.layoutLargo
-                                                    ? 'p-invalid w-full'
-                                                    : 'w-full'
-                                            }
+                                            // DESPUÉS (S3358 fix):
+                                            className={obtenerClaseCampoEntrega(
+                                                Boolean(alertaNoNumerico.layoutLargo),
+                                                Boolean(errors.layoutLargo)
+                                            )}
                                         />
                                         {(errors.layoutLargo || alertaNoNumerico.layoutLargo) && (
                                             <span
@@ -347,13 +352,11 @@ const TarjetaEntregaManipulacion: React.FC<TarjetaEntregaManipulacionProps> = ({
                                             minFractionDigits={0}
                                             maxFractionDigits={2}
                                             placeholder={t('datosLogisticos.segmento4.layoutAncho')}
-                                            className={
-                                                alertaNoNumerico.layoutAncho
-                                                    ? 'campo-warning-input w-full'
-                                                    : errors.layoutAncho
-                                                    ? 'p-invalid w-full'
-                                                    : 'w-full'
-                                            }
+                                            // DESPUÉS (S3358 fix):
+                                            className={obtenerClaseCampoEntrega(
+                                                Boolean(alertaNoNumerico.layoutAncho),
+                                                Boolean(errors.layoutAncho)
+                                            )}
                                         />
                                         {(errors.layoutAncho || alertaNoNumerico.layoutAncho) && (
                                             <span

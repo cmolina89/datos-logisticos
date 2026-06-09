@@ -610,8 +610,8 @@ const TarjetaMedidasEmpaqueIndividual: React.FC<TarjetaMedidasEmpaqueIndividualP
                     {/* Mensajes de error generales al inicio del formulario */}
                     {mensajesErrorGenerales.length > 0 && (
                         <div className="alerta-formulario-error">
-                            {mensajesErrorGenerales.map((msg, idx) => (
-                                <div className="alerta-formulario-error-item" key={idx}>
+                            {mensajesErrorGenerales.map((msg) => (
+                                <div className="alerta-formulario-error-item" key={msg}>
                                     <span>{msg}</span>
                                 </div>
                             ))}

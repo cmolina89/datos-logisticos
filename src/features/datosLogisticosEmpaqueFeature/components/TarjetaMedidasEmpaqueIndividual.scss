@@ -21,7 +21,9 @@
 .segmento-medidas-empaque-individual {
     background: #fff;
     border-radius: 16px;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 12px rgba(0, 0, 0, 0.1);
+    box-shadow:
+        0 8px 40px rgba(0, 0, 0, 0.18),
+        0 2px 12px rgba(0, 0, 0, 0.1);
     border: none;
     overflow: hidden;
     font-family: 'Poppins', Arial, sans-serif;
@@ -123,6 +125,7 @@
     .segmento-medidas-form {
         padding: 0 1.25rem 1.25rem;
 
+        // S4666 fix: Se eliminó el selector .segmento-label duplicado (se mantiene solo esta definición)
         .segmento-label {
             font-weight: 500;
             color: var(--text-color);
@@ -181,11 +184,7 @@
             }
         }
 
-        .segmento-label {
-            font-weight: 500;
-            color: var(--text-color);
-            margin-bottom: 0.35rem;
-        }
+        // S4666 fix: selector .segmento-label duplicado ELIMINADO de aquí (ya definido arriba)
 
         @media (max-width: 600px) {
             .segmento-medidas-fila-2 {
@@ -210,25 +209,18 @@
             box-shadow: none !important;
         }
 
-        /* Campos: fondo blanco, bordes redondeados, contorno gris oscuro */
+        // S4656 fix: Se consolidaron las propiedades duplicadas background, border, color, transition
+        // en una sola declaración usando var() con fallback
         .p-inputtext,
         .p-inputnumber-input {
-            background: #ffffff;
-            border: 1px solid #5a5a5a;
-            border-radius: 6px;
-            color: var(--text-color);
-            transition: border 0.2s;
-            background: #ffffff;
             background: var(--surface-ground, #ffffff);
-            border: 1px solid #081754;
             border: 1px solid var(--surface-border, #081754);
-            color: #081754;
+            border-radius: 6px;
             color: var(--text-color, #081754);
             font-family: var(--font-family);
             font-size: 16px;
             height: 40px;
             padding: 8px 16px;
-            -moz-transition: all 0.2s ease;
             transition: all 0.2s ease;
             width: 100%;
 
@@ -273,7 +265,9 @@
                 border-radius: 0 !important;
                 min-width: 2.5rem;
                 flex-shrink: 0;
-                transition: background 0.2s ease, transform 0.15s ease;
+                transition:
+                    background 0.2s ease,
+                    transform 0.15s ease;
 
                 &:hover:not(.p-disabled) {
                     background: #1535c0 !important;
@@ -306,26 +300,21 @@
                 font-size: 16px;
                 color: var(--text-color, #081754);
                 background: #ffffff;
-                -moz-transition: all 0.2s ease;
                 transition: all 0.2s ease;
             }
         }
 
-        /* InputNumber sin botones (Peso, Alto, Frente, Fondo, Estiba) */
+        // S4656 fix: Se consolidaron las propiedades duplicadas background, border, color
+        // en una sola declaración usando var() con fallback
         .p-inputnumber:not(.p-inputnumber-buttons-horizontal) .p-inputnumber-input {
             border-radius: 6px;
-            border: 1px solid #5a5a5a;
-            background: #ffffff;
             background: var(--surface-ground, #ffffff);
-            border: 1px solid #081754;
             border: 1px solid var(--surface-border, #081754);
-            color: #081754;
             color: var(--text-color, #081754);
             font-family: var(--font-family);
             font-size: 16px;
             height: 40px;
             padding: 8px 16px;
-            -moz-transition: all 0.2s ease;
             transition: all 0.2s ease;
             width: 100%;
         }
