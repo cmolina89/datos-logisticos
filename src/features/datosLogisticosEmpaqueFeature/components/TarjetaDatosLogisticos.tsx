@@ -21,6 +21,7 @@ import {
     datosLogisticosEmpaqueStateAtom,
     collapseSectionAfterSaveAtom,
     proveedorAltaCompletaAtom,
+    supplierIdAtom,
     erroresDatosLogisticosAtom,
     filasCedisLoadingAtom,
     filasCedisErrorAtom,
@@ -39,6 +40,7 @@ import { Button } from 'primereact/button';
 import { FilterMatchMode } from 'primereact/api';
 import type React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useHostSharedStore } from '@/hooks/useHostSharedStore';
 import './TarjetaDatosLogisticos.scss';
 
 interface TarjetaDatosLogisticosProps {
@@ -107,9 +109,11 @@ const TarjetaDatosLogisticos: React.FC<TarjetaDatosLogisticosProps> = ({ childre
     const collapseSectionAfterSave = useAtomValue(collapseSectionAfterSaveAtom);
     const setCollapseSectionAfterSave = useSetAtom(collapseSectionAfterSaveAtom);
     const proveedorAltaCompleta = useAtomValue(proveedorAltaCompletaAtom);
+    const supplierId = useAtomValue(supplierIdAtom);
     const errors = useAtomValue(erroresDatosLogisticosAtom);
     const filasCedisLoading = useAtomValue(filasCedisLoadingAtom);
     const filasCedisError = useAtomValue(filasCedisErrorAtom);
+    const hostSharedStore = useHostSharedStore();
     const [collapsed, setCollapsed] = useState(false);
 
     useEffect(() => {
@@ -198,6 +202,26 @@ const TarjetaDatosLogisticos: React.FC<TarjetaDatosLogisticosProps> = ({ childre
             onChange={() => handleToggleReceptor(row.id)}
             aria-label={`${t('datosLogisticos.segmento1.receptorLabel')} ${row.cedis}`}
         />
+    );
+
+    const handleGoToLogisticsConfig = useCallback(
+        (event: React.MouseEvent<HTMLAnchorElement>) => {
+            event.preventDefault();
+            hostSharedStore.sendMessage('navigate-to-logistics-configuration', {
+                source: 'datos-logisticos-empaque',
+                supplierId: supplierId || null,
+                breadcrumb: [
+                    'Inicio',
+                    'Proveedores y prospectos',
+                    'Proveedores',
+                    'Razón social',
+                    'Negociaciones',
+                    'Convenio logístico',
+                    'Configuración logística'
+                ]
+            });
+        },
+        [hostSharedStore, supplierId]
     );
 
     return (
@@ -367,11 +391,9 @@ const TarjetaDatosLogisticos: React.FC<TarjetaDatosLogisticosProps> = ({ childre
                                 {/* Footer: link izquierda, botón Guardar derecha - HU 039 Func. / HU 040 Guardado */}
                                 <div className="segmento-datos-logisticos-footer">
                                     <a
-                                        href="#configuracion-logistica"
+                                        href="/proveedores-y-prospectos/proveedores"
                                         className="segmento-link-config"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                        }}
+                                        onClick={handleGoToLogisticsConfig}
                                     >
                                         {t('datosLogisticos.segmento1.goToConfig')}
                                     </a>

@@ -27,7 +27,7 @@ interface MFEMessage {
   source: 'host' | 'remote'
   target: 'host' | 'remote' | 'all'
   type: string
-  payload: any
+  payload: unknown
   timestamp: number
 }
 
@@ -50,7 +50,7 @@ export const useHostSharedStore = () => {
     messages: [] as MFEMessage[],
     hostStore: hostStoreRef.current.store,
     hostHooks: hostStoreRef.current.hooks,
-    sendMessage: (type: string, payload: any) => {
+    sendMessage: (type: string, payload: unknown) => {
       sharedState.sendMessage({ source: 'remote', target: 'host', type, payload })
       console.log('[Remote] Sending message to host:', { type, payload })
     },
@@ -69,14 +69,14 @@ export const useRemoteCommunication = () => {
   const store = useHostSharedStore()
 
   const sendToHost = React.useCallback(
-    (type: string, payload: any) => {
+    (type: string, payload: unknown) => {
       store.sendMessage(type, payload)
     },
     [store]
   )
 
   const broadcast = React.useCallback(
-    (type: string, payload: any) => {
+    (type: string, payload: unknown) => {
       store.sendMessage(type, payload)
     },
     [store]

@@ -77,5 +77,5 @@ export interface ValidationErrors {
   [key: string]: string | undefined
 }
 
-/** Estado de guardado (mock) */
+/** Estado de guardado */
 export type GuardadoStatus = 'idle' | 'loading' | 'success' | 'error'

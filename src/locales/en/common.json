@@ -123,10 +123,11 @@
             "fixMedidas": "Fix errors in Individual packaging measures.",
             "fixEmpaques": "Fix errors in Product packaging.",
             "fixEntrega": "Fix errors in Delivery and handling.",
-            "savedDatos": "Logistics data saved successfully (mock).",
-            "savedMedidas": "Individual packaging measures saved successfully (mock).",
-            "savedEmpaques": "Product packaging saved successfully (mock).",
-            "savedEntrega": "Delivery and handling saved successfully (mock)."
+            "savedDatos": "Logistics data saved successfully.",
+            "savedMedidas": "Individual packaging measures saved successfully.",
+            "savedEmpaques": "Product packaging saved successfully.",
+            "savedEntrega": "Delivery and handling saved successfully.",
+            "missingFolio": "Proposal folio was not found. Reload this page from the SKU registration flow."
         },
         "aria": {
             "expandSection": "Expand section",

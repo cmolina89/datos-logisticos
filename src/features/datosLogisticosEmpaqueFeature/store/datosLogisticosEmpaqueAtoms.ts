@@ -9,23 +9,60 @@ import type {
   GuardadoStatus,
   ValidationErrors,
   DatosLogisticos,
-  FilaCedis,
   MedidasEmpaqueIndividual,
   EmpaquesProducto,
   EntregaManipulacion,
 } from '../types'
-import { initialState } from '../mocks/datosLogisticosEmpaqueMocks'
 
-/** Estado inicial con filasCedis explícitamente tipado como FilaCedis[] */
 const initialDatosLogisticos: DatosLogisticos = {
-  ...initialState.datosLogisticos,
-  filasCedis: [], // Se pobla desde getFilasCedis() al montar la página
+  tipoEsquemaDistribucion: '',
+  filasCedis: [],
+}
+
+const initialMedidasEmpaqueIndividual: MedidasEmpaqueIndividual = {
+  tieneEmpaqueIndividual: true,
+  nombreMedidaEmpaque: '',
+  unidadPeso: '',
+  peso: null,
+  unidadMedida: '',
+  alto: null,
+  frente: null,
+  fondo: null,
+  estibaMaxima: null,
+}
+
+const initialEmpaquesProducto: EmpaquesProducto = {
+  cualAplica: 'carton_master',
+  cantidadUdsCartonMaster: null,
+  multiploCartonMaster: null,
+  unidadPeso: '',
+  peso: null,
+  unidadMedida: '',
+  alto: null,
+  frente: null,
+  fondo: null,
+}
+
+const initialEntregaManipulacion: EntregaManipulacion = {
+  entregaPaletizable: true,
+  unidadMedidaPallet: '',
+  layoutLargo: null,
+  layoutAncho: null,
+  puedeAcomodarseDistintasFormas: null,
+}
+
+/** Estado inicial del formulario: se carga desde APIs al montar la página. */
+const initialDatosLogisticosBase: DatosLogisticos = {
+  tipoEsquemaDistribucion: '',
+  filasCedis: [],
 }
 
 /** Estado completo del formulario (4 tarjetas) - filasCedis se carga desde API */
 export const datosLogisticosEmpaqueStateAtom = atom<DatosLogisticosEmpaqueState>({
-  ...initialState,
-  datosLogisticos: initialDatosLogisticos,
+  datosLogisticos: initialDatosLogisticosBase,
+  medidasEmpaqueIndividual: initialMedidasEmpaqueIndividual,
+  empaquesProducto: initialEmpaquesProducto,
+  entregaManipulacion: initialEntregaManipulacion,
 })
 
 /** Setters por sección (actualizan solo su parte) */
@@ -71,7 +108,7 @@ export const setEntregaManipulacionAtom = atom(
   }
 )
 
-/** Estado de guardado (mock: simula envío al backend) */
+/** Estado de guardado por sección */
 export const guardadoStatusAtom = atom<GuardadoStatus>('idle')
 export const guardadoMensajeAtom = atom<string | null>(null)
 /** Sección que está guardando (para mostrar loading en el botón correcto) */
@@ -96,3 +133,15 @@ export const erroresDatosLogisticosAtom = atom<ValidationErrors>({})
 export const erroresMedidasAtom = atom<ValidationErrors>({})
 export const erroresEmpaquesAtom = atom<ValidationErrors>({})
 export const erroresEntregaAtom = atom<ValidationErrors>({})
+
+/**
+ * ID del proveedor activo (UUID).
+ * Se establece desde el host vía Module Federation o query param al montar la página.
+ */
+export const supplierIdAtom = atom<string>('')
+
+/**
+ * Folio de la propuesta en proceso de alta (prospectiveFolio).
+ * Se establece desde la URL query param "folio" al montar la página.
+ */
+export const prospectiveFolioAtom = atom<string>('')

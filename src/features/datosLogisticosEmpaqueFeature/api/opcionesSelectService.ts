@@ -1,69 +1,92 @@
 /**
  * Servicio de opciones para selects/dropdowns (Datos logísticos y empaque).
  *
- * Origen actual: JSON mock estático.
- * Para usar base de datos o REST, reemplazar las implementaciones por:
- *   - fetch('/api/opciones/esquema-distribucion').then(r => r.json())
- *   - o el cliente HTTP que use el proyecto (axios, etc.)
- *
- * Formato: cada opción tiene value y labelKey (clave i18n).
- * El componente resuelve el label con t(labelKey). Si el backend devuelve "label"
- * en lugar de "labelKey", el componente puede usar label directamente.
+ * Origen de datos por tipo:
+ *   - Tipo de esquema de distribución  → PS_SAP_PSUM_SUPPLIERCONTRACTS (dinámico por proveedor)
+ *   - Unidad de peso / medida / etc.   → datos estáticos (ApplicationConfigs no expone catálogos simples)
  */
+
+import { getLogisticsSchemas } from './supplierContractsApi'
 
 export interface OpcionSelect {
   value: string
-  /** Clave i18n para el label; si viene de REST puede ser "label" con texto ya traducido */
+  /** Clave i18n, o label directo cuando viene del backend */
   labelKey?: string
   label?: string
 }
 
-// Mocks estáticos (sustituibles por fetch)
-import opcionesEsquemaDistribucionJson from './mocks/opcionesEsquemaDistribucion.json'
-import opcionesUnidadPesoJson from './mocks/opcionesUnidadPeso.json'
-import opcionesUnidadMedidaJson from './mocks/opcionesUnidadMedidaDimensiones.json'
-import opcionesOrientacionJson from './mocks/opcionesOrientacion.json'
-import opcionesCualAplicaJson from './mocks/opcionesCualAplicaEmpaque.json'
+// ─── Catálogos estáticos ──────────────────────────────────────────────────────
+// ApplicationConfigs no expone endpoints para estos catálogos simples.
+// Si en el futuro se agrega un endpoint, reemplazar Promise.resolve() por fetch().
 
-const asOpciones = (data: unknown): OpcionSelect[] =>
-  Array.isArray(data) ? (data as OpcionSelect[]) : []
+const OPCIONES_UNIDAD_PESO: OpcionSelect[] = [
+  { value: 'KG', labelKey: 'datosLogisticos.options.kg' },
+  { value: 'LB', labelKey: 'datosLogisticos.options.lb' },
+  { value: 'GR', label: 'GR' },
+  { value: 'OZ', label: 'OZ' },
+]
+
+const OPCIONES_UNIDAD_MEDIDA: OpcionSelect[] = [
+  { value: 'cm', label: 'CM' },
+  { value: 'mm', label: 'MM' },
+  { value: 'm',  label: 'M' },
+  { value: 'ft', label: 'FT' },
+  { value: 'in', label: 'IN' },
+]
+
+const OPCIONES_ORIENTACION: OpcionSelect[] = [
+  { value: 'VERTICAL',   label: 'Vertical' },
+  { value: 'HORIZONTAL', label: 'Horizontal' },
+  { value: 'FLEXIBLE',   label: 'Flexible' },
+]
+
+const OPCIONES_CUAL_APLICA: OpcionSelect[] = [
+  { value: 'carton_master', labelKey: 'datosLogisticos.options.cartonMaster' },
+  { value: 'bulto',         labelKey: 'datosLogisticos.options.bulto' },
+  { value: 'ninguno',       labelKey: 'datosLogisticos.options.ninguno' },
+]
+
+// ─── Opciones dinámicas ───────────────────────────────────────────────────────
 
 /**
- * Opciones para el dropdown "Tipo de esquema(s) de distribución".
- * REST: GET /api/opciones/esquema-distribucion (o similar)
+ * Obtiene los esquemas logísticos del proveedor desde SupplierContracts.
+ * Requiere el supplierId del proveedor activo.
+ *
+ * GET /ps/sourcing-procurement/supplier-management/supplier-contracts/api/v2/suppliers/{supplierId}/schemas?schemaTypeCode=LOGISTIC
  */
-export function getOpcionesEsquemaDistribucion(): Promise<OpcionSelect[]> {
-  return Promise.resolve(asOpciones(opcionesEsquemaDistribucionJson))
+export async function getOpcionesEsquemaDistribucion(
+  supplierId: string,
+): Promise<OpcionSelect[]> {
+  const schemas = await getLogisticsSchemas(supplierId)
+  return schemas.map((s) => ({ value: s.id, label: s.name }))
 }
+
+// ─── Catálogos estáticos exportados ──────────────────────────────────────────
 
 /**
  * Opciones para unidad de peso (KG, LB, G).
- * REST: GET /api/opciones/unidad-peso
  */
 export function getOpcionesUnidadPeso(): Promise<OpcionSelect[]> {
-  return Promise.resolve(asOpciones(opcionesUnidadPesoJson))
+  return Promise.resolve(OPCIONES_UNIDAD_PESO)
 }
 
 /**
  * Opciones para unidad de medida - dimensiones (cm, m, in).
- * REST: GET /api/opciones/unidad-medida-dimensiones
  */
 export function getOpcionesUnidadMedidaDimensiones(): Promise<OpcionSelect[]> {
-  return Promise.resolve(asOpciones(opcionesUnidadMedidaJson))
+  return Promise.resolve(OPCIONES_UNIDAD_MEDIDA)
 }
 
 /**
  * Opciones para orientación del producto (Vertical, Horizontal, Indistinta).
- * REST: GET /api/opciones/orientacion
  */
 export function getOpcionesOrientacion(): Promise<OpcionSelect[]> {
-  return Promise.resolve(asOpciones(opcionesOrientacionJson))
+  return Promise.resolve(OPCIONES_ORIENTACION)
 }
 
 /**
  * Opciones "¿Cuál aplica?" empaques (Cartón master, Bulto, Ninguno).
- * REST: GET /api/opciones/cual-aplica-empaque
  */
 export function getOpcionesCualAplicaEmpaque(): Promise<OpcionSelect[]> {
-  return Promise.resolve(asOpciones(opcionesCualAplicaJson))
+  return Promise.resolve(OPCIONES_CUAL_APLICA)
 }

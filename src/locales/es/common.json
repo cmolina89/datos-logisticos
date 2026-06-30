@@ -123,10 +123,11 @@
             "fixMedidas": "Corrija los errores en Medidas con empaque individual.",
             "fixEmpaques": "Corrija los errores en Empaques del producto.",
             "fixEntrega": "Corrija los errores en Entrega y manipulación.",
-            "savedDatos": "Datos logísticos guardados correctamente (mock).",
-            "savedMedidas": "Medidas con empaque individual guardadas correctamente (mock).",
-            "savedEmpaques": "Empaques del producto guardados correctamente (mock).",
-            "savedEntrega": "Entrega y manipulación guardados correctamente (mock)."
+            "savedDatos": "Datos logísticos guardados correctamente.",
+            "savedMedidas": "Medidas con empaque individual guardadas correctamente.",
+            "savedEmpaques": "Empaques del producto guardados correctamente.",
+            "savedEntrega": "Entrega y manipulación guardados correctamente.",
+            "missingFolio": "No se encontró el folio de la propuesta. Recarga la página desde el flujo de alta de SKU."
         },
         "aria": {
             "expandSection": "Expandir sección",

@@ -107,6 +107,54 @@ function validarFondoMax(val: number | null | undefined, maxVal = 500): string |
 interface TarjetaEmpaquesProductoProps {
     children?: React.ReactNode;
     saved?: boolean;
+    containerTypes?: Array<{ id: string; code: string; name: string; usageType?: string }>;
+    containerTypesLoading?: boolean;
+    containerTypesError?: string | null;
+    supplierItem?: {
+        id: string;
+        supplierItemId?: string;
+        itemNumber?: string;
+        originTypeCode?: string;
+        countryCode?: string;
+        isImportedBySupplier?: boolean;
+    } | null;
+    supplierItemLoading?: boolean;
+    supplierItemError?: string | null;
+    receivingUnits?: Array<{
+        id: string;
+        containerTypeCode?: string;
+        description?: string;
+        unitsCount?: number;
+        multiple?: number;
+        sizeUnitOfMeasureCode?: string;
+        weightUnitOfMeasureCode?: string;
+        weight?: number;
+        depth?: number;
+        height?: number;
+        width?: number;
+    }>;
+    packSizes?: Array<{
+        sku?: string;
+        cartonPack?: number;
+        itemSizes?: {
+            sizeCode?: string;
+            packSizes?: {
+                internalSizeCode?: string;
+                borderSizeCode?: string;
+            };
+        };
+    }>;
+    packSizesLoading?: boolean;
+    packSizesError?: string | null;
+    leadTimes?: {
+        sku?: number;
+        transitTime?: number;
+        productionLeadTime?: number;
+        supplyLeadTime?: number;
+    } | null;
+    leadTimesLoading?: boolean;
+    leadTimesError?: string | null;
+    leadTimesInfoMessage?: string | null;
 }
 
 type ValorCampoEmpaques = number | string | null | undefined;
@@ -355,7 +403,24 @@ const camposVaciosEmpaques = {
     fondo: null as number | null
 };
 
-const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ children, saved }) => {
+const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({
+    children,
+    saved,
+    containerTypes = [],
+    containerTypesLoading = false,
+    containerTypesError = null,
+    supplierItem = null,
+    supplierItemLoading = false,
+    supplierItemError = null,
+    receivingUnits = [],
+    packSizes = [],
+    packSizesLoading = false,
+    packSizesError = null,
+    leadTimes = null,
+    leadTimesLoading = false,
+    leadTimesError = null,
+    leadTimesInfoMessage = null
+}) => {
     const { t } = useTranslation();
     const state = useAtomValue(datosLogisticosEmpaqueStateAtom);
     const setEmpaques = useSetAtom(setEmpaquesProductoAtom);
@@ -593,6 +658,88 @@ const TarjetaEmpaquesProducto: React.FC<TarjetaEmpaquesProductoProps> = ({ child
             {!collapsed && (
                 <>
                     <p className="segmento-carton-intro">{t('datosLogisticos.segmento3.intro')}</p>
+
+                    <div className="segmento-carton-catalogo-referencia">
+                        {containerTypesLoading && <p>Cargando tipos de contenedor de referencia...</p>}
+                        {containerTypesError && <p>{containerTypesError}</p>}
+                        {!containerTypesLoading && !containerTypesError && containerTypes.length > 0 && (
+                            <p>
+                                <strong>Catálogo de contenedores de referencia:</strong>{' '}
+                                {containerTypes.slice(0, 5).map((type, index) => (
+                                    <span key={type.id || type.code}>
+                                        {index > 0 ? ' · ' : ''}
+                                        {type.name}
+                                        {type.usageType ? ` (${type.usageType})` : ''}
+                                    </span>
+                                ))}
+                            </p>
+                        )}
+                        {supplierItemLoading && <p>Cargando referencia del artículo...</p>}
+                        {supplierItemError && <p>{supplierItemError}</p>}
+                        {!supplierItemLoading && !supplierItemError && supplierItem && (
+                            <div className="segmento-carton-catalogo-articulo">
+                                <p>
+                                    <strong>Artículo de proveedor:</strong>{' '}
+                                    {supplierItem.itemNumber || supplierItem.supplierItemId || supplierItem.id}
+                                </p>
+                                <p>
+                                    <strong>Origen:</strong> {supplierItem.originTypeCode || 'N/D'}{' '}
+                                    <strong>País:</strong> {supplierItem.countryCode || 'N/D'}{' '}
+                                    <strong>Importado:</strong> {supplierItem.isImportedBySupplier ? 'Sí' : 'No'}
+                                </p>
+                                {receivingUnits.length > 0 && (
+                                    <p>
+                                        <strong>Unidades de recepción:</strong>{' '}
+                                        {receivingUnits.slice(0, 3).map((unit, index) => (
+                                            <span key={unit.id}>
+                                                {index > 0 ? ' · ' : ''}
+                                                {unit.containerTypeCode || 'SIN-CODIGO'}
+                                                {unit.unitsCount != null ? ` x${unit.unitsCount}` : ''}
+                                                {unit.multiple != null ? ` / múltiplo ${unit.multiple}` : ''}
+                                            </span>
+                                        ))}
+                                    </p>
+                                )}
+                            </div>
+                        )}
+                        {packSizesLoading && <p>Cargando pack-sizes...</p>}
+                        {packSizesError && <p>{packSizesError}</p>}
+                        {!packSizesLoading && !packSizesError && packSizes.length > 0 && (
+                            <div>
+                                <p>
+                                    <strong>Pack-sizes:</strong> {packSizes.length} registro(s)
+                                </p>
+                                <p>
+                                    {packSizes.slice(0, 3).map((pack, index) => (
+                                        <span key={`${pack.sku || 'sku'}-${pack.itemSizes?.sizeCode || index}`}>
+                                            {index > 0 ? ' · ' : ''}
+                                            SKU {pack.sku || 'N/D'}
+                                            {pack.cartonPack != null ? ` caja ${pack.cartonPack}` : ''}
+                                            {pack.itemSizes?.sizeCode ? ` talla ${pack.itemSizes.sizeCode}` : ''}
+                                            {pack.itemSizes?.packSizes?.internalSizeCode
+                                                ? ` int ${pack.itemSizes.packSizes.internalSizeCode}`
+                                                : ''}
+                                            {pack.itemSizes?.packSizes?.borderSizeCode
+                                                ? ` ext ${pack.itemSizes.packSizes.borderSizeCode}`
+                                                : ''}
+                                        </span>
+                                    ))}
+                                </p>
+                            </div>
+                        )}
+                        {leadTimesLoading && <p>Cargando lead-times...</p>}
+                        {leadTimesError && <p>{leadTimesError}</p>}
+                        {!leadTimesLoading && !leadTimesError && leadTimesInfoMessage && <p>{leadTimesInfoMessage}</p>}
+                        {!leadTimesLoading && !leadTimesError && leadTimes && (
+                            <p>
+                                <strong>Lead-times:</strong>{' '}
+                                SKU {leadTimes.sku ?? 'N/D'} ·
+                                Tránsito {leadTimes.transitTime ?? 'N/D'} ·
+                                Producción {leadTimes.productionLeadTime ?? 'N/D'} ·
+                                Suministro {leadTimes.supplyLeadTime ?? 'N/D'}
+                            </p>
+                        )}
+                    </div>
 
                     <div className="segmento-carton-pregunta p-mb-3">
                         <a

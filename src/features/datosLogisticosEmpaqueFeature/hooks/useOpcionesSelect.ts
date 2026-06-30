@@ -1,10 +1,11 @@
 /**
- * Hook que carga opciones de selects desde el servicio (mock JSON o REST)
+ * Hook que carga opciones de selects desde servicios de API/catálogo
  * y resuelve las etiquetas con i18n (t).
  */
 
 import { useTranslation } from '@/hooks/useTranslation'
 import { useEffect, useState } from 'react'
+import { useAtomValue } from 'jotai'
 import type { OpcionSelect } from '../api/opcionesSelectService'
 import {
   getOpcionesCualAplicaEmpaque,
@@ -13,6 +14,7 @@ import {
   getOpcionesUnidadMedidaDimensiones,
   getOpcionesUnidadPeso,
 } from '../api/opcionesSelectService'
+import { supplierIdAtom } from '../store/datosLogisticosEmpaqueAtoms'
 
 export interface OpcionDropdown {
   label: string
@@ -28,11 +30,31 @@ function mapOpciones(opciones: OpcionSelect[], t: (key: string) => string): Opci
 
 export function useOpcionesEsquemaDistribucion(): OpcionDropdown[] {
   const { t } = useTranslation()
+  const supplierId = useAtomValue(supplierIdAtom)
   const [opciones, setOpciones] = useState<OpcionSelect[]>([])
 
   useEffect(() => {
-    getOpcionesEsquemaDistribucion().then(setOpciones)
-  }, [])
+    if (!supplierId) return
+
+    let mounted = true
+
+    getOpcionesEsquemaDistribucion(supplierId)
+      .then((data) => {
+        if (mounted) {
+          setOpciones(data)
+        }
+      })
+      .catch((error) => {
+        console.error('Error cargando opciones de esquema de distribucion:', error)
+        if (mounted) {
+          setOpciones([])
+        }
+      })
+
+    return () => {
+      mounted = false
+    }
+  }, [supplierId])
 
   return mapOpciones(opciones, t)
 }
@@ -42,7 +64,24 @@ export function useOpcionesUnidadPeso(): OpcionDropdown[] {
   const [opciones, setOpciones] = useState<OpcionSelect[]>([])
 
   useEffect(() => {
-    getOpcionesUnidadPeso().then(setOpciones)
+    let mounted = true
+
+    getOpcionesUnidadPeso()
+      .then((data) => {
+        if (mounted) {
+          setOpciones(data)
+        }
+      })
+      .catch((error) => {
+        console.error('Error cargando opciones de unidad de peso:', error)
+        if (mounted) {
+          setOpciones([])
+        }
+      })
+
+    return () => {
+      mounted = false
+    }
   }, [])
 
   return mapOpciones(opciones, t)
@@ -53,7 +92,24 @@ export function useOpcionesUnidadMedidaDimensiones(): OpcionDropdown[] {
   const [opciones, setOpciones] = useState<OpcionSelect[]>([])
 
   useEffect(() => {
-    getOpcionesUnidadMedidaDimensiones().then(setOpciones)
+    let mounted = true
+
+    getOpcionesUnidadMedidaDimensiones()
+      .then((data) => {
+        if (mounted) {
+          setOpciones(data)
+        }
+      })
+      .catch((error) => {
+        console.error('Error cargando opciones de unidad de medida:', error)
+        if (mounted) {
+          setOpciones([])
+        }
+      })
+
+    return () => {
+      mounted = false
+    }
   }, [])
 
   return mapOpciones(opciones, t)
@@ -64,7 +120,24 @@ export function useOpcionesOrientacion(): OpcionDropdown[] {
   const [opciones, setOpciones] = useState<OpcionSelect[]>([])
 
   useEffect(() => {
-    getOpcionesOrientacion().then(setOpciones)
+    let mounted = true
+
+    getOpcionesOrientacion()
+      .then((data) => {
+        if (mounted) {
+          setOpciones(data)
+        }
+      })
+      .catch((error) => {
+        console.error('Error cargando opciones de orientacion:', error)
+        if (mounted) {
+          setOpciones([])
+        }
+      })
+
+    return () => {
+      mounted = false
+    }
   }, [])
 
   return mapOpciones(opciones, t)
@@ -75,7 +148,24 @@ export function useOpcionesCualAplicaEmpaque(): OpcionDropdown[] {
   const [opciones, setOpciones] = useState<OpcionSelect[]>([])
 
   useEffect(() => {
-    getOpcionesCualAplicaEmpaque().then(setOpciones)
+    let mounted = true
+
+    getOpcionesCualAplicaEmpaque()
+      .then((data) => {
+        if (mounted) {
+          setOpciones(data)
+        }
+      })
+      .catch((error) => {
+        console.error('Error cargando opciones de empaque:', error)
+        if (mounted) {
+          setOpciones([])
+        }
+      })
+
+    return () => {
+      mounted = false
+    }
   }, [])
 
   return mapOpciones(opciones, t)
