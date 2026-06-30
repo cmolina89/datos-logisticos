@@ -1,25 +1,34 @@
 // Runtime plugin para manejar errores de carga de chunks en Module Federation
 
+const DEBUG_MF_RUNTIME =
+  typeof process !== 'undefined' && process.env?.MODERN_APP_DEBUG_MF_RUNTIME === 'true'
+
+const debugLog = (...args: unknown[]) => {
+  if (DEBUG_MF_RUNTIME) {
+    console.log(...args)
+  }
+}
+
 const runtimePlugin = () => ({
   name: 'chunk-retry-plugin',
   beforeInit(args: any) {
-    console.log('MF Runtime Plugin: beforeInit', args)
+    debugLog('MF Runtime Plugin: beforeInit', args)
     return args
   },
   beforeRequest(args: any) {
-    console.log('MF Runtime Plugin: beforeRequest', args)
+    debugLog('MF Runtime Plugin: beforeRequest', args)
     return args
   },
   afterResolve(args: any) {
-    console.log('MF Runtime Plugin: afterResolve', args)
+    debugLog('MF Runtime Plugin: afterResolve', args)
     return args
   },
   onLoad(args: any) {
-    console.log('MF Runtime Plugin: onLoad', args)
+    debugLog('MF Runtime Plugin: onLoad', args)
     return args
   },
   async loadShare(args: any) {
-    console.log('MF Runtime Plugin: loadShare', args)
+    debugLog('MF Runtime Plugin: loadShare', args)
     try {
       return await args.default(args)
     } catch (error) {
@@ -28,7 +37,7 @@ const runtimePlugin = () => ({
     }
   },
   async beforeLoadShare(args: any) {
-    console.log('MF Runtime Plugin: beforeLoadShare', args)
+    debugLog('MF Runtime Plugin: beforeLoadShare', args)
     return args
   },
 })

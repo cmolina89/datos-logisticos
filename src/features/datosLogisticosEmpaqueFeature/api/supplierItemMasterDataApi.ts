@@ -4,6 +4,8 @@
  * Se usa como catálogo auxiliar para empaque y manejo.
  */
 
+import { fetchWithRetry } from '@/lib/fetchWithRetry'
+
 export interface ContainerType {
   id: string
   code: string
@@ -72,18 +74,19 @@ interface ApiResponse<T> {
   data?: T
 }
 
-const DEFAULT_BASE =
-  '/ps/sourcing-procurement/supplier-management/supplier-item-master-data/api'
+const DEFAULT_BASE = '/ds/supplier-item-master-data/api'
 
 const BASE =
   (typeof process !== 'undefined' &&
     process.env &&
     (process.env.MODERN_APP_SUPPLIER_ITEM_MASTER_DATA_BASE ||
-      process.env.MODERN_APP_URL_SUPPLIERITEMMASTERDATA_PS)) ||
+      process.env.MODERN_APP_URL_SUPPLIERITEMMASTERDATA_PS ||
+      process.env.MODERN_APP_PS_SAP_SUPM_SUPPLIER_ITEM_MASTER_DATA_BASE ||
+      process.env.MODERN_APP_DS_SAP_SUPM_SUPPLIER_ITEM_MASTER_DATA_BASE)) ||
   DEFAULT_BASE
 
 async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url, {
+  const response = await fetchWithRetry(url, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -94,7 +97,26 @@ async function fetchJson<T>(url: string): Promise<T> {
     throw new Error(`SupplierItemMasterData ${response.status}: ${url}`)
   }
 
-  const json = (await response.json()) as ApiResponse<T>
+  const contentType = response.headers.get('content-type') || ''
+  const raw = await response.text()
+
+  if (raw.trim().startsWith('<!DOCTYPE') || raw.trim().startsWith('<html')) {
+    throw new Error(`SupplierItemMasterData invalid JSON response (HTML): ${url}`)
+  }
+
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      `SupplierItemMasterData unexpected content-type (${contentType || 'unknown'}): ${url}`
+    )
+  }
+
+  let json: ApiResponse<T>
+  try {
+    json = JSON.parse(raw) as ApiResponse<T>
+  } catch {
+    throw new Error(`SupplierItemMasterData invalid JSON payload: ${url}`)
+  }
+
   return (json.data ?? json) as T
 }
 
@@ -129,8 +151,12 @@ function normalizeObjectResponse<T>(payload: unknown): T | null {
   return payload as T
 }
 
-export async function getSupplierItemById(supplierItemId: string): Promise<SupplierItemSummary | null> {
-  const item = await fetchJson<SupplierItemSummary>(`${BASE}/v1/supplier-items/${encodeURIComponent(supplierItemId)}`)
+export async function getSupplierItemById(
+  supplierItemId: string
+): Promise<SupplierItemSummary | null> {
+  const item = await fetchJson<SupplierItemSummary>(
+    `${BASE}/v1/supplier-items/${encodeURIComponent(supplierItemId)}`
+  )
   return item ?? null
 }
 
@@ -146,18 +172,18 @@ export async function findSupplierItems(params: {
 
   const query = search.toString()
   const payload = await fetchJson<{ result?: SupplierItemSummary[] } | SupplierItemSummary[]>(
-    `${BASE}/v1/supplier-items${query ? `?${query}` : ''}`,
+    `${BASE}/v1/supplier-items${query ? `?${query}` : ''}`
   )
 
   return normalizeListResponse<SupplierItemSummary>(payload)
 }
 
 export async function getReceivingUnitsBySupplierItemId(
-  supplierItemId: string,
+  supplierItemId: string
 ): Promise<SupplierItemReceivingUnit[]> {
-  const payload = await fetchJson<{ result?: SupplierItemReceivingUnit[] } | SupplierItemReceivingUnit[]>(
-    `${BASE}/v1/supplier-items/${encodeURIComponent(supplierItemId)}/receiving-units`,
-  )
+  const payload = await fetchJson<
+    { result?: SupplierItemReceivingUnit[] } | SupplierItemReceivingUnit[]
+  >(`${BASE}/v1/supplier-items/${encodeURIComponent(supplierItemId)}/receiving-units`)
 
   return normalizeListResponse<SupplierItemReceivingUnit>(payload)
 }
@@ -165,7 +191,7 @@ export async function getReceivingUnitsBySupplierItemId(
 export async function getItemPackSizes(
   supplierId: string,
   itemSku: string,
-  areaTypeCode: string,
+  areaTypeCode: string
 ): Promise<ItemPackSize[]> {
   const url = `${BASE}/v1/${encodeURIComponent(supplierId)}/items/${encodeURIComponent(itemSku)}/pack-sizes?areaTypeCode=${encodeURIComponent(areaTypeCode)}`
   const payload = await fetchJson<{ result?: ItemPackSize[] } | ItemPackSize[]>(url)
@@ -175,7 +201,7 @@ export async function getItemPackSizes(
 export async function getLeadTimes(
   supplierId: string,
   itemSku: string,
-  areaTypeCode: string,
+  areaTypeCode: string
 ): Promise<LeadTimesData | null> {
   const url = `${BASE}/v1/supplier/${encodeURIComponent(supplierId)}/items/${encodeURIComponent(itemSku)}/lead-times?areaTypeCode=${encodeURIComponent(areaTypeCode)}`
   const payload = await fetchJson<{ result?: LeadTimesData } | LeadTimesData>(url)

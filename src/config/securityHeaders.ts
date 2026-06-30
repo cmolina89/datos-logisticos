@@ -24,6 +24,14 @@ export const RESPONSE_SECURITY_HEADERS = {
 } as const
 
 export const CLIENT_META_SECURITY_HEADERS = {
-  'Content-Security-Policy': RESPONSE_SECURITY_HEADERS['Content-Security-Policy'],
+  // `frame-ancestors` solo aplica en header HTTP de respuesta; se ignora en meta tags.
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: https:",
+    "font-src 'self' data:",
+    "connect-src 'self'",
+  ].join('; '),
   'Referrer-Policy': RESPONSE_SECURITY_HEADERS['Referrer-Policy'],
 } as const

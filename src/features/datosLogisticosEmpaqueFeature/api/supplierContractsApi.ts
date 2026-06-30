@@ -9,9 +9,16 @@
  */
 
 import type { FilaCedis } from '../types'
+import { fetchWithRetry } from '@/lib/fetchWithRetry'
+
+const DEFAULT_BASE = '/ps/sourcing-procurement/supplier-management/supplier-contracts/api/v2'
 
 const BASE =
-  '/ps/sourcing-procurement/supplier-management/supplier-contracts/api/v2'
+  (typeof process !== 'undefined' &&
+    process.env &&
+    (process.env.MODERN_APP_PS_SAP_SUPM_SUPPLIER_CONTRACTS_BASE ||
+      process.env.MODERN_APP_SUPPLIER_CONTRACTS_BASE)) ||
+  DEFAULT_BASE
 
 // ─── Tipos del OAS ────────────────────────────────────────────────────────────
 
@@ -60,7 +67,7 @@ interface ApiResponse<T> {
 // ─── Helper fetch ─────────────────────────────────────────────────────────────
 
 async function fetchJson<T>(url: string): Promise<T> {
-  const res = await fetch(url, {
+  const res = await fetchWithRetry(url, {
     method: 'GET',
     headers: { Accept: 'application/json' },
   })
@@ -87,11 +94,9 @@ function parseReceivingWarehouse(item: SupplierLogisticsAgreementItem): boolean 
   return false
 }
 
-function mapAgreementToFilaCedis(
-  item: SupplierLogisticsAgreementItem,
-): FilaCedis {
+function mapAgreementToFilaCedis(item: SupplierLogisticsAgreementItem): FilaCedis {
   const cedisDestino = (item.deliveryRoutes ?? [])
-    .map((r) => r.destinationWarehouseCode)
+    .map(r => r.destinationWarehouseCode)
     .filter(Boolean)
     .join(', ')
 
@@ -114,11 +119,9 @@ function mapAgreementToFilaCedis(
  *
  * GET /api/v2/suppliers/{supplierId}/schemas?schemaTypeCode=LOGISTIC
  */
-export async function getLogisticsSchemas(
-  supplierId: string,
-): Promise<LogisticsSchema[]> {
+export async function getLogisticsSchemas(supplierId: string): Promise<LogisticsSchema[]> {
   const data = await fetchJson<LogisticsSchema[]>(
-    `${BASE}/suppliers/${encodeURIComponent(supplierId)}/schemas?schemaTypeCode=LOGISTIC`,
+    `${BASE}/suppliers/${encodeURIComponent(supplierId)}/schemas?schemaTypeCode=LOGISTIC`
   )
   return Array.isArray(data) ? data : []
 }
@@ -131,7 +134,7 @@ export async function getLogisticsSchemas(
  */
 export async function getFilasCedisBySchema(
   supplierId: string,
-  schemaId: string,
+  schemaId: string
 ): Promise<FilaCedis[]> {
   const url = `${BASE}/suppliers/${encodeURIComponent(supplierId)}/logistics-agreements?schemaId=${encodeURIComponent(schemaId)}`
   const data = await fetchJson<SupplierLogisticsAgreementItem[]>(url)

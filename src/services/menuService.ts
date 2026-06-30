@@ -1,102 +1,45 @@
 // src/services/menuService.ts
+import { getApplicationConfigValue } from '@/services/applicationConfigService'
 import type { MenuOptionModel } from '@/types/menu'
 
-// Simulación de datos del menú - en producción esto vendría de una API
-const mockMenuData: MenuOptionModel[] = [
-  {
-    url: '/dashboard',
-    name: 'Dashboard',
-    icon: 'dashboard',
-  },
-  {
-    url: '/users',
-    name: 'Usuarios',
-    icon: 'users',
-    children: [
-      {
-        title: 'Gestión de Usuarios',
-        menu: [
-          {
-            url: '/users/list',
-            name: 'Lista de usuarios',
-            icon: 'list',
-          },
-          {
-            url: '/users/create',
-            name: 'Crear usuario',
-            icon: 'plus',
-          },
-          {
-            url: '/users/roles',
-            name: 'Roles y Permisos',
-            icon: 'shield',
-            children: [
-              {
-                title: 'Administración',
-                menu: [
-                  { url: '/users/roles/admin', name: 'Administradores' },
-                  { url: '/users/roles/editor', name: 'Editores' },
-                  { url: '/users/roles/viewer', name: 'Visualizadores' },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    url: '/products',
-    name: 'Productos',
-    icon: 'package',
-    children: [
-      {
-        title: 'Catálogo',
-        menu: [
-          { url: '/products/list', name: 'Lista de productos' },
-          { url: '/products/categories', name: 'Categorías' },
-        ],
-      },
-      {
-        title: 'Inventario',
-        menu: [
-          { url: '/products/stock', name: 'Control de stock' },
-          { url: '/products/movements', name: 'Movimientos' },
-        ],
-      },
-    ],
-  },
-  {
-    url: '/reports',
-    name: 'Reportes',
-    icon: 'chart-bar',
-  },
-  {
-    url: '/settings',
-    name: 'Configuración',
-    icon: 'settings',
-    children: [
-      {
-        title: 'Sistema',
-        menu: [
-          { url: '/settings/general', name: 'General' },
-          { url: '/settings/security', name: 'Seguridad' },
-        ],
-      },
-    ],
-  },
-]
+const DEFAULT_MENU_CONFIG_CODE = 'SIDEBAR_MENU'
+
+const SIDEBAR_MENU_CONFIG_CODE =
+  (typeof process !== 'undefined' &&
+    process.env &&
+    process.env.MODERN_APP_SIDEBAR_MENU_CONFIG_CODE) ||
+  DEFAULT_MENU_CONFIG_CODE
+
+function isMenuOption(value: unknown): value is MenuOptionModel {
+  return Boolean(value) && typeof value === 'object'
+}
+
+function parseMenuConfigValue(rawConfig: unknown): MenuOptionModel[] {
+  if (Array.isArray(rawConfig)) {
+    return rawConfig.filter(isMenuOption)
+  }
+
+  if (rawConfig && typeof rawConfig === 'object') {
+    const candidate = rawConfig as { menu?: unknown; options?: unknown; result?: unknown }
+    if (Array.isArray(candidate.menu)) return candidate.menu.filter(isMenuOption)
+    if (Array.isArray(candidate.options)) return candidate.options.filter(isMenuOption)
+    if (Array.isArray(candidate.result)) return candidate.result.filter(isMenuOption)
+  }
+
+  return []
+}
 
 export class MenuService {
+  private currentMenuData: MenuOptionModel[] = []
+
   /**
    * Obtiene los elementos del menú del sidebar
-   * En producción, esto haría una llamada HTTP a la API
    */
   async fetchSidebarMenu(): Promise<MenuOptionModel[]> {
-    // Simular delay de red
-    await new Promise(resolve => setTimeout(resolve, 100))
-
-    return mockMenuData
+    const rawConfig = await getApplicationConfigValue(SIDEBAR_MENU_CONFIG_CODE)
+    const menu = parseMenuConfigValue(rawConfig)
+    this.currentMenuData = menu
+    return menu
   }
 
   /**
@@ -104,7 +47,7 @@ export class MenuService {
    */
   findMenuItemByUrl(
     url: string,
-    menuItems: MenuOptionModel[] = mockMenuData
+    menuItems: MenuOptionModel[] = this.currentMenuData
   ): MenuOptionModel | null {
     for (const item of menuItems) {
       if (item.url === url) {
@@ -153,7 +96,7 @@ export class MenuService {
       return false
     }
 
-    findPath(mockMenuData, url, [])
+    findPath(this.currentMenuData, url, [])
     return path
   }
 }

@@ -1,0 +1,6 @@
+{
+  "name": "coltrane-css",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Local stub for the Coltrane CSS package used by this repository"
+}

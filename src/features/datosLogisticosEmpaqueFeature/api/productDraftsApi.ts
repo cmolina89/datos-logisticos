@@ -22,8 +22,15 @@ import type {
   EntregaManipulacion,
   CualAplicaEmpaque,
 } from '../types'
+import { fetchWithRetry } from '@/lib/fetchWithRetry'
 
-const BASE = '/ps/v1/product-drafts'
+const DEFAULT_BASE = '/ps/product-drafts/api'
+
+const BASE =
+  (typeof process !== 'undefined' &&
+    process.env &&
+    (process.env.MODERN_APP_PS_SGC_PRODUCTDRAFTS || process.env.MODERN_APP_PRODUCT_DRAFTS_BASE)) ||
+  DEFAULT_BASE
 
 // ─── Tipos OAS (nodos del draft) ──────────────────────────────────────────────
 
@@ -107,12 +114,9 @@ const draftLogisticsCache = new Map<string, DraftLogisticsData>()
 
 // ─── Helpers HTTP ──────────────────────────────────────────────────────────────
 
-async function fetchDraftNode(
-  prospectiveFolio: string,
-  cards: string,
-): Promise<DraftDataNode> {
-  const url = `${BASE}/?prospectiveFolio=${encodeURIComponent(prospectiveFolio)}&cards=${encodeURIComponent(cards)}`
-  const res = await fetch(url, {
+async function fetchDraftNode(prospectiveFolio: string, cards: string): Promise<DraftDataNode> {
+  const url = `${BASE}/v1/product-drafts/?prospectiveFolio=${encodeURIComponent(prospectiveFolio)}&cards=${encodeURIComponent(cards)}`
+  const res = await fetchWithRetry(url, {
     method: 'GET',
     headers: { Accept: 'application/json' },
   })
@@ -125,12 +129,9 @@ async function fetchDraftNode(
   return json.data ?? {}
 }
 
-async function patchDraft(
-  prospectiveFolio: string,
-  body: Partial<DraftDataNode>,
-): Promise<void> {
-  const res = await fetch(
-    `${BASE}/?prospectiveFolio=${encodeURIComponent(prospectiveFolio)}`,
+async function patchDraft(prospectiveFolio: string, body: Partial<DraftDataNode>): Promise<void> {
+  const res = await fetchWithRetry(
+    `${BASE}/v1/product-drafts/?prospectiveFolio=${encodeURIComponent(prospectiveFolio)}`,
     {
       method: 'PATCH',
       headers: {
@@ -138,7 +139,7 @@ async function patchDraft(
         Accept: 'application/json',
       },
       body: JSON.stringify(body),
-    },
+    }
   )
 
   if (!res.ok) {
@@ -156,24 +157,20 @@ function mapDraftWarehouseToFilaCedis(w: DraftWarehouse): FilaCedis {
     frecuencia: String(w.purchase_order_frequence_day_count ?? ''),
     leadTime: String(w.purchase_order_lead_time ?? ''),
     cedisDestino: (w.delivery_routes ?? [])
-      .map((r) => r.destination_warehouse_code)
+      .map(r => r.destination_warehouse_code)
       .filter(Boolean)
       .join(', '),
   }
 }
 
-function mapDraftLogisticsToDatosLogisticos(
-  d: DraftLogisticsData,
-): DatosLogisticos {
+function mapDraftLogisticsToDatosLogisticos(d: DraftLogisticsData): DatosLogisticos {
   return {
     tipoEsquemaDistribucion: d.schema_id ?? '',
     filasCedis: (d.warehouses ?? []).map(mapDraftWarehouseToFilaCedis),
   }
 }
 
-function mapDraftIndividualPackageToMedidas(
-  d: DraftIndividualPackage,
-): MedidasEmpaqueIndividual {
+function mapDraftIndividualPackageToMedidas(d: DraftIndividualPackage): MedidasEmpaqueIndividual {
   return {
     tieneEmpaqueIndividual: d.apply_individual_package ?? true,
     nombreMedidaEmpaque: '',
@@ -187,9 +184,7 @@ function mapDraftIndividualPackageToMedidas(
   }
 }
 
-function mapDraftProductPackageToEmpaques(
-  d: DraftProductPackage,
-): EmpaquesProducto {
+function mapDraftProductPackageToEmpaques(d: DraftProductPackage): EmpaquesProducto {
   const typeCode = d.type_code ?? ''
   const cualAplica: CualAplicaEmpaque =
     typeCode === 'bulto' ? 'bulto' : typeCode === 'ninguno' ? 'ninguno' : 'carton_master'
@@ -208,7 +203,7 @@ function mapDraftProductPackageToEmpaques(
 }
 
 function mapDraftDeliveryToEntregaManipulacion(
-  d: DraftDeliveryAndManipulation,
+  d: DraftDeliveryAndManipulation
 ): EntregaManipulacion {
   return {
     entregaPaletizable: d.is_pallet_delivered ?? null,
@@ -223,11 +218,11 @@ function mapDraftDeliveryToEntregaManipulacion(
 
 function mapCedisDestinoToDeliveryRoutes(
   cedisDestino: string,
-  previousRoutes: DraftDeliveryRoute[] = [],
+  previousRoutes: DraftDeliveryRoute[] = []
 ): DraftDeliveryRoute[] {
   const parsedCodes = cedisDestino
     .split(',')
-    .map((value) => value.trim())
+    .map(value => value.trim())
     .filter(Boolean)
 
   if (parsedCodes.length === 0) {
@@ -235,32 +230,29 @@ function mapCedisDestinoToDeliveryRoutes(
   }
 
   const previousByCode = new Map(
-    previousRoutes.map((route) => [route.destination_warehouse_code, route]),
+    previousRoutes.map(route => [route.destination_warehouse_code, route])
   )
 
-  return parsedCodes.map((code) => {
+  return parsedCodes.map(code => {
     const previous = previousByCode.get(code)
     return {
       destination_warehouse_number: previous?.destination_warehouse_number,
       destination_warehouse_code: code,
-      destination_warehouse_name:
-        previous?.destination_warehouse_name || code,
+      destination_warehouse_name: previous?.destination_warehouse_name || code,
     }
   })
 }
 
 function mapDatosLogisticosToDraft(
   d: DatosLogisticos,
-  previous?: DraftLogisticsData,
+  previous?: DraftLogisticsData
 ): DraftLogisticsData {
   const previousWarehouses = previous?.warehouses ?? []
-  const previousByCode = new Map(
-    previousWarehouses.map((warehouse) => [warehouse.code, warehouse]),
-  )
+  const previousByCode = new Map(previousWarehouses.map(warehouse => [warehouse.code, warehouse]))
 
   return {
     schema_id: d.tipoEsquemaDistribucion || undefined,
-    warehouses: d.filasCedis.map((f) => {
+    warehouses: d.filasCedis.map(f => {
       const previousWarehouse = previousByCode.get(f.id)
       const code = (f.id || previousWarehouse?.code || f.cedis || '').trim()
 
@@ -273,16 +265,14 @@ function mapDatosLogisticosToDraft(
         purchase_order_frequence_day_count: Number(f.frecuencia) || 0,
         delivery_routes: mapCedisDestinoToDeliveryRoutes(
           f.cedisDestino,
-          previousWarehouse?.delivery_routes,
+          previousWarehouse?.delivery_routes
         ),
       }
     }),
   }
 }
 
-function mapMedidasToDraftIndividualPackage(
-  d: MedidasEmpaqueIndividual,
-): DraftIndividualPackage {
+function mapMedidasToDraftIndividualPackage(d: MedidasEmpaqueIndividual): DraftIndividualPackage {
   return {
     apply_individual_package: d.tieneEmpaqueIndividual,
     weight_unit_of_measure_code: d.unidadPeso || undefined,
@@ -295,9 +285,7 @@ function mapMedidasToDraftIndividualPackage(
   }
 }
 
-function mapEmpaquesToDraftProductPackage(
-  d: EmpaquesProducto,
-): DraftProductPackage {
+function mapEmpaquesToDraftProductPackage(d: EmpaquesProducto): DraftProductPackage {
   return {
     type_code: d.cualAplica,
     units_count: d.cantidadUdsCartonMaster,
@@ -311,9 +299,7 @@ function mapEmpaquesToDraftProductPackage(
   }
 }
 
-function mapEntregaToDraftDelivery(
-  d: EntregaManipulacion,
-): DraftDeliveryAndManipulation {
+function mapEntregaToDraftDelivery(d: EntregaManipulacion): DraftDeliveryAndManipulation {
   return {
     is_pallet_delivered: d.entregaPaletizable,
     size_unit_of_measure_code: d.unidadMedidaPallet || undefined,
@@ -346,17 +332,11 @@ export async function getLogisticsSectionsDraft(prospectiveFolio: string): Promi
 
   return {
     supplierId: draft.header_info?.supplier_id ?? '',
-    datosLogisticos: mapDraftLogisticsToDatosLogisticos(
-      draft.logistics_data ?? {},
-    ),
-    medidasEmpaqueIndividual: mapDraftIndividualPackageToMedidas(
-      draft.individual_package ?? {},
-    ),
-    empaquesProducto: mapDraftProductPackageToEmpaques(
-      draft.product_package ?? {},
-    ),
+    datosLogisticos: mapDraftLogisticsToDatosLogisticos(draft.logistics_data ?? {}),
+    medidasEmpaqueIndividual: mapDraftIndividualPackageToMedidas(draft.individual_package ?? {}),
+    empaquesProducto: mapDraftProductPackageToEmpaques(draft.product_package ?? {}),
     entregaManipulacion: mapDraftDeliveryToEntregaManipulacion(
-      draft.delivery_and_manipulation ?? {},
+      draft.delivery_and_manipulation ?? {}
     ),
   }
 }
@@ -364,7 +344,7 @@ export async function getLogisticsSectionsDraft(prospectiveFolio: string): Promi
 /** Guarda la tarjeta "Datos logísticos" en el borrador. */
 export async function saveDatosLogisticos(
   prospectiveFolio: string,
-  data: DatosLogisticos,
+  data: DatosLogisticos
 ): Promise<void> {
   const previousLogistics = draftLogisticsCache.get(prospectiveFolio)
   const nextLogistics = mapDatosLogisticosToDraft(data, previousLogistics)
@@ -379,7 +359,7 @@ export async function saveDatosLogisticos(
 /** Guarda la tarjeta "Medidas con empaque individual" en el borrador. */
 export async function saveMedidasEmpaqueIndividual(
   prospectiveFolio: string,
-  data: MedidasEmpaqueIndividual,
+  data: MedidasEmpaqueIndividual
 ): Promise<void> {
   await patchDraft(prospectiveFolio, {
     individual_package: mapMedidasToDraftIndividualPackage(data),
@@ -389,7 +369,7 @@ export async function saveMedidasEmpaqueIndividual(
 /** Guarda la tarjeta "Empaques del producto" en el borrador. */
 export async function saveEmpaquesProducto(
   prospectiveFolio: string,
-  data: EmpaquesProducto,
+  data: EmpaquesProducto
 ): Promise<void> {
   await patchDraft(prospectiveFolio, {
     product_package: mapEmpaquesToDraftProductPackage(data),
@@ -399,7 +379,7 @@ export async function saveEmpaquesProducto(
 /** Guarda la tarjeta "Entrega y manipulación" en el borrador. */
 export async function saveEntregaManipulacion(
   prospectiveFolio: string,
-  data: EntregaManipulacion,
+  data: EntregaManipulacion
 ): Promise<void> {
   await patchDraft(prospectiveFolio, {
     delivery_and_manipulation: mapEntregaToDraftDelivery(data),

@@ -15,6 +15,22 @@ const assetPrefix = normalizeAssetPrefix(
   process.env.MODERN_APP_ASSET_PREFIX || process.env.MODERN_APP_REMOTE_PUBLIC_PATH
 )
 
+const apiGatewayTarget = process.env.MODERN_APP_API_GATEWAY_TARGET || 'https://sgc-dev.coppel.io'
+const supplierDsTarget =
+  process.env.MODERN_APP_SUPPLIER_DS_TARGET || 'https://suppliers-dev.coppel.io'
+const apiAuthToken = process.env.MODERN_APP_API_AUTH_TOKEN
+
+const buildProxyConfig = (target: string) => ({
+  target,
+  changeOrigin: true,
+  secure: true,
+  onProxyReq: (proxyReq: { setHeader: (name: string, value: string) => void }) => {
+    if (apiAuthToken) {
+      proxyReq.setHeader('Authorization', `Bearer ${apiAuthToken}`)
+    }
+  },
+})
+
 export default defineConfig({
   runtime: { router: true },
   dev: {
@@ -42,6 +58,10 @@ export default defineConfig({
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
+      },
+      proxy: {
+        '/ps': buildProxyConfig(apiGatewayTarget),
+        '/ds': buildProxyConfig(supplierDsTarget),
       },
     },
     webpack: (config, { env }) => {

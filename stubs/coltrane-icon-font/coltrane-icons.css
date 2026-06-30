@@ -1,0 +1,15 @@
+/* Local fallback for the Coltrane icon font package. */
+[class^='clt-'],
+[class*=' clt-'] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+}
+
+[class^='clt-']::before,
+[class*=' clt-']::before {
+  content: '◉';
+}
