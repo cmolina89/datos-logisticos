@@ -5,6 +5,8 @@
  */
 
 import { fetchWithRetry } from '@/lib/fetchWithRetry'
+import { getRuntimeEnv } from '@/lib/api/runtimeEnv'
+import { readSafeJson } from '@/lib/api/safeJsonResponse'
 
 export interface ContainerType {
   id: string
@@ -77,12 +79,10 @@ interface ApiResponse<T> {
 const DEFAULT_BASE = '/ds/supplier-item-master-data/api'
 
 const BASE =
-  (typeof process !== 'undefined' &&
-    process.env &&
-    (process.env.MODERN_APP_SUPPLIER_ITEM_MASTER_DATA_BASE ||
-      process.env.MODERN_APP_URL_SUPPLIERITEMMASTERDATA_PS ||
-      process.env.MODERN_APP_PS_SAP_SUPM_SUPPLIER_ITEM_MASTER_DATA_BASE ||
-      process.env.MODERN_APP_DS_SAP_SUPM_SUPPLIER_ITEM_MASTER_DATA_BASE)) ||
+  getRuntimeEnv('MODERN_APP_SUPPLIER_ITEM_MASTER_DATA_BASE') ||
+  getRuntimeEnv('MODERN_APP_URL_SUPPLIERITEMMASTERDATA_PS') ||
+  getRuntimeEnv('MODERN_APP_PS_SAP_SUPM_SUPPLIER_ITEM_MASTER_DATA_BASE') ||
+  getRuntimeEnv('MODERN_APP_DS_SAP_SUPM_SUPPLIER_ITEM_MASTER_DATA_BASE') ||
   DEFAULT_BASE
 
 async function fetchJson<T>(url: string): Promise<T> {
@@ -93,29 +93,7 @@ async function fetchJson<T>(url: string): Promise<T> {
     },
   })
 
-  if (!response.ok) {
-    throw new Error(`SupplierItemMasterData ${response.status}: ${url}`)
-  }
-
-  const contentType = response.headers.get('content-type') || ''
-  const raw = await response.text()
-
-  if (raw.trim().startsWith('<!DOCTYPE') || raw.trim().startsWith('<html')) {
-    throw new Error(`SupplierItemMasterData invalid JSON response (HTML): ${url}`)
-  }
-
-  if (!contentType.includes('application/json')) {
-    throw new Error(
-      `SupplierItemMasterData unexpected content-type (${contentType || 'unknown'}): ${url}`
-    )
-  }
-
-  let json: ApiResponse<T>
-  try {
-    json = JSON.parse(raw) as ApiResponse<T>
-  } catch {
-    throw new Error(`SupplierItemMasterData invalid JSON payload: ${url}`)
-  }
+  const json = await readSafeJson<ApiResponse<T>>(response, 'SupplierItemMasterData', url)
 
   return (json.data ?? json) as T
 }

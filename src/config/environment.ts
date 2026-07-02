@@ -15,13 +15,23 @@ const isServer = typeof window === 'undefined'
  */
 export const config = {
   /**
-   * URL base para las llamadas a la API
-   * En el servidor: usa la variable de entorno o el valor por defecto
-   * En el cliente: usa directamente el valor por defecto (más seguro)
+   * URL base para las llamadas generales a la API
+   * En servidor: usa variable de entorno o valor por defecto
+   * En cliente: usa ruta relativa proxificada por Modern.js
    */
   apiBaseUrl: isServer
     ? process.env.MODERN_APP_API_BASE_URL || 'https://jsonplaceholder.typicode.com'
     : 'https://jsonplaceholder.typicode.com',
+
+  /**
+   * URL base para llamadas de configuración de aplicación (Application Configs)
+   * En servidor: usa variable de entorno o valor por defecto
+   * En cliente: usa ruta relativa proxificada por Modern.js
+   */
+  configApiBaseUrl: isServer
+    ? process.env.MODERN_APP_CONFIG_API_BASE_URL ||
+      'http://localhost:8080/ps/sgc/application-configs/api/'
+    : '/ps/sgc/application-configs/api/',
 
   /**
    * Indica si la aplicación está en modo producción

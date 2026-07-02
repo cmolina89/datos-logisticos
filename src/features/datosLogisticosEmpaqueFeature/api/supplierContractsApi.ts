@@ -10,14 +10,14 @@
 
 import type { FilaCedis } from '../types'
 import { fetchWithRetry } from '@/lib/fetchWithRetry'
+import { getRuntimeEnv } from '@/lib/api/runtimeEnv'
+import { readSafeJson } from '@/lib/api/safeJsonResponse'
 
 const DEFAULT_BASE = '/ps/sourcing-procurement/supplier-management/supplier-contracts/api/v2'
 
 const BASE =
-  (typeof process !== 'undefined' &&
-    process.env &&
-    (process.env.MODERN_APP_PS_SAP_SUPM_SUPPLIER_CONTRACTS_BASE ||
-      process.env.MODERN_APP_SUPPLIER_CONTRACTS_BASE)) ||
+  getRuntimeEnv('MODERN_APP_PS_SAP_SUPM_SUPPLIER_CONTRACTS_BASE') ||
+  getRuntimeEnv('MODERN_APP_SUPPLIER_CONTRACTS_BASE') ||
   DEFAULT_BASE
 
 // ─── Tipos del OAS ────────────────────────────────────────────────────────────
@@ -27,6 +27,21 @@ export interface LogisticsSchema {
   supplierId: string
   typeCode: string
   name: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+interface LogisticsSchemaRaw {
+  id?: string
+  _id?: string
+  schemaId?: string
+  supplierId?: string
+  supplier_id?: string
+  typeCode?: string
+  schemaTypeCode?: string
+  name?: string
+  schemaName?: string
+  description?: string
   createdAt?: string
   updatedAt?: string
 }
@@ -64,6 +79,42 @@ interface ApiResponse<T> {
   meta?: unknown
 }
 
+function normalizeListResponse<T>(payload: unknown): T[] {
+  if (Array.isArray(payload)) return payload as T[]
+
+  if (payload && typeof payload === 'object') {
+    const source = payload as {
+      result?: unknown
+      items?: unknown
+      rows?: unknown
+      data?: unknown
+    }
+
+    const candidates = [source.result, source.items, source.rows, source.data]
+    for (const candidate of candidates) {
+      if (Array.isArray(candidate)) return candidate as T[]
+    }
+  }
+
+  return []
+}
+
+function mapRawSchema(raw: LogisticsSchemaRaw): LogisticsSchema | null {
+  const id = raw.id || raw._id || raw.schemaId || ''
+  const name = raw.name || raw.schemaName || raw.description || ''
+
+  if (!id || !name) return null
+
+  return {
+    id,
+    supplierId: raw.supplierId || raw.supplier_id || '',
+    typeCode: raw.typeCode || raw.schemaTypeCode || 'LOGISTIC',
+    name,
+    createdAt: raw.createdAt,
+    updatedAt: raw.updatedAt,
+  }
+}
+
 // ─── Helper fetch ─────────────────────────────────────────────────────────────
 
 async function fetchJson<T>(url: string): Promise<T> {
@@ -72,11 +123,7 @@ async function fetchJson<T>(url: string): Promise<T> {
     headers: { Accept: 'application/json' },
   })
 
-  if (!res.ok) {
-    throw new Error(`SupplierContracts ${res.status}: ${url}`)
-  }
-
-  const json = (await res.json()) as ApiResponse<T>
+  const json = await readSafeJson<ApiResponse<T>>(res, 'SupplierContracts', url)
   return (json.data ?? json) as T
 }
 
@@ -123,7 +170,10 @@ export async function getLogisticsSchemas(supplierId: string): Promise<Logistics
   const data = await fetchJson<LogisticsSchema[]>(
     `${BASE}/suppliers/${encodeURIComponent(supplierId)}/schemas?schemaTypeCode=LOGISTIC`
   )
-  return Array.isArray(data) ? data : []
+
+  return normalizeListResponse<LogisticsSchemaRaw>(data)
+    .map(mapRawSchema)
+    .filter((item): item is LogisticsSchema => item !== null)
 }
 
 /**
@@ -138,6 +188,6 @@ export async function getFilasCedisBySchema(
 ): Promise<FilaCedis[]> {
   const url = `${BASE}/suppliers/${encodeURIComponent(supplierId)}/logistics-agreements?schemaId=${encodeURIComponent(schemaId)}`
   const data = await fetchJson<SupplierLogisticsAgreementItem[]>(url)
-  const items = Array.isArray(data) ? data : []
+  const items = normalizeListResponse<SupplierLogisticsAgreementItem>(data)
   return items.map(mapAgreementToFilaCedis)
 }

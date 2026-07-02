@@ -89,6 +89,29 @@
     padding: 0.5rem 1.5rem;
 }
 
+.guardado-feedback {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 1rem 1rem 0;
+
+    .p-message {
+        margin: 0;
+        width: 100%;
+    }
+}
+
+.guardado-feedback-loading {
+    .p-message {
+        border-left-width: 4px;
+    }
+}
+
+.guardado-feedback-error {
+    .p-message {
+        border-left-width: 4px;
+    }
+}
+
 .datos-logisticos-empaque-layout {
     background-color: #ffffff;
     display: flex;

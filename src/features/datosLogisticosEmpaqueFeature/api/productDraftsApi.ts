@@ -23,13 +23,14 @@ import type {
   CualAplicaEmpaque,
 } from '../types'
 import { fetchWithRetry } from '@/lib/fetchWithRetry'
+import { getRuntimeEnv } from '@/lib/api/runtimeEnv'
+import { readSafeJson } from '@/lib/api/safeJsonResponse'
 
 const DEFAULT_BASE = '/ps/product-drafts/api'
 
 const BASE =
-  (typeof process !== 'undefined' &&
-    process.env &&
-    (process.env.MODERN_APP_PS_SGC_PRODUCTDRAFTS || process.env.MODERN_APP_PRODUCT_DRAFTS_BASE)) ||
+  getRuntimeEnv('MODERN_APP_PS_SGC_PRODUCTDRAFTS') ||
+  getRuntimeEnv('MODERN_APP_PRODUCT_DRAFTS_BASE') ||
   DEFAULT_BASE
 
 // ─── Tipos OAS (nodos del draft) ──────────────────────────────────────────────
@@ -121,11 +122,7 @@ async function fetchDraftNode(prospectiveFolio: string, cards: string): Promise<
     headers: { Accept: 'application/json' },
   })
 
-  if (!res.ok) {
-    throw new Error(`ProductDrafts GET ${res.status}`)
-  }
-
-  const json = (await res.json()) as DraftResponse
+  const json = await readSafeJson<DraftResponse>(res, 'ProductDrafts GET', url)
   return json.data ?? {}
 }
 

@@ -1,8 +1,10 @@
-import { fetchWithRetry } from '@/lib/fetchWithRetry'
+import { configHttpClient } from '@/lib/httpClient'
+import axios from 'axios'
 
 interface ApplicationConfigEntry {
   _id?: string
   code?: string
+  name?: string | null
   description?: string
   value?: unknown
   createdAt?: string
@@ -14,38 +16,58 @@ interface ApplicationConfigResponse {
   meta?: unknown
 }
 
-const DEFAULT_BASE = '/ps/sgc/application-configs'
+function parseMaybeJsonString(value: unknown): unknown {
+  if (typeof value !== 'string') return value
 
-const BASE =
-  (typeof process !== 'undefined' &&
-    process.env &&
-    (process.env.MODERN_APP_PS_SGC_APPLICATIONCONFIGS ||
-      process.env.MODERN_APP_APPLICATION_CONFIGS_BASE)) ||
-  DEFAULT_BASE
+  const trimmed = value.trim()
+  if (!trimmed) return value
 
-export async function getApplicationConfigValue(code: string): Promise<unknown> {
-  const url = `${BASE}/v1/application-configs/${encodeURIComponent(code)}`
-  const response = await fetchWithRetry(url, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error(`ApplicationConfigs ${response.status}: ${code}`)
+  if (!(trimmed.startsWith('{') || trimmed.startsWith('['))) {
+    return value
   }
 
-  const json = (await response.json()) as ApplicationConfigResponse
+  try {
+    return JSON.parse(trimmed)
+  } catch {
+    return value
+  }
+}
+
+function extractConfigData(json: ApplicationConfigResponse): unknown {
   const data = json.data
 
   if (Array.isArray(data)) {
-    return data[0]?.value
+    const first = data[0]
+    if (first && typeof first === 'object' && 'value' in first) {
+      return parseMaybeJsonString((first as ApplicationConfigEntry).value)
+    }
+    return data
   }
 
   if (data && typeof data === 'object' && 'value' in data) {
-    return (data as ApplicationConfigEntry).value
+    return parseMaybeJsonString((data as ApplicationConfigEntry).value)
   }
 
-  return undefined
+  return data ?? undefined
+}
+
+export async function getApplicationConfigValue(code: string): Promise<unknown> {
+  try {
+    const response = await configHttpClient.get<ApplicationConfigResponse>(
+      `/v1/application-configs/${encodeURIComponent(code)}`,
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      }
+    )
+
+    return extractConfigData(response.data)
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      return undefined
+    }
+
+    throw error
+  }
 }

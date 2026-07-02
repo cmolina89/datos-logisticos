@@ -6,10 +6,12 @@
 
 import SEOHead from '@/components/common/SEOHead/SEOHead'
 import { useTranslation } from '@/hooks/useTranslation'
+import { getRuntimeEnv } from '@/lib/api/runtimeEnv'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Button } from 'primereact/button'
 import { Card } from 'primereact/card'
 import { Dialog } from 'primereact/dialog'
+import { Message } from 'primereact/message'
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import TarjetaDatosLogisticos from '../components/TarjetaDatosLogisticos'
@@ -67,6 +69,11 @@ import {
   validarEntregaManipulacion,
   tieneErrores,
 } from '../utils/validaciones'
+import {
+  getEmpaquesDynamicConfig,
+  type EmpaquesFieldConfig,
+  type EmpaquesModalConfig,
+} from '../api/empaquesDynamicConfigService'
 import './DatosLogisticosEmpaquePage.scss'
 
 const SUPPLIER_ID_PATTERN = /^[A-Za-z0-9]{1,12}$/
@@ -75,10 +82,109 @@ const ITEM_SKU_HELPER_PATTERN = /^[A-Za-z0-9-]{5,20}$/
 const AREA_TYPE_CODE_PATTERN = /^(1|2)$/
 const NUMERIC_PATTERN = /^\d+$/
 
+const SUPPLIER_ID_QUERY_KEYS = [
+  'supplierId',
+  'supplierID',
+  'supplier_id',
+  'supplier',
+  'idSupplier',
+  'supplierNumber',
+  'proveedorId',
+  'idProveedor',
+]
+
+const FOLIO_QUERY_KEYS = ['folio', 'prospectiveFolio', 'prospective_folio']
+const DEFAULT_SUPPLIER_ID = getRuntimeEnv('MODERN_APP_DEFAULT_SUPPLIER_ID')
+
+function getQueryValueByAliases(params: URLSearchParams, aliases: string[]): string {
+  for (const alias of aliases) {
+    const value = params.get(alias)
+    if (value && value.trim()) return value.trim()
+  }
+
+  return ''
+}
+
+function buildSearchParamsFromLocation(): URLSearchParams {
+  if (typeof window === 'undefined') return new URLSearchParams()
+
+  const params = new URLSearchParams(window.location.search)
+  const hash = window.location.hash || ''
+  const hashQueryIndex = hash.indexOf('?')
+
+  if (hashQueryIndex >= 0) {
+    const hashParams = new URLSearchParams(hash.slice(hashQueryIndex + 1))
+    hashParams.forEach((value, key) => {
+      if (!params.has(key)) {
+        params.set(key, value)
+      }
+    })
+  }
+
+  return params
+}
+
+function getSupplierIdFromPathname(pathname: string): string {
+  const match = pathname.match(/(?:supplier|suppliers|proveedor|proveedores)\/([A-Za-z0-9-]+)/i)
+  return match?.[1]?.trim() || ''
+}
+
+function findSupplierIdInObject(source: unknown): string {
+  if (!source || typeof source !== 'object') return ''
+
+  const obj = source as Record<string, unknown>
+  const directKeys = [
+    'supplierId',
+    'supplierID',
+    'supplier_id',
+    'idSupplier',
+    'supplierNumber',
+    'proveedorId',
+    'idProveedor',
+  ]
+
+  for (const key of directKeys) {
+    const value = obj[key]
+    if (typeof value === 'string' && value.trim()) return value.trim()
+    if (typeof value === 'number') return String(value)
+  }
+
+  const nestedCandidates = [obj.payload, obj.data, obj.context, obj.detail, obj.params]
+  for (const nested of nestedCandidates) {
+    const nestedValue = findSupplierIdInObject(nested)
+    if (nestedValue) return nestedValue
+  }
+
+  return ''
+}
+
+function findProspectiveFolioInObject(source: unknown): string {
+  if (!source || typeof source !== 'object') return ''
+
+  const obj = source as Record<string, unknown>
+  const directKeys = ['folio', 'prospectiveFolio', 'prospective_folio', 'proposalFolio']
+
+  for (const key of directKeys) {
+    const value = obj[key]
+    if (typeof value === 'string' && value.trim()) return value.trim()
+    if (typeof value === 'number') return String(value)
+  }
+
+  const nestedCandidates = [obj.payload, obj.data, obj.context, obj.detail, obj.params]
+  for (const nested of nestedCandidates) {
+    const nestedValue = findProspectiveFolioInObject(nested)
+    if (nestedValue) return nestedValue
+  }
+
+  return ''
+}
+
 const getFriendlyApiErrorMessage = (error: unknown, fallbackMessage: string): string => {
   const technicalMessage = error instanceof Error ? error.message : String(error ?? '')
   const looksLikeHtmlInsteadOfJson =
-    technicalMessage.includes('Unexpected token') && technicalMessage.includes('<!DOCTYPE')
+    (technicalMessage.includes('Unexpected token') && technicalMessage.includes('<!DOCTYPE')) ||
+    technicalMessage.includes('invalid JSON response (HTML)') ||
+    technicalMessage.includes('unexpected content-type')
 
   if (looksLikeHtmlInsteadOfJson) {
     return `${fallbackMessage}. El servicio no devolvio JSON valido.`
@@ -97,6 +203,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
   const setFilasCedisLoading = useSetAtom(filasCedisLoadingAtom)
   const setFilasCedisError = useSetAtom(filasCedisErrorAtom)
   const guardadoStatus = useAtomValue(guardadoStatusAtom)
+  const guardadoMensaje = useAtomValue(guardadoMensajeAtom)
   const guardadoSection = useAtomValue(guardadoSectionAtom)
   const setGuardadoStatus = useSetAtom(guardadoStatusAtom)
   const setGuardadoMensaje = useSetAtom(guardadoMensajeAtom)
@@ -136,6 +243,10 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
   const [leadTimesLoading, setLeadTimesLoading] = useState(false)
   const [leadTimesError, setLeadTimesError] = useState<string | null>(null)
   const [leadTimesInfoMessage, setLeadTimesInfoMessage] = useState<string | null>(null)
+  const [empaquesModalConfig, setEmpaquesModalConfig] = useState<EmpaquesModalConfig | null>(null)
+  const [empaquesFieldConfig, setEmpaquesFieldConfig] = useState<EmpaquesFieldConfig[]>([])
+  const [empaquesConfigLoading, setEmpaquesConfigLoading] = useState(false)
+  const [empaquesConfigError, setEmpaquesConfigError] = useState<string | null>(null)
 
   const validarFolioAntesDeGuardar = useCallback((): boolean => {
     if (prospectiveFolio) return true
@@ -153,9 +264,11 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
   // ── Leer folio y supplierId desde URL query params al montar ───────────────
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const params = new URLSearchParams(window.location.search)
-    const folio = params.get('folio') ?? params.get('prospectiveFolio') ?? ''
-    const supplier = params.get('supplierId') ?? ''
+    const params = buildSearchParamsFromLocation()
+    const folio = getQueryValueByAliases(params, FOLIO_QUERY_KEYS)
+    const supplierFromQuery = getQueryValueByAliases(params, SUPPLIER_ID_QUERY_KEYS)
+    const supplierFromPath = getSupplierIdFromPathname(window.location.pathname)
+    const supplier = supplierFromQuery || supplierFromPath || DEFAULT_SUPPLIER_ID
     const itemNumberParam = params.get('itemNumber') ?? ''
     const itemSkuParam = params.get('itemSKU') ?? ''
     const areaTypeCodeParam = params.get('areaTypeCode') ?? ''
@@ -169,6 +282,31 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
     }
     if (supplierItemIdParam) setSupplierItemId(supplierItemIdParam)
   }, [setProspectiveFolioAtom, setSupplierIdAtom])
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || (supplierId && prospectiveFolio)) return
+
+    const onHostMessage = (event: MessageEvent) => {
+      if (!supplierId) {
+        const idFromMessage = findSupplierIdInObject(event.data)
+        if (idFromMessage) {
+          setSupplierIdAtom(idFromMessage)
+        }
+      }
+
+      if (!prospectiveFolio) {
+        const folioFromMessage = findProspectiveFolioInObject(event.data)
+        if (folioFromMessage) {
+          setProspectiveFolioAtom(folioFromMessage)
+        }
+      }
+    }
+
+    window.addEventListener('message', onHostMessage)
+    return () => {
+      window.removeEventListener('message', onHostMessage)
+    }
+  }, [supplierId, prospectiveFolio, setSupplierIdAtom, setProspectiveFolioAtom])
 
   // ── Carga inicial: leer las 4 tarjetas del borrador (ProductDrafts) ────────
   useEffect(() => {
@@ -193,7 +331,9 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
       })
       .catch(err => {
         if (!cancelled) {
-          setFilasCedisError(err instanceof Error ? err.message : 'Error al cargar el borrador')
+          setFilasCedisError(
+            getFriendlyApiErrorMessage(err, 'Error al cargar el borrador logístico')
+          )
         }
       })
       .finally(() => {
@@ -219,6 +359,13 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
   useEffect(() => {
     if (!supplierId || !schemaId) return
 
+    if (schemaId.startsWith('SCHEMA_')) {
+      setDatosLogisticos({ filasCedis: [] })
+      setFilasCedisError(null)
+      setFilasCedisLoading(false)
+      return
+    }
+
     if (skipNextSchemaReloadRef.current && state.datosLogisticos.filasCedis.length > 0) {
       skipNextSchemaReloadRef.current = false
       return
@@ -232,8 +379,14 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
         if (!cancelled) setDatosLogisticos({ filasCedis: filas })
       })
       .catch(err => {
-        if (!cancelled)
-          setFilasCedisError(err instanceof Error ? err.message : 'Error al cargar CEDIS')
+        if (!cancelled) {
+          setFilasCedisError(
+            getFriendlyApiErrorMessage(
+              err,
+              'No se pudieron cargar los CEDIS para el esquema seleccionado'
+            )
+          )
+        }
       })
       .finally(() => {
         if (!cancelled) setFilasCedisLoading(false)
@@ -271,6 +424,36 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
       .finally(() => {
         if (!cancelled) {
           setContainerTypesLoading(false)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    setEmpaquesConfigLoading(true)
+    setEmpaquesConfigError(null)
+
+    getEmpaquesDynamicConfig()
+      .then(config => {
+        if (cancelled) return
+        setEmpaquesModalConfig(config.modal)
+        setEmpaquesFieldConfig(config.fields)
+      })
+      .catch(error => {
+        if (cancelled) return
+        setEmpaquesConfigError(
+          getFriendlyApiErrorMessage(error, 'Error al cargar configuracion dinamica de empaques')
+        )
+        setEmpaquesModalConfig(null)
+        setEmpaquesFieldConfig([])
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setEmpaquesConfigLoading(false)
         }
       })
 
@@ -504,7 +687,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
   const guardarEmpaquesProducto = useCallback(() => {
     if (!validarFolioAntesDeGuardar()) return
 
-    const e3 = validarEmpaquesProducto(state.empaquesProducto)
+    const e3 = validarEmpaquesProducto(state.empaquesProducto, empaquesFieldConfig)
     setErroresEmpaques(e3)
     if (tieneErrores(e3)) {
       setGuardadoMensaje(t('datosLogisticos.messages.fixEmpaques'))
@@ -540,6 +723,7 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
     setSavedSections,
     validarFolioAntesDeGuardar,
     t,
+    empaquesFieldConfig,
   ])
 
   const guardarEntregaManipulacion = useCallback(() => {
@@ -591,6 +775,21 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
         keywords="Alta SKU, datos logísticos, empaque, medidas, entrega, manipulación"
       />
       <div className="datos-logisticos-empaque-page datos-logisticos-empaque-layout">
+        {guardadoStatus === 'error' && guardadoMensaje && (
+          <div className="guardado-feedback guardado-feedback-error">
+            <Message severity="error" text={guardadoMensaje} />
+          </div>
+        )}
+
+        {guardadoStatus === 'loading' && (
+          <div className="guardado-feedback guardado-feedback-loading">
+            <Message
+              severity="info"
+              text={guardadoMensaje || 'Guardando información, espera un momento...'}
+            />
+          </div>
+        )}
+
         {/* Área de contenido con scroll - 4 frames en columna vertical */}
         {/* Modal de éxito al guardar (reemplaza la alerta) */}
         <Dialog
@@ -682,6 +881,10 @@ const DatosLogisticosEmpaquePage: React.FC = () => {
                     leadTimesLoading={leadTimesLoading}
                     leadTimesError={leadTimesError}
                     leadTimesInfoMessage={leadTimesInfoMessage}
+                    modalConfig={empaquesModalConfig}
+                    fieldsConfig={empaquesFieldConfig}
+                    dynamicConfigLoading={empaquesConfigLoading}
+                    dynamicConfigError={empaquesConfigError}
                   >
                     <Button
                       label={t('common.save')}

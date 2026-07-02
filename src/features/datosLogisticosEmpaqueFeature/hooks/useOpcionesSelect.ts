@@ -21,6 +21,12 @@ export interface OpcionDropdown {
   value: string
 }
 
+export interface OpcionesEsquemaState {
+  options: OpcionDropdown[]
+  loading: boolean
+  error: string | null
+}
+
 function mapOpciones(opciones: OpcionSelect[], t: (key: string) => string): OpcionDropdown[] {
   return opciones.map(o => ({
     label: o.label ?? (o.labelKey ? t(o.labelKey) : o.value),
@@ -28,26 +34,58 @@ function mapOpciones(opciones: OpcionSelect[], t: (key: string) => string): Opci
   }))
 }
 
-export function useOpcionesEsquemaDistribucion(): OpcionDropdown[] {
+export function useOpcionesEsquemaDistribucion(): OpcionesEsquemaState {
   const { t } = useTranslation()
   const supplierId = useAtomValue(supplierIdAtom)
   const [opciones, setOpciones] = useState<OpcionSelect[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!supplierId) return
+    if (!supplierId) {
+      setOpciones([])
+      setError(
+        'No se encontró supplierId del proveedor. Verifica que el host envíe supplierId (o aliases como supplier_id / idProveedor), o define MODERN_APP_DEFAULT_SUPPLIER_ID para pruebas locales.'
+      )
+      setLoading(false)
+      return
+    }
 
     let mounted = true
+    setLoading(true)
+    setError(null)
 
     getOpcionesEsquemaDistribucion(supplierId)
-      .then((data) => {
+      .then(data => {
         if (mounted) {
+          if (data.length === 0) {
+            console.warn(
+              '[DatosLogisticos] No se recibieron esquemas logisticos para supplierId:',
+              supplierId
+            )
+            setError('No se recibieron esquemas logísticos para el proveedor actual.')
+          } else {
+            setError(null)
+          }
           setOpciones(data)
         }
       })
-      .catch((error) => {
-        console.error('Error cargando opciones de esquema de distribucion:', error)
+      .catch(error => {
+        console.error(
+          'Error cargando opciones de esquema de distribucion para supplierId:',
+          supplierId,
+          error
+        )
         if (mounted) {
           setOpciones([])
+          setError(
+            'No fue posible cargar los esquemas logísticos. Verifica autenticación y endpoint.'
+          )
+        }
+      })
+      .finally(() => {
+        if (mounted) {
+          setLoading(false)
         }
       })
 
@@ -56,7 +94,11 @@ export function useOpcionesEsquemaDistribucion(): OpcionDropdown[] {
     }
   }, [supplierId])
 
-  return mapOpciones(opciones, t)
+  return {
+    options: mapOpciones(opciones, t),
+    loading,
+    error,
+  }
 }
 
 export function useOpcionesUnidadPeso(): OpcionDropdown[] {
@@ -67,12 +109,12 @@ export function useOpcionesUnidadPeso(): OpcionDropdown[] {
     let mounted = true
 
     getOpcionesUnidadPeso()
-      .then((data) => {
+      .then(data => {
         if (mounted) {
           setOpciones(data)
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error cargando opciones de unidad de peso:', error)
         if (mounted) {
           setOpciones([])
@@ -95,12 +137,12 @@ export function useOpcionesUnidadMedidaDimensiones(): OpcionDropdown[] {
     let mounted = true
 
     getOpcionesUnidadMedidaDimensiones()
-      .then((data) => {
+      .then(data => {
         if (mounted) {
           setOpciones(data)
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error cargando opciones de unidad de medida:', error)
         if (mounted) {
           setOpciones([])
@@ -123,12 +165,12 @@ export function useOpcionesOrientacion(): OpcionDropdown[] {
     let mounted = true
 
     getOpcionesOrientacion()
-      .then((data) => {
+      .then(data => {
         if (mounted) {
           setOpciones(data)
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error cargando opciones de orientacion:', error)
         if (mounted) {
           setOpciones([])
@@ -151,12 +193,12 @@ export function useOpcionesCualAplicaEmpaque(): OpcionDropdown[] {
     let mounted = true
 
     getOpcionesCualAplicaEmpaque()
-      .then((data) => {
+      .then(data => {
         if (mounted) {
           setOpciones(data)
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error cargando opciones de empaque:', error)
         if (mounted) {
           setOpciones([])

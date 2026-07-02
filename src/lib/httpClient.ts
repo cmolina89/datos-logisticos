@@ -1,8 +1,7 @@
 // src/lib/axios.ts
 
 import { config } from '@/config/environment'
-import { applySecurityHeaders } from '@/utils/securityHeaders'
-import { validateSecurityHeaders } from '@/utils/securityHeaders'
+import { applySecurityHeaders, validateSecurityHeaders } from '@/utils/securityHeaders'
 import axios, {
   type AxiosError,
   type AxiosInstance,
@@ -10,88 +9,70 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios'
 
-// La URL base para el ejemplo de JSONPlaceholder.
-// Ahora usa la configuración segura que funciona tanto en servidor como en cliente.
-const baseURL = config.apiBaseUrl
+const createClient = (baseURL: string): AxiosInstance => {
+  const client: AxiosInstance = axios.create({
+    baseURL,
+    timeout: 10000,
+    headers: applySecurityHeaders({
+      'Content-Type': 'application/json',
+    }),
+  })
 
-// Crear una instancia de Axios
-const httpClient: AxiosInstance = axios.create({
-  baseURL,
-  timeout: 10000,
-  headers: applySecurityHeaders({
-    'Content-Type': 'application/json',
-  }),
-})
-
-// Interceptor de Solicitudes (Request)
-// NOTA: Este interceptor se deja como ejemplo de cómo añadir un token.
-// Como JSONPlaceholder no requiere autenticación, no se usará activamente en nuestra llamada.
-// Para que esto funcione, el token debería ser leído desde un lugar accesible
-// fuera de los componentes React, como directamente de document.cookie si es necesario.
-httpClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    // En una app real, podrías leer la cookie aquí si es necesario
-    // const token = document.cookie.split('; ').find(row => row.startsWith('accessToken='))?.split('=')[1];
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
-    return config
-  },
-  (error: AxiosError) => {
-    console.error('Request Error:', error)
-    return Promise.reject(error)
-  }
-)
-
-// Interceptor de Respuestas (Response)
-httpClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    // Validar headers de seguridad en todas las respuestas
-    try {
-      validateSecurityHeaders(response as unknown as Response)
-    } catch (error) {
-      console.error('Security headers validation error:', error)
+  client.interceptors.request.use(
+    (requestConfig: InternalAxiosRequestConfig) => {
+      return requestConfig
+    },
+    (error: AxiosError) => {
+      console.error('Request Error:', error)
+      return Promise.reject(error)
     }
+  )
 
-    // Procesar la respuesta antes de devolverla
-    return response
-  },
-  (error: AxiosError) => {
-    if (error.response) {
-      const { status, data } = error.response
-      console.error(`HTTP Error ${status}:`, data)
-
-      // Ejemplo de manejo de errores comunes
-      switch (status) {
-        case 401:
-          console.error('Unauthorized. Redirecting to login...')
-          // En un proyecto real, esto debería limpiar el estado de autenticación
-          // y redirigir. La redirección en un interceptor es delicada.
-          // Es mejor que la lógica de la UI maneje la redirección al recibir el error 401.
-          if (typeof window !== 'undefined') {
-            // window.location.href = '/login'; // Esta es una redirección dura
-          }
-          break
-        case 403:
-          console.error('Forbidden access.')
-          break
-        case 404:
-          console.error('Resource not found.')
-          break
-        case 500:
-          console.error('Internal server error.')
-          break
-        default:
-          break
+  client.interceptors.response.use(
+    (response: AxiosResponse) => {
+      try {
+        validateSecurityHeaders(response as unknown as Response)
+      } catch (error) {
+        console.error('Security headers validation error:', error)
       }
-    } else if (error.request) {
-      console.error('Network Error: No response received from server.', error.request)
-    } else {
-      console.error('Axios Error:', error.message)
-    }
 
-    return Promise.reject(error)
-  }
-)
+      return response
+    },
+    (error: AxiosError) => {
+      if (error.response) {
+        const { status, data } = error.response
+        console.error(`HTTP Error ${status}:`, data)
+
+        switch (status) {
+          case 401:
+            console.error('Unauthorized access.')
+            break
+          case 403:
+            console.error('Forbidden access.')
+            break
+          case 404:
+            console.error('Resource not found.')
+            break
+          case 500:
+            console.error('Server error.')
+            break
+          default:
+            break
+        }
+      } else if (error.request) {
+        console.error('Network Error: No response received.', error.request)
+      } else {
+        console.error('Axios Error:', error.message)
+      }
+
+      return Promise.reject(error)
+    }
+  )
+
+  return client
+}
+
+export const httpClient = createClient(config.apiBaseUrl)
+export const configHttpClient = createClient(config.configApiBaseUrl)
 
 export default httpClient
